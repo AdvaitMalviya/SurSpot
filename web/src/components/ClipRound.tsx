@@ -40,8 +40,6 @@ export function ClipRound({ song, index, attempts, onAttempt, onSkipSong, reveal
   }, [attempts.length, done, stage, status, play, playHook]);
 
   const toggle = () => (playing ? stop() : play(full ?? STAGES[stage], full ? clip!.onset : undefined));
-  const earned = clues(song).filter((c) => attempts.length >= c.after || done);
-  const nextClue = clues(song).find((c) => attempts.length < c.after);
   const skipLabel = stage === STAGES.length - 1 ? 'Give up' : `Skip, hear ${fmtSeconds(STAGES[stage + 1])}`;
 
   const kindOf = (i: number) => {
@@ -64,12 +62,17 @@ export function ClipRound({ song, index, attempts, onAttempt, onSkipSong, reveal
             {status === 'ready' && done && (playing ? 'Now playing' : 'Tap the record to hear it again')}
           </p>
         </div>
-        {!done && (earned.length > 0 || nextClue) && (
+        {!done && (
           <dl className="clues">
-            {earned.map((c) => (
-              <div key={c.label} className="clue"><dt>{c.label}</dt><dd>{c.text}</dd></div>
-            ))}
-            {nextClue && <p className="clue-next">{earned.length ? 'Another clue' : 'A first clue'} appears on try {nextClue.after + 1}.</p>}
+            {clues(song).map((c) => {
+              const open = attempts.length >= c.after && !!c.text;
+              return (
+                <div key={c.label} className={`clue ${open ? 'is-open' : ''}`}>
+                  <dt>{c.label}</dt>
+                  <dd>{open ? c.text : c.text ? `Unlocks on try ${c.after + 1}` : 'Not known'}</dd>
+                </div>
+              );
+            })}
           </dl>
         )}
         {done && (
