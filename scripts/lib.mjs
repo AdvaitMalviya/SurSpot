@@ -13,6 +13,8 @@ export const CACHE_DIR = join(DATA, '.cache', 'itunes');
 export const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 export const readJson = (p) => JSON.parse(readFileSync(p, 'utf8'));
 export const writeJson = (p, data) => { mkdirSync(dirname(p), { recursive: true }); writeFileSync(p, JSON.stringify(data, null, 2) + '\n'); };
+// Arrays the game downloads: one compact record per line keeps the file small and its git diffs readable.
+export const writeJsonRows = (p, rows) => { mkdirSync(dirname(p), { recursive: true }); writeFileSync(p, '[\n' + rows.map((r) => JSON.stringify(r)).join(',\n') + '\n]\n'); };
 
 // ---------------------------------------------------------------- iTunes API: cache + throttle
 // Research §7: ~20/min documented; a burst of 44 back-to-back calls passed, the 45th got 429 + Retry-After 5.

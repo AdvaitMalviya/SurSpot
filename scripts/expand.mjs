@@ -11,7 +11,7 @@ import { createHash } from 'node:crypto';
 import { existsSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import {
-  DATA, net, sleep, readJson, writeJson, itunesJson, slugify, skeleton, basicNorm, stripDecorations, decorations,
+  DATA, net, sleep, readJson, writeJson, writeJsonRows, itunesJson, slugify, skeleton, basicNorm, stripDecorations, decorations,
   splitArtists, artwork600, decadeOf, throttleInterval,
 } from './lib.mjs';
 
@@ -133,8 +133,12 @@ function isFilmPage(f) {
 }
 
 // ---------------------------------------------------------------- iTunes soundtrack albums
-const BAD_EDITION = /\b(dialogues?|jhankar|remix(es|ed)?|karaoke|instrumentals?|lo ?fi|unplugged|reprise|covers?|tribute|slowed|reverb|mashups?|8d|sinhalese|tamil|telugu|malayalam|kannada|bengali|marathi|punjabi|bhojpuri|gujarati|dubbed|version|piano|flute|lullab\w*)\b/i;
+const BAD_EDITION = /\b(dialogues?|jhankar|remix(es|ed)?|karaoke|instrumentals?|lo ?fi|unplugged|reprise|covers?|tribute|slowed|reverb|mashups?|8d|sinhalese|tamil|telugu|malayalam|kannada|bengali|marathi|punjabi|bhojpuri|gujarati|dubbed|version|piano|flute|lullab\w*|score|background)\b/i;
 const OST = /original motion picture soundtrack|motion picture soundtrack|original soundtrack|\bost\b|soundtrack/i;
+// iTunes files Hindi film albums under these genres; anything else (a country album that shares the film's
+// name, a Telugu dub) must at least call itself the film's soundtrack, and other-language genres never count.
+const HINDI_GENRE = /^(bollywood|soundtrack|regional indian|indian pop|indian|devotional & spiritual)$/i;
+const OTHER_LANGUAGE = /^(telugu|tamil|kannada|malayalam|bengali|gujarati|marathi|punjabi|punjabi pop|bhojpuri|haryanvi)$/i;
 const albumSearchUrl = (term) =>
   `https://itunes.apple.com/search?${new URLSearchParams({ term, country: 'in', media: 'music', entity: 'album', limit: '25' })}`;
 const albumTracksUrl = (ids) => `https://itunes.apple.com/lookup?id=${ids.join(',')}&entity=song&country=in&limit=200`;
@@ -151,6 +155,8 @@ function pickAlbum(film, results, ambiguous) {
     const name = r.collectionName ?? '';
     if (key(bracketless(name)) !== want && key(stripDecorations(name)) !== want) continue;
     if (BAD_EDITION.test(decorations(name).join(' ')) || BAD_EDITION.test(name.replace(OST, ''))) continue;
+    const genre = r.primaryGenreName ?? '';
+    if (OTHER_LANGUAGE.test(genre) || (!HINDI_GENRE.test(genre) && !OST.test(name))) continue;
     const y = Number(String(r.releaseDate ?? '').slice(0, 4)) || null;
     const delta = y ? y - film.year : 0;
     if (y && delta < -1) continue;
@@ -164,7 +170,8 @@ function pickAlbum(film, results, ambiguous) {
 }
 
 // ---------------------------------------------------------------- tracks -> songs
-const SKIP_ANYWHERE = /\b(dialogues?|theme|instrumental|interlude|score|bgm|promo|teaser|medley|karaoke|jhankar|mashup|ringtone)\b/i;
+const SKIP_ANYWHERE = /\b(dialogues?|theme|instrumental|interlude|score|bgm|promo|teaser|medley|karaoke|jhankar|mashup|ringtone|title music|mix|remix|reprise|soliloq\w*|version)\b/i;
+const LATER_PART = /\b(pt\.?|part)\s*[2-9]\b/i; // "Yaadon Ki Baaraat, Pt. 2" continues part 1
 const SKIP_DECOR = /\b(remix(ed)?|reprise|unplugged|lo ?fi|female|male|sad|happy|version|reloaded|club|dub|edit|extended|acoustic|live|slowed|reverb|mix|duet|solo)\b/i;
 const OK_DECOR = /^(from\b|feat\b|featuring\b|ft\b|original|film version|title (track|song))/i;
 const LYRICISTS = new Set(['anand bakshi', 'sameer', 'sameer anjaan', 'gulzar', 'javed akhtar', 'majrooh sultanpuri', 'sahir ludhianvi',
@@ -178,23 +185,29 @@ const LYRICISTS = new Set(['anand bakshi', 'sameer', 'sameer anjaan', 'gulzar', 
   'kumar', 'sahir', 'majrooh', 'hasrat', 'shakeel', 'kafeel azar', 'asad ajmeri', 'aziz qaisi', 'ravi basnet', 'arafat mehmood']);
 const person = (n) => basicNorm(n).replace(/\b(mohd|md|mohammad|muhammad)\b/g, 'mohammed');
 
+// The album credit names every composer (and on newer albums lyricists too); a song gets the ones its own
+// credit names, else the album's when there are at most three, else none rather than a wrong list.
 function songsFromAlbum(film, album, tracks) {
-  const composers = splitArtists(album.artistName).filter((a) => !/various artists/i.test(a));
+  const albumPeople = splitArtists(album.artistName).filter((a) => !/various artists/i.test(a) && !LYRICISTS.has(person(a)));
   const seen = new Set(), out = [];
   for (const t of tracks.sort((a, b) => (a.discNumber ?? 1) - (b.discNumber ?? 1) || (a.trackNumber ?? 0) - (b.trackNumber ?? 0))) {
     const raw = t.trackName ?? '';
-    if (!t.previewUrl || (t.trackTimeMillis ?? 0) < 75000 || SKIP_ANYWHERE.test(raw)) continue;
+    if (!t.previewUrl || (t.trackTimeMillis ?? 0) < 75000 || SKIP_ANYWHERE.test(raw) || LATER_PART.test(raw)) continue;
     if (decorations(raw).some((d) => !OK_DECOR.test(d) && SKIP_DECOR.test(d))) continue;
-    const title = stripDecorations(raw) || raw;
+    const title = (stripDecorations(raw) || raw).replace(/,?\s*(pt\.?|part)\s*1$/i, '');
     const k = key(title);
     if (!k || seen.has(k)) continue;
     seen.add(k);
     const credit = splitArtists(t.artistName).filter((a) => !LYRICISTS.has(person(a)));
-    const singers = credit.filter((a) => !composers.some((c) => person(c) === person(a)));
+    const onTrack = albumPeople.filter((c) => credit.some((a) => person(a) === person(c)));
+    const composers = onTrack.length ? onTrack : albumPeople.length <= 3 ? albumPeople : [];
+    // A credit naming only the composer means "sung by the composer" on newer albums, but on old reissues it
+    // usually means the singers were never credited; those stay unknown rather than wrong.
+    const singers = credit.filter((a) => !onTrack.some((c) => person(c) === person(a)));
     out.push({
       title, alt_titles: [], movie: film.name, year: film.year,
-      singers: singers.length ? singers : credit.length ? credit : [t.artistName],
-      composers: composers.length ? composers : [], tags: [], tier: film.tier,
+      singers: singers.length ? singers : film.year < 1980 ? [] : credit,
+      composers, tags: [], tier: film.tier,
       trackId: t.trackId, preview: t.previewUrl, artwork: artwork600(t.artworkUrl100),
       appleUrl: t.trackViewUrl?.replace(/[?&]uo=\d+/, '') ?? null, durationMs: t.trackTimeMillis ?? null, confidence: 'auto',
     });
@@ -267,12 +280,12 @@ const perDecade = Object.fromEntries([...Map.groupBy(songs, (s) => decadeOf(s.ye
 const perTier = Object.fromEntries([...Map.groupBy(songs, (s) => s.tier)].map(([t, xs]) => [t, xs.length]));
 if (partial) console.log('\nPartial run: data/expanded.json not written.');
 else {
-  writeJson(join(DATA, 'expanded.json'), songs);
+  writeJsonRows(join(DATA, 'expanded.json'), songs);
   writeFileSync(join(DATA, 'expand-report.md'), [
     '# Catalog expansion report', '',
     `Generated by \`node scripts/expand.mjs\`. ${films.length} films kept from ${all.length} listed, ${found.length} soundtracks found, `
       + `${songs.length} new songs (${dupes} already in the catalog).`, '',
-    `Songs per decade: ${Object.entries(perDecade).map(([d, n]) => `${d}s ${n}`).join(', ')}.`,
+    `Songs per decade: ${Object.entries(perDecade).map(([d, n]) => `${d} ${n}`).join(', ')}.`,
     `Songs per tier: ${Object.entries(perTier).map(([t, n]) => `tier ${t} ${n}`).join(', ')}.`, '',
     `## Films without a soundtrack match (${missing.length})`, '', '| film | year | views (60 days) | why |', '|---|---|---|---|',
     ...missing.map(({ film, why }) => `| ${film.name} | ${film.year} | ${film.views} | ${why} |`), '',

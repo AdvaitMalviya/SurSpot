@@ -7,7 +7,7 @@
 import { readdirSync, existsSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import {
-  DATA, net, readJson, writeJson, itunesJson, searchUrl, lookupUrl, baseSongId, decadeOf, songContext, decide,
+  DATA, net, readJson, writeJson, writeJsonRows, itunesJson, searchUrl, lookupUrl, baseSongId, decadeOf, songContext, decide,
   hasLatin, stripDecorations, fmtDur, artwork600, throttleInterval,
 } from './lib.mjs';
 
@@ -121,7 +121,7 @@ const dupes = [...byTrack.values()].filter((v) => v.length > 1);
 if (only || limit < Infinity) console.log('\nPartial run: data/catalog.json not written.');
 else {
   catalog.sort((a, b) => a.year - b.year || a.id.localeCompare(b.id));
-  writeJson(join(DATA, 'catalog.json'), catalog);
+  writeJsonRows(join(DATA, 'catalog.json'), catalog);
 }
 
 const md = (x) => String(x ?? '').replace(/\|/g, '\\|');
