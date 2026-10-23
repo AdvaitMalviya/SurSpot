@@ -1,8 +1,9 @@
 // Validates the seed catalog: node data/seed/check.mjs
 import fs from 'node:fs';
 import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 
-const dir = path.dirname(new URL(import.meta.url).pathname);
+const dir = path.dirname(fileURLToPath(import.meta.url));
 const TAGS = new Set(['romantic', 'sad', 'party', 'dance', 'sufi', 'qawwali', 'ghazal', 'devotional', 'patriotic',
   'wedding', 'item', 'rap', 'indipop', 'classical', 'rain', 'friendship', 'festive', 'non-film']);
 const FIELDS = ['title', 'alt_titles', 'movie', 'year', 'singers', 'composers', 'tags', 'tier'];
