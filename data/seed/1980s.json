@@ -1,0 +1,2038 @@
+[
+  {
+    "title": "Aap Jaisa Koi",
+    "alt_titles": [
+      "Aap Jaisa Koi Meri Zindagi Mein Aaye",
+      "आप जैसा कोई"
+    ],
+    "movie": "Qurbani",
+    "year": 1980,
+    "singers": [
+      "Nazia Hassan"
+    ],
+    "composers": [
+      "Biddu"
+    ],
+    "tags": [
+      "party",
+      "dance"
+    ],
+    "tier": 1
+  },
+  {
+    "title": "Laila O Laila",
+    "alt_titles": [
+      "Laila Ho Laila",
+      "Laila O Laila Aisi Main Laila",
+      "लैला ओ लैला"
+    ],
+    "movie": "Qurbani",
+    "year": 1980,
+    "singers": [
+      "Amit Kumar",
+      "Kanchan"
+    ],
+    "composers": [
+      "Kalyanji-Anandji"
+    ],
+    "tags": [
+      "item",
+      "dance"
+    ],
+    "tier": 2
+  },
+  {
+    "title": "Om Shanti Om",
+    "alt_titles": [
+      "Om Shanti Om Meri Umar Ke Naujawano",
+      "ओम शांति ओम"
+    ],
+    "movie": "Karz",
+    "year": 1980,
+    "singers": [
+      "Kishore Kumar"
+    ],
+    "composers": [
+      "Laxmikant-Pyarelal"
+    ],
+    "tags": [
+      "party",
+      "dance"
+    ],
+    "tier": 1
+  },
+  {
+    "title": "Ek Haseena Thi",
+    "alt_titles": [
+      "Ek Haseena Thi Ek Deewana Tha",
+      "एक हसीना थी"
+    ],
+    "movie": "Karz",
+    "year": 1980,
+    "singers": [
+      "Kishore Kumar",
+      "Asha Bhosle"
+    ],
+    "composers": [
+      "Laxmikant-Pyarelal"
+    ],
+    "tags": [
+      "romantic"
+    ],
+    "tier": 2
+  },
+  {
+    "title": "Paisa Yeh Paisa",
+    "alt_titles": [
+      "Paisa Ye Paisa",
+      "पैसा ये पैसा"
+    ],
+    "movie": "Karz",
+    "year": 1980,
+    "singers": [
+      "Kishore Kumar"
+    ],
+    "composers": [
+      "Laxmikant-Pyarelal"
+    ],
+    "tags": [
+      "party"
+    ],
+    "tier": 3
+  },
+  {
+    "title": "Hazaar Rahen Mud Ke Dekhin",
+    "alt_titles": [
+      "Hazaar Raahen Mudke Dekhi",
+      "हज़ार राहें मुड़ के देखीं"
+    ],
+    "movie": "Thodisi Bewafaii",
+    "year": 1980,
+    "singers": [
+      "Kishore Kumar",
+      "Lata Mangeshkar"
+    ],
+    "composers": [
+      "Khayyam"
+    ],
+    "tags": [
+      "sad"
+    ],
+    "tier": 2
+  },
+  {
+    "title": "Yamma Yamma",
+    "alt_titles": [
+      "Yamma Yamma Yamma Yamma Pyara Samma",
+      "यम्मा यम्मा"
+    ],
+    "movie": "Shaan",
+    "year": 1980,
+    "singers": [
+      "Mohammed Rafi",
+      "R. D. Burman"
+    ],
+    "composers": [
+      "R. D. Burman"
+    ],
+    "tags": [
+      "dance",
+      "party"
+    ],
+    "tier": 2
+  },
+  {
+    "title": "Maine Poocha Chand Se",
+    "alt_titles": [
+      "Maine Puchha Chand Se Ke Dekha Hai Kahin",
+      "मैंने पूछा चाँद से"
+    ],
+    "movie": "Abdullah",
+    "year": 1980,
+    "singers": [
+      "Mohammed Rafi"
+    ],
+    "composers": [
+      "R. D. Burman"
+    ],
+    "tags": [
+      "romantic"
+    ],
+    "tier": 3
+  },
+  {
+    "title": "Tu Is Tarah Se Meri Zindagi Mein",
+    "alt_titles": [
+      "Tu Is Tarah Se Meri Zindagi Mein Shamil Hai",
+      "तू इस तरह से मेरी ज़िंदगी में"
+    ],
+    "movie": "Aap To Aise Na The",
+    "year": 1980,
+    "singers": [
+      "Mohammed Rafi"
+    ],
+    "composers": [
+      "Usha Khanna"
+    ],
+    "tags": [
+      "romantic"
+    ],
+    "tier": 3
+  },
+  {
+    "title": "Sheesha Ho Ya Dil Ho",
+    "alt_titles": [
+      "Sheesha Ho Ya Dil Ho Aakhir Toot Jata Hai",
+      "शीशा हो या दिल हो"
+    ],
+    "movie": "Aasha",
+    "year": 1980,
+    "singers": [
+      "Lata Mangeshkar"
+    ],
+    "composers": [
+      "Laxmikant-Pyarelal"
+    ],
+    "tags": [
+      "sad"
+    ],
+    "tier": 4
+  },
+  {
+    "title": "Rang Barse",
+    "alt_titles": [
+      "Rang Barse Bhige Chunar Wali",
+      "Holi Khele Raghuveera",
+      "रंग बरसे"
+    ],
+    "movie": "Silsila",
+    "year": 1981,
+    "singers": [
+      "Amitabh Bachchan"
+    ],
+    "composers": [
+      "Shiv-Hari"
+    ],
+    "tags": [
+      "festive",
+      "dance"
+    ],
+    "tier": 1
+  },
+  {
+    "title": "Dekha Ek Khwab",
+    "alt_titles": [
+      "Dekha Ek Khwab To Ye Silsile Huye",
+      "देखा एक ख़्वाब"
+    ],
+    "movie": "Silsila",
+    "year": 1981,
+    "singers": [
+      "Kishore Kumar",
+      "Lata Mangeshkar"
+    ],
+    "composers": [
+      "Shiv-Hari"
+    ],
+    "tags": [
+      "romantic"
+    ],
+    "tier": 1
+  },
+  {
+    "title": "Yeh Kahan Aa Gaye Hum",
+    "alt_titles": [
+      "Ye Kahan Aa Gaye Hum Yunhi Saath Saath Chalte",
+      "ये कहाँ आ गए हम"
+    ],
+    "movie": "Silsila",
+    "year": 1981,
+    "singers": [
+      "Lata Mangeshkar",
+      "Amitabh Bachchan"
+    ],
+    "composers": [
+      "Shiv-Hari"
+    ],
+    "tags": [
+      "romantic"
+    ],
+    "tier": 2
+  },
+  {
+    "title": "Neela Aasman So Gaya",
+    "alt_titles": [
+      "Neela Asman So Gaya",
+      "नीला आसमान सो गया"
+    ],
+    "movie": "Silsila",
+    "year": 1981,
+    "singers": [
+      "Amitabh Bachchan"
+    ],
+    "composers": [
+      "Shiv-Hari"
+    ],
+    "tags": [
+      "sad"
+    ],
+    "tier": 3
+  },
+  {
+    "title": "Tere Mere Beech Mein",
+    "alt_titles": [
+      "Tere Mere Beech Mein Kaisa Hai Yeh Bandhan Anjana",
+      "तेरे मेरे बीच में"
+    ],
+    "movie": "Ek Duuje Ke Liye",
+    "year": 1981,
+    "singers": [
+      "S. P. Balasubrahmanyam",
+      "Lata Mangeshkar"
+    ],
+    "composers": [
+      "Laxmikant-Pyarelal"
+    ],
+    "tags": [
+      "romantic",
+      "sad"
+    ],
+    "tier": 1
+  },
+  {
+    "title": "Hum Bane Tum Bane",
+    "alt_titles": [
+      "Hum Bane Tum Bane Ek Duje Ke Liye",
+      "हम बने तुम बने"
+    ],
+    "movie": "Ek Duuje Ke Liye",
+    "year": 1981,
+    "singers": [
+      "S. P. Balasubrahmanyam",
+      "Lata Mangeshkar"
+    ],
+    "composers": [
+      "Laxmikant-Pyarelal"
+    ],
+    "tags": [
+      "romantic"
+    ],
+    "tier": 4
+  },
+  {
+    "title": "Yaad Aa Rahi Hai",
+    "alt_titles": [
+      "Yaad Aa Rahi Hai Teri Yaad Aa Rahi Hai",
+      "याद आ रही है"
+    ],
+    "movie": "Love Story",
+    "year": 1981,
+    "singers": [
+      "Amit Kumar",
+      "Lata Mangeshkar"
+    ],
+    "composers": [
+      "R. D. Burman"
+    ],
+    "tags": [
+      "romantic",
+      "sad"
+    ],
+    "tier": 2
+  },
+  {
+    "title": "Kya Yahi Pyar Hai",
+    "alt_titles": [
+      "Kya Yehi Pyar Hai",
+      "क्या यही प्यार है"
+    ],
+    "movie": "Rocky",
+    "year": 1981,
+    "singers": [
+      "Kishore Kumar",
+      "Lata Mangeshkar"
+    ],
+    "composers": [
+      "R. D. Burman"
+    ],
+    "tags": [
+      "romantic"
+    ],
+    "tier": 2
+  },
+  {
+    "title": "Aa Dekhen Zara",
+    "alt_titles": [
+      "Aa Dekhen Zara Kisme Kitna Hai Dum",
+      "आ देखें ज़रा"
+    ],
+    "movie": "Rocky",
+    "year": 1981,
+    "singers": [
+      "Kishore Kumar",
+      "Asha Bhosle"
+    ],
+    "composers": [
+      "R. D. Burman"
+    ],
+    "tags": [
+      "party",
+      "dance"
+    ],
+    "tier": 3
+  },
+  {
+    "title": "Dil Cheez Kya Hai",
+    "alt_titles": [
+      "Dil Cheez Kya Hai Aap Meri Jaan Lijiye",
+      "दिल चीज़ क्या है"
+    ],
+    "movie": "Umrao Jaan",
+    "year": 1981,
+    "singers": [
+      "Asha Bhosle"
+    ],
+    "composers": [
+      "Khayyam"
+    ],
+    "tags": [
+      "ghazal",
+      "dance"
+    ],
+    "tier": 1
+  },
+  {
+    "title": "In Aankhon Ki Masti",
+    "alt_titles": [
+      "In Aankhon Ki Masti Ke Mastane Hazaron Hain",
+      "इन आँखों की मस्ती"
+    ],
+    "movie": "Umrao Jaan",
+    "year": 1981,
+    "singers": [
+      "Asha Bhosle"
+    ],
+    "composers": [
+      "Khayyam"
+    ],
+    "tags": [
+      "ghazal"
+    ],
+    "tier": 2
+  },
+  {
+    "title": "Justuju Jiski Thi",
+    "alt_titles": [
+      "Justuju Jis Ki Thi Usko To Na Paya Humne",
+      "जुस्तजू जिसकी थी"
+    ],
+    "movie": "Umrao Jaan",
+    "year": 1981,
+    "singers": [
+      "Asha Bhosle"
+    ],
+    "composers": [
+      "Khayyam"
+    ],
+    "tags": [
+      "ghazal",
+      "sad"
+    ],
+    "tier": 4
+  },
+  {
+    "title": "Mere Angne Mein",
+    "alt_titles": [
+      "Mere Angne Mein Tumhara Kya Kaam Hai",
+      "मेरे अंगने में"
+    ],
+    "movie": "Laawaris",
+    "year": 1981,
+    "singers": [
+      "Amitabh Bachchan"
+    ],
+    "composers": [
+      "Kalyanji-Anandji"
+    ],
+    "tags": [
+      "dance",
+      "festive"
+    ],
+    "tier": 2
+  },
+  {
+    "title": "Hothon Se Chhu Lo Tum",
+    "alt_titles": [
+      "Honthon Se Chhu Lo Tum Mera Geet Amar Kar Do",
+      "होठों से छू लो तुम"
+    ],
+    "movie": "Prem Geet",
+    "year": 1981,
+    "singers": [
+      "Jagjit Singh"
+    ],
+    "composers": [
+      "Jagjit Singh"
+    ],
+    "tags": [
+      "ghazal",
+      "romantic"
+    ],
+    "tier": 1
+  },
+  {
+    "title": "Hamein Tumse Pyar Kitna",
+    "alt_titles": [
+      "Humein Tumse Pyar Kitna Ye Hum Nahin Jaante",
+      "हमें तुमसे प्यार कितना"
+    ],
+    "movie": "Kudrat",
+    "year": 1981,
+    "singers": [
+      "Kishore Kumar"
+    ],
+    "composers": [
+      "R. D. Burman"
+    ],
+    "tags": [
+      "romantic"
+    ],
+    "tier": 1
+  },
+  {
+    "title": "Jahan Teri Yeh Nazar Hai",
+    "alt_titles": [
+      "Jahan Teri Ye Nazar Hai Meri Jaan Mujhe Khabar Hai",
+      "जहाँ तेरी ये नज़र है"
+    ],
+    "movie": "Kaalia",
+    "year": 1981,
+    "singers": [
+      "Kishore Kumar"
+    ],
+    "composers": [
+      "R. D. Burman"
+    ],
+    "tags": [
+      "romantic"
+    ],
+    "tier": 3
+  },
+  {
+    "title": "Zindagi Ki Na Toote Ladi",
+    "alt_titles": [
+      "Zindagi Ki Na Toote Ladi Pyar Kar Le Ghadi Do Ghadi",
+      "ज़िंदगी की ना टूटे लड़ी"
+    ],
+    "movie": "Kranti",
+    "year": 1981,
+    "singers": [
+      "Lata Mangeshkar",
+      "Nitin Mukesh"
+    ],
+    "composers": [
+      "Laxmikant-Pyarelal"
+    ],
+    "tags": [
+      "romantic"
+    ],
+    "tier": 4
+  },
+  {
+    "title": "Rambha Ho",
+    "alt_titles": [
+      "Rambha Ho Ho Ho",
+      "Rambha Ho Ho Ho Sambha Ho Ho Ho",
+      "रंभा हो"
+    ],
+    "movie": "Armaan",
+    "year": 1981,
+    "singers": [
+      "Usha Uthup"
+    ],
+    "composers": [
+      "Bappi Lahiri"
+    ],
+    "tags": [
+      "dance",
+      "party"
+    ],
+    "tier": 2
+  },
+  {
+    "title": "Kahan Se Aaye Badra",
+    "alt_titles": [
+      "Kahan Se Aaye Badra Ghulta Jaye Kajra",
+      "कहाँ से आए बदरा"
+    ],
+    "movie": "Chashme Buddoor",
+    "year": 1981,
+    "singers": [
+      "Yesudas",
+      "Haimanti Shukla"
+    ],
+    "composers": [
+      "Raj Kamal"
+    ],
+    "tags": [
+      "rain",
+      "classical"
+    ],
+    "tier": 4
+  },
+  {
+    "title": "Disco Deewane",
+    "alt_titles": [
+      "Disco Deewane Aha Aha",
+      "डिस्को दीवाने"
+    ],
+    "movie": "Disco Deewane",
+    "year": 1981,
+    "singers": [
+      "Nazia Hassan",
+      "Zoheb Hassan"
+    ],
+    "composers": [
+      "Biddu"
+    ],
+    "tags": [
+      "indipop",
+      "non-film",
+      "party"
+    ],
+    "tier": 2
+  },
+  {
+    "title": "I Am a Disco Dancer",
+    "alt_titles": [
+      "I Am A Disco Dancer Zindagi Mera Gaana",
+      "आई एम अ डिस्को डांसर"
+    ],
+    "movie": "Disco Dancer",
+    "year": 1982,
+    "singers": [
+      "Vijay Benedict"
+    ],
+    "composers": [
+      "Bappi Lahiri"
+    ],
+    "tags": [
+      "dance",
+      "party"
+    ],
+    "tier": 1
+  },
+  {
+    "title": "Jimmy Jimmy Jimmy Aaja",
+    "alt_titles": [
+      "Jimmy Jimmy Aaja Aaja",
+      "जिमी जिमी जिमी आजा"
+    ],
+    "movie": "Disco Dancer",
+    "year": 1982,
+    "singers": [
+      "Parvati Khan"
+    ],
+    "composers": [
+      "Bappi Lahiri"
+    ],
+    "tags": [
+      "dance",
+      "party"
+    ],
+    "tier": 1
+  },
+  {
+    "title": "Yaad Aa Raha Hai",
+    "alt_titles": [
+      "Yaad Aa Raha Hai Tera Pyar",
+      "याद आ रहा है"
+    ],
+    "movie": "Disco Dancer",
+    "year": 1982,
+    "singers": [
+      "Bappi Lahiri"
+    ],
+    "composers": [
+      "Bappi Lahiri"
+    ],
+    "tags": [
+      "sad",
+      "dance"
+    ],
+    "tier": 2
+  },
+  {
+    "title": "Auva Auva Koi Yahan Nache",
+    "alt_titles": [
+      "Auva Auva",
+      "Koi Yahan Aha Nache Nache",
+      "औवा औवा"
+    ],
+    "movie": "Disco Dancer",
+    "year": 1982,
+    "singers": [
+      "Usha Uthup",
+      "Bappi Lahiri"
+    ],
+    "composers": [
+      "Bappi Lahiri"
+    ],
+    "tags": [
+      "dance",
+      "party"
+    ],
+    "tier": 4
+  },
+  {
+    "title": "Pag Ghungroo Baandh",
+    "alt_titles": [
+      "Pag Ghungroo Baandh Meera Nachi Thi",
+      "पग घुँघरू बाँध"
+    ],
+    "movie": "Namak Halaal",
+    "year": 1982,
+    "singers": [
+      "Kishore Kumar",
+      "Pandit Satyanarayan Mishra"
+    ],
+    "composers": [
+      "Bappi Lahiri"
+    ],
+    "tags": [
+      "dance",
+      "classical"
+    ],
+    "tier": 2
+  },
+  {
+    "title": "Raat Baaki Baat Baaki",
+    "alt_titles": [
+      "Raat Baaqi Baat Baaqi",
+      "रात बाक़ी बात बाक़ी"
+    ],
+    "movie": "Namak Halaal",
+    "year": 1982,
+    "singers": [
+      "Asha Bhosle",
+      "Bappi Lahiri"
+    ],
+    "composers": [
+      "Bappi Lahiri"
+    ],
+    "tags": [
+      "party",
+      "dance"
+    ],
+    "tier": 2
+  },
+  {
+    "title": "Thodi Si Jo Pee Li Hai",
+    "alt_titles": [
+      "Thodi Si Jo Pi Li Hai Chori To Nahin Ki Hai",
+      "थोड़ी सी जो पी ली है"
+    ],
+    "movie": "Namak Halaal",
+    "year": 1982,
+    "singers": [
+      "Kishore Kumar"
+    ],
+    "composers": [
+      "Bappi Lahiri"
+    ],
+    "tags": [
+      "party"
+    ],
+    "tier": 3
+  },
+  {
+    "title": "Pyar Humein Kis Mod Pe Le Aaya",
+    "alt_titles": [
+      "Pyar Hamen Kis Mod Pe Le Aaya",
+      "प्यार हमें किस मोड़ पे ले आया"
+    ],
+    "movie": "Satte Pe Satta",
+    "year": 1982,
+    "singers": [
+      "Kishore Kumar",
+      "Bhupinder Singh",
+      "R. D. Burman",
+      "Sapan Chakraborty",
+      "Gulshan Bawra"
+    ],
+    "composers": [
+      "R. D. Burman"
+    ],
+    "tags": [
+      "friendship",
+      "party"
+    ],
+    "tier": 2
+  },
+  {
+    "title": "Dilbar Mere",
+    "alt_titles": [
+      "Dilbar Mere Kab Tak Mujhe Aise Hi Tadpaoge",
+      "दिलबर मेरे"
+    ],
+    "movie": "Satte Pe Satta",
+    "year": 1982,
+    "singers": [
+      "Kishore Kumar",
+      "Annette Pinto"
+    ],
+    "composers": [
+      "R. D. Burman"
+    ],
+    "tags": [
+      "romantic"
+    ],
+    "tier": 3
+  },
+  {
+    "title": "Bhanwre Ne Khilaya Phool",
+    "alt_titles": [
+      "Bhanware Ne Khilaya Phool Phool Ko Le Gaya Rajkunwar",
+      "भँवरे ने खिलाया फूल"
+    ],
+    "movie": "Prem Rog",
+    "year": 1982,
+    "singers": [
+      "Lata Mangeshkar",
+      "Suresh Wadkar"
+    ],
+    "composers": [
+      "Laxmikant-Pyarelal"
+    ],
+    "tags": [
+      "romantic"
+    ],
+    "tier": 2
+  },
+  {
+    "title": "Mohabbat Hai Kya Cheez",
+    "alt_titles": [
+      "Mohabbat Hai Kya Cheez Hamko Batao",
+      "मोहब्बत है क्या चीज़"
+    ],
+    "movie": "Prem Rog",
+    "year": 1982,
+    "singers": [
+      "Lata Mangeshkar",
+      "Suresh Wadkar"
+    ],
+    "composers": [
+      "Laxmikant-Pyarelal"
+    ],
+    "tags": [
+      "romantic"
+    ],
+    "tier": 3
+  },
+  {
+    "title": "Yeh Galiyan Yeh Chaubara",
+    "alt_titles": [
+      "Ye Galiyan Ye Chaubara Yahan Aana Na Dobara",
+      "ये गलियाँ ये चौबारा"
+    ],
+    "movie": "Prem Rog",
+    "year": 1982,
+    "singers": [
+      "Lata Mangeshkar"
+    ],
+    "composers": [
+      "Laxmikant-Pyarelal"
+    ],
+    "tags": [
+      "wedding",
+      "sad"
+    ],
+    "tier": 3
+  },
+  {
+    "title": "Chupke Chupke Raat Din",
+    "alt_titles": [
+      "Chupke Chupke Raat Din Aansu Bahana Yaad Hai",
+      "चुपके चुपके रात दिन"
+    ],
+    "movie": "Nikaah",
+    "year": 1982,
+    "singers": [
+      "Ghulam Ali"
+    ],
+    "composers": [
+      "Ravi"
+    ],
+    "tags": [
+      "ghazal",
+      "romantic"
+    ],
+    "tier": 2
+  },
+  {
+    "title": "Dil Ke Armaan Aansuon Mein Beh Gaye",
+    "alt_titles": [
+      "Dil Ke Armaan Aansuon Mein Beh Gaye",
+      "दिल के अरमाँ आँसुओं में बह गए"
+    ],
+    "movie": "Nikaah",
+    "year": 1982,
+    "singers": [
+      "Salma Agha"
+    ],
+    "composers": [
+      "Ravi"
+    ],
+    "tags": [
+      "sad"
+    ],
+    "tier": 2
+  },
+  {
+    "title": "Tum Itna Jo Muskura Rahe Ho",
+    "alt_titles": [
+      "Tum Itna Jo Muskura Rahe Ho Kya Gham Hai Jisko Chhupa Rahe Ho",
+      "तुम इतना जो मुस्कुरा रहे हो"
+    ],
+    "movie": "Arth",
+    "year": 1982,
+    "singers": [
+      "Jagjit Singh"
+    ],
+    "composers": [
+      "Jagjit Singh",
+      "Chitra Singh"
+    ],
+    "tags": [
+      "ghazal",
+      "sad"
+    ],
+    "tier": 2
+  },
+  {
+    "title": "Jhuki Jhuki Si Nazar",
+    "alt_titles": [
+      "Jhuki Jhuki Si Nazar Bekarar Hai Ki Nahin",
+      "झुकी झुकी सी नज़र"
+    ],
+    "movie": "Arth",
+    "year": 1982,
+    "singers": [
+      "Jagjit Singh"
+    ],
+    "composers": [
+      "Jagjit Singh",
+      "Chitra Singh"
+    ],
+    "tags": [
+      "ghazal",
+      "romantic"
+    ],
+    "tier": 3
+  },
+  {
+    "title": "Tumko Dekha To Yeh Khayal Aaya",
+    "alt_titles": [
+      "Tumko Dekha To Ye Khayal Aaya",
+      "तुमको देखा तो ये ख़याल आया"
+    ],
+    "movie": "Saath Saath",
+    "year": 1982,
+    "singers": [
+      "Jagjit Singh",
+      "Chitra Singh"
+    ],
+    "composers": [
+      "Kuldeep Singh"
+    ],
+    "tags": [
+      "ghazal",
+      "romantic"
+    ],
+    "tier": 2
+  },
+  {
+    "title": "Phir Chhidi Raat Baat Phoolon Ki",
+    "alt_titles": [
+      "Phir Chhidi Raat",
+      "फिर छिड़ी रात बात फूलों की"
+    ],
+    "movie": "Bazaar",
+    "year": 1982,
+    "singers": [
+      "Lata Mangeshkar",
+      "Talat Aziz"
+    ],
+    "composers": [
+      "Khayyam"
+    ],
+    "tags": [
+      "ghazal",
+      "romantic"
+    ],
+    "tier": 3
+  },
+  {
+    "title": "Karoge Yaad To",
+    "alt_titles": [
+      "Karoge Yaad To Har Baat Yaad Aayegi",
+      "करोगे याद तो"
+    ],
+    "movie": "Bazaar",
+    "year": 1982,
+    "singers": [
+      "Bhupinder Singh"
+    ],
+    "composers": [
+      "Khayyam"
+    ],
+    "tags": [
+      "ghazal",
+      "sad"
+    ],
+    "tier": 4
+  },
+  {
+    "title": "Jaane Kaise Kab Kahan Iqrar Ho Gaya",
+    "alt_titles": [
+      "Jaane Kaise Kab Kahan",
+      "जाने कैसे कब कहाँ इक़रार हो गया"
+    ],
+    "movie": "Shakti",
+    "year": 1982,
+    "singers": [
+      "Kishore Kumar",
+      "Lata Mangeshkar"
+    ],
+    "composers": [
+      "R. D. Burman"
+    ],
+    "tags": [
+      "romantic"
+    ],
+    "tier": 3
+  },
+  {
+    "title": "Lambi Judaai",
+    "alt_titles": [
+      "Char Dinan Da Pyar O Rabba Badi Lambi Judaai",
+      "लंबी जुदाई"
+    ],
+    "movie": "Hero",
+    "year": 1983,
+    "singers": [
+      "Reshma"
+    ],
+    "composers": [
+      "Laxmikant-Pyarelal"
+    ],
+    "tags": [
+      "sad"
+    ],
+    "tier": 2
+  },
+  {
+    "title": "Jab Hum Jawan Honge",
+    "alt_titles": [
+      "Jab Hum Jawan Honge Jaane Kahan Honge",
+      "जब हम जवाँ होंगे"
+    ],
+    "movie": "Betaab",
+    "year": 1983,
+    "singers": [
+      "Shabbir Kumar",
+      "Lata Mangeshkar"
+    ],
+    "composers": [
+      "R. D. Burman"
+    ],
+    "tags": [
+      "romantic"
+    ],
+    "tier": 2
+  },
+  {
+    "title": "Tujhse Naraz Nahin Zindagi",
+    "alt_titles": [
+      "Tujhse Naaraz Nahi Zindagi Hairan Hoon Main",
+      "तुझसे नाराज़ नहीं ज़िंदगी"
+    ],
+    "movie": "Masoom",
+    "year": 1983,
+    "singers": [
+      "Lata Mangeshkar"
+    ],
+    "composers": [
+      "R. D. Burman"
+    ],
+    "tags": [
+      "sad"
+    ],
+    "tier": 1
+  },
+  {
+    "title": "Lakdi Ki Kaathi",
+    "alt_titles": [
+      "Lakdi Ki Kathi Kathi Pe Ghoda",
+      "लकड़ी की काठी"
+    ],
+    "movie": "Masoom",
+    "year": 1983,
+    "singers": [
+      "Vanita Mishra",
+      "Gauri Bapat",
+      "Gurpreet Kaur"
+    ],
+    "composers": [
+      "R. D. Burman"
+    ],
+    "tags": [
+      "friendship"
+    ],
+    "tier": 1
+  },
+  {
+    "title": "Do Naina Ek Kahani",
+    "alt_titles": [
+      "Do Naina Aur Ek Kahani",
+      "दो नैना एक कहानी"
+    ],
+    "movie": "Masoom",
+    "year": 1983,
+    "singers": [
+      "Aarti Mukherjee"
+    ],
+    "composers": [
+      "R. D. Burman"
+    ],
+    "tags": [
+      "sad"
+    ],
+    "tier": 4
+  },
+  {
+    "title": "Nainon Mein Sapna",
+    "alt_titles": [
+      "Naino Mein Sapna Sapnon Mein Sajna",
+      "नैनों में सपना"
+    ],
+    "movie": "Himmatwala",
+    "year": 1983,
+    "singers": [
+      "Kishore Kumar",
+      "Lata Mangeshkar"
+    ],
+    "composers": [
+      "Bappi Lahiri"
+    ],
+    "tags": [
+      "romantic",
+      "dance"
+    ],
+    "tier": 1
+  },
+  {
+    "title": "Taki O Taki",
+    "alt_titles": [
+      "Taki Taki O Taki",
+      "ताकी ओ ताकी"
+    ],
+    "movie": "Himmatwala",
+    "year": 1983,
+    "singers": [
+      "Kishore Kumar",
+      "Asha Bhosle"
+    ],
+    "composers": [
+      "Bappi Lahiri"
+    ],
+    "tags": [
+      "dance"
+    ],
+    "tier": 2
+  },
+  {
+    "title": "Ae Dil-e-Nadan",
+    "alt_titles": [
+      "Aye Dil-e-Nadaan",
+      "Ae Dil E Nadan Arzoo Kya Hai",
+      "ऐ दिल-ए-नादाँ"
+    ],
+    "movie": "Razia Sultan",
+    "year": 1983,
+    "singers": [
+      "Lata Mangeshkar"
+    ],
+    "composers": [
+      "Khayyam"
+    ],
+    "tags": [
+      "romantic",
+      "ghazal"
+    ],
+    "tier": 2
+  },
+  {
+    "title": "Zindagi Pyar Ka Geet Hai",
+    "alt_titles": [
+      "Zindagi Pyar Ka Geet Hai Ise Har Dil Ko Gaana Padega",
+      "ज़िंदगी प्यार का गीत है"
+    ],
+    "movie": "Souten",
+    "year": 1983,
+    "singers": [
+      "Kishore Kumar"
+    ],
+    "composers": [
+      "Usha Khanna"
+    ],
+    "tags": [
+      "sad",
+      "romantic"
+    ],
+    "tier": 2
+  },
+  {
+    "title": "Ae Zindagi Gale Laga Le",
+    "alt_titles": [
+      "Aye Zindagi Gale Laga Le",
+      "ऐ ज़िंदगी गले लगा ले"
+    ],
+    "movie": "Sadma",
+    "year": 1983,
+    "singers": [
+      "Suresh Wadkar"
+    ],
+    "composers": [
+      "Ilaiyaraaja"
+    ],
+    "tags": [
+      "romantic"
+    ],
+    "tier": 3
+  },
+  {
+    "title": "Surmayee Akhiyon Mein",
+    "alt_titles": [
+      "Surmai Ankhiyon Mein Nanha Munna Ek Sapna De Ja Re",
+      "सुरमई अँखियों में"
+    ],
+    "movie": "Sadma",
+    "year": 1983,
+    "singers": [
+      "Yesudas"
+    ],
+    "composers": [
+      "Ilaiyaraaja"
+    ],
+    "tags": [
+      "sad"
+    ],
+    "tier": 4
+  },
+  {
+    "title": "Inteha Ho Gayi Intezaar Ki",
+    "alt_titles": [
+      "Inteha Ho Gayi Intezar Ki",
+      "इंतहा हो गई इंतज़ार की"
+    ],
+    "movie": "Sharaabi",
+    "year": 1984,
+    "singers": [
+      "Kishore Kumar",
+      "Asha Bhosle"
+    ],
+    "composers": [
+      "Bappi Lahiri"
+    ],
+    "tags": [
+      "romantic"
+    ],
+    "tier": 2
+  },
+  {
+    "title": "Manzilein Apni Jagah Hain",
+    "alt_titles": [
+      "Manzilen Apni Jagah Hain Raaste Apni Jagah",
+      "मंज़िलें अपनी जगह हैं"
+    ],
+    "movie": "Sharaabi",
+    "year": 1984,
+    "singers": [
+      "Kishore Kumar"
+    ],
+    "composers": [
+      "Bappi Lahiri"
+    ],
+    "tags": [
+      "sad"
+    ],
+    "tier": 2
+  },
+  {
+    "title": "Log Kehte Hain Main Sharaabi Hoon",
+    "alt_titles": [
+      "Log Kehte Hain Main Sharabi Hoon",
+      "लोग कहते हैं मैं शराबी हूँ"
+    ],
+    "movie": "Sharaabi",
+    "year": 1984,
+    "singers": [
+      "Kishore Kumar"
+    ],
+    "composers": [
+      "Bappi Lahiri"
+    ],
+    "tags": [
+      "party"
+    ],
+    "tier": 3
+  },
+  {
+    "title": "Holi Aayi Holi Aayi",
+    "alt_titles": [
+      "Holi Aayi Holi Aayi Dekho Holi Aayi",
+      "होली आई होली आई"
+    ],
+    "movie": "Mashaal",
+    "year": 1984,
+    "singers": [
+      "Kishore Kumar",
+      "Lata Mangeshkar",
+      "Mahendra Kapoor"
+    ],
+    "composers": [
+      "Hridaynath Mangeshkar"
+    ],
+    "tags": [
+      "festive",
+      "dance"
+    ],
+    "tier": 3
+  },
+  {
+    "title": "Mann Kyun Behka Re Behka",
+    "alt_titles": [
+      "Man Kyun Behka Re Behka Aadhi Raat Ko",
+      "मन क्यूँ बहका रे बहका"
+    ],
+    "movie": "Utsav",
+    "year": 1984,
+    "singers": [
+      "Lata Mangeshkar",
+      "Asha Bhosle"
+    ],
+    "composers": [
+      "Laxmikant-Pyarelal"
+    ],
+    "tags": [
+      "romantic"
+    ],
+    "tier": 3
+  },
+  {
+    "title": "Sun Sahiba Sun",
+    "alt_titles": [
+      "Sun Sahiba Sun Pyar Ki Dhun",
+      "सुन साहिबा सुन"
+    ],
+    "movie": "Ram Teri Ganga Maili",
+    "year": 1985,
+    "singers": [
+      "Lata Mangeshkar"
+    ],
+    "composers": [
+      "Ravindra Jain"
+    ],
+    "tags": [
+      "romantic",
+      "dance"
+    ],
+    "tier": 1
+  },
+  {
+    "title": "Ek Radha Ek Meera",
+    "alt_titles": [
+      "Ek Radha Ek Meera Dono Ne Shyam Ko Chaaha",
+      "एक राधा एक मीरा"
+    ],
+    "movie": "Ram Teri Ganga Maili",
+    "year": 1985,
+    "singers": [
+      "Lata Mangeshkar"
+    ],
+    "composers": [
+      "Ravindra Jain"
+    ],
+    "tags": [
+      "devotional",
+      "romantic"
+    ],
+    "tier": 3
+  },
+  {
+    "title": "Saagar Kinare",
+    "alt_titles": [
+      "Saagar Kinare Dil Ye Pukare",
+      "सागर किनारे"
+    ],
+    "movie": "Saagar",
+    "year": 1985,
+    "singers": [
+      "Kishore Kumar",
+      "Lata Mangeshkar"
+    ],
+    "composers": [
+      "R. D. Burman"
+    ],
+    "tags": [
+      "romantic"
+    ],
+    "tier": 1
+  },
+  {
+    "title": "Chehra Hai Ya Chand Khila Hai",
+    "alt_titles": [
+      "Chehra Hai Ya Chaand Khila Hai",
+      "चेहरा है या चाँद खिला है"
+    ],
+    "movie": "Saagar",
+    "year": 1985,
+    "singers": [
+      "Kishore Kumar"
+    ],
+    "composers": [
+      "R. D. Burman"
+    ],
+    "tags": [
+      "romantic"
+    ],
+    "tier": 1
+  },
+  {
+    "title": "Yaar Bina Chain Kahan Re",
+    "alt_titles": [
+      "Yaar Bina Chain Kahan Re Pyar Bina Chain Kahan Re",
+      "यार बिना चैन कहाँ रे"
+    ],
+    "movie": "Saaheb",
+    "year": 1985,
+    "singers": [
+      "Bappi Lahiri",
+      "S. Janaki"
+    ],
+    "composers": [
+      "Bappi Lahiri"
+    ],
+    "tags": [
+      "dance",
+      "romantic"
+    ],
+    "tier": 2
+  },
+  {
+    "title": "Zihaal-e-Miskin",
+    "alt_titles": [
+      "Zihale Masti Mukund Ranjish",
+      "Zihaal-e-Muskin Makun Ba-Ranjish",
+      "ज़िहाल-ए-मिस्कीं"
+    ],
+    "movie": "Ghulami",
+    "year": 1985,
+    "singers": [
+      "Shabbir Kumar",
+      "Lata Mangeshkar"
+    ],
+    "composers": [
+      "Laxmikant-Pyarelal"
+    ],
+    "tags": [
+      "romantic"
+    ],
+    "tier": 2
+  },
+  {
+    "title": "Tumse Milkar Na Jaane Kyon",
+    "alt_titles": [
+      "Tumse Milkar Na Jaane Kyun Aur Bhi Kuchh Yaad Aata Hai",
+      "तुमसे मिलकर ना जाने क्यों"
+    ],
+    "movie": "Pyar Jhukta Nahin",
+    "year": 1985,
+    "singers": [
+      "Shabbir Kumar",
+      "Lata Mangeshkar"
+    ],
+    "composers": [
+      "Laxmikant-Pyarelal"
+    ],
+    "tags": [
+      "romantic"
+    ],
+    "tier": 3
+  },
+  {
+    "title": "Kisi Nazar Ko Tera Intezaar Aaj Bhi Hai",
+    "alt_titles": [
+      "Kisi Nazar Ko Tera Intezar Aaj Bhi Hai",
+      "किसी नज़र को तेरा इंतज़ार आज भी है"
+    ],
+    "movie": "Aitbaar",
+    "year": 1985,
+    "singers": [
+      "Bhupinder Singh",
+      "Asha Bhosle"
+    ],
+    "composers": [
+      "Bappi Lahiri"
+    ],
+    "tags": [
+      "ghazal",
+      "romantic"
+    ],
+    "tier": 4
+  },
+  {
+    "title": "Chitthi Aayi Hai",
+    "alt_titles": [
+      "Chitthi Aayi Hai Aayi Hai Chitthi Aayi Hai",
+      "चिट्ठी आई है"
+    ],
+    "movie": "Naam",
+    "year": 1986,
+    "singers": [
+      "Pankaj Udhas"
+    ],
+    "composers": [
+      "Laxmikant-Pyarelal"
+    ],
+    "tags": [
+      "sad",
+      "ghazal"
+    ],
+    "tier": 1
+  },
+  {
+    "title": "Itni Shakti Hamein Dena Data",
+    "alt_titles": [
+      "Itni Shakti Humein Dena Daata Man Ka Vishwas Kamzor Ho Na",
+      "इतनी शक्ति हमें देना दाता"
+    ],
+    "movie": "Ankush",
+    "year": 1986,
+    "singers": [
+      "Pushpa Pagdhare",
+      "Sushma Shrestha"
+    ],
+    "composers": [
+      "Kuldeep Singh"
+    ],
+    "tags": [
+      "devotional"
+    ],
+    "tier": 1
+  },
+  {
+    "title": "Har Karam Apna Karenge",
+    "alt_titles": [
+      "Aye Watan Tere Liye",
+      "Dil Diya Hai Jaan Bhi Denge",
+      "हर करम अपना करेंगे"
+    ],
+    "movie": "Karma",
+    "year": 1986,
+    "singers": [
+      "Mohammed Aziz",
+      "Kavita Krishnamurthy"
+    ],
+    "composers": [
+      "Laxmikant-Pyarelal"
+    ],
+    "tags": [
+      "patriotic"
+    ],
+    "tier": 3
+  },
+  {
+    "title": "Main Teri Dushman",
+    "alt_titles": [
+      "Main Teri Dushman Dushman Tu Mera",
+      "मैं तेरी दुश्मन"
+    ],
+    "movie": "Nagina",
+    "year": 1986,
+    "singers": [
+      "Lata Mangeshkar"
+    ],
+    "composers": [
+      "Laxmikant-Pyarelal"
+    ],
+    "tags": [
+      "dance"
+    ],
+    "tier": 2
+  },
+  {
+    "title": "Mera Kuchh Saamaan",
+    "alt_titles": [
+      "Mera Kuch Saaman Tumhare Paas Pada Hai",
+      "मेरा कुछ सामान"
+    ],
+    "movie": "Ijaazat",
+    "year": 1987,
+    "singers": [
+      "Asha Bhosle"
+    ],
+    "composers": [
+      "R. D. Burman"
+    ],
+    "tags": [
+      "sad"
+    ],
+    "tier": 2
+  },
+  {
+    "title": "Katra Katra Milti Hai",
+    "alt_titles": [
+      "Katra Katra Milti Hai Katra Katra Jeene Do",
+      "क़तरा क़तरा मिलती है"
+    ],
+    "movie": "Ijaazat",
+    "year": 1987,
+    "singers": [
+      "Asha Bhosle"
+    ],
+    "composers": [
+      "R. D. Burman"
+    ],
+    "tags": [
+      "romantic"
+    ],
+    "tier": 4
+  },
+  {
+    "title": "Hawa Hawai",
+    "alt_titles": [
+      "Hawa Hawaii",
+      "हवा हवाई"
+    ],
+    "movie": "Mr. India",
+    "year": 1987,
+    "singers": [
+      "Kavita Krishnamurthy"
+    ],
+    "composers": [
+      "Laxmikant-Pyarelal"
+    ],
+    "tags": [
+      "dance"
+    ],
+    "tier": 1
+  },
+  {
+    "title": "Kaate Nahin Katte",
+    "alt_titles": [
+      "Kate Nahin Katte Yeh Din Yeh Raat",
+      "काटे नहीं कटते"
+    ],
+    "movie": "Mr. India",
+    "year": 1987,
+    "singers": [
+      "Kishore Kumar",
+      "Alisha Chinai"
+    ],
+    "composers": [
+      "Laxmikant-Pyarelal"
+    ],
+    "tags": [
+      "rain",
+      "romantic"
+    ],
+    "tier": 1
+  },
+  {
+    "title": "Aap Ke Aa Jane Se",
+    "alt_titles": [
+      "Aapke Aa Jaane Se",
+      "आपके आ जाने से"
+    ],
+    "movie": "Khudgarz",
+    "year": 1987,
+    "singers": [
+      "Mohammed Aziz",
+      "Sadhana Sargam"
+    ],
+    "composers": [
+      "Rajesh Roshan"
+    ],
+    "tags": [
+      "romantic",
+      "dance"
+    ],
+    "tier": 2
+  },
+  {
+    "title": "Papa Kehte Hain",
+    "alt_titles": [
+      "Papa Kehte Hain Bada Naam Karega",
+      "पापा कहते हैं"
+    ],
+    "movie": "Qayamat Se Qayamat Tak",
+    "year": 1988,
+    "singers": [
+      "Udit Narayan"
+    ],
+    "composers": [
+      "Anand-Milind"
+    ],
+    "tags": [
+      "friendship"
+    ],
+    "tier": 1
+  },
+  {
+    "title": "Ae Mere Humsafar",
+    "alt_titles": [
+      "Aye Mere Humsafar Ek Zara Intezaar",
+      "ऐ मेरे हमसफ़र"
+    ],
+    "movie": "Qayamat Se Qayamat Tak",
+    "year": 1988,
+    "singers": [
+      "Udit Narayan",
+      "Alka Yagnik"
+    ],
+    "composers": [
+      "Anand-Milind"
+    ],
+    "tags": [
+      "romantic"
+    ],
+    "tier": 1
+  },
+  {
+    "title": "Gazab Ka Hai Din",
+    "alt_titles": [
+      "Ghazab Ka Hai Din Socho Zara",
+      "ग़ज़ब का है दिन"
+    ],
+    "movie": "Qayamat Se Qayamat Tak",
+    "year": 1988,
+    "singers": [
+      "Udit Narayan",
+      "Alka Yagnik"
+    ],
+    "composers": [
+      "Anand-Milind"
+    ],
+    "tags": [
+      "romantic"
+    ],
+    "tier": 3
+  },
+  {
+    "title": "Ek Do Teen",
+    "alt_titles": [
+      "Ek Do Teen Char Paanch Chhe Saat",
+      "एक दो तीन"
+    ],
+    "movie": "Tezaab",
+    "year": 1988,
+    "singers": [
+      "Alka Yagnik"
+    ],
+    "composers": [
+      "Laxmikant-Pyarelal"
+    ],
+    "tags": [
+      "dance",
+      "item"
+    ],
+    "tier": 1
+  },
+  {
+    "title": "So Gaya Yeh Jahan",
+    "alt_titles": [
+      "So Gaya Ye Jahan So Gaya Aasman",
+      "सो गया ये जहाँ"
+    ],
+    "movie": "Tezaab",
+    "year": 1988,
+    "singers": [
+      "Nitin Mukesh",
+      "Alka Yagnik",
+      "Shabbir Kumar"
+    ],
+    "composers": [
+      "Laxmikant-Pyarelal"
+    ],
+    "tags": [
+      "romantic"
+    ],
+    "tier": 3
+  },
+  {
+    "title": "Andheri Raaton Mein",
+    "alt_titles": [
+      "Andheri Raaton Mein Sunsaan Raahon Par",
+      "अँधेरी रातों में"
+    ],
+    "movie": "Shahenshah",
+    "year": 1988,
+    "singers": [
+      "Kishore Kumar"
+    ],
+    "composers": [
+      "Amar-Utpal"
+    ],
+    "tags": [
+      "party"
+    ],
+    "tier": 3
+  },
+  {
+    "title": "Aaj Phir Tum Pe Pyar Aaya Hai",
+    "alt_titles": [
+      "Aaj Phir Tumpe Pyaar Aaya Hai",
+      "आज फिर तुम पे प्यार आया है"
+    ],
+    "movie": "Dayavan",
+    "year": 1988,
+    "singers": [
+      "Pankaj Udhas",
+      "Anuradha Paudwal"
+    ],
+    "composers": [
+      "Laxmikant-Pyarelal"
+    ],
+    "tags": [
+      "romantic"
+    ],
+    "tier": 2
+  },
+  {
+    "title": "Dil Deewana",
+    "alt_titles": [
+      "Dil Deewana Bin Sajna Ke Maane Na",
+      "दिल दीवाना"
+    ],
+    "movie": "Maine Pyar Kiya",
+    "year": 1989,
+    "singers": [
+      "Lata Mangeshkar"
+    ],
+    "composers": [
+      "Raamlaxman"
+    ],
+    "tags": [
+      "romantic"
+    ],
+    "tier": 1
+  },
+  {
+    "title": "Kabootar Ja Ja Ja",
+    "alt_titles": [
+      "Kabutar Ja Ja Ja",
+      "कबूतर जा जा जा"
+    ],
+    "movie": "Maine Pyar Kiya",
+    "year": 1989,
+    "singers": [
+      "Lata Mangeshkar",
+      "S. P. Balasubrahmanyam"
+    ],
+    "composers": [
+      "Raamlaxman"
+    ],
+    "tags": [
+      "romantic"
+    ],
+    "tier": 1
+  },
+  {
+    "title": "Aate Jaate Hanste Gaate",
+    "alt_titles": [
+      "Aate Jaate Haste Gaate",
+      "आते जाते हँसते गाते"
+    ],
+    "movie": "Maine Pyar Kiya",
+    "year": 1989,
+    "singers": [
+      "S. P. Balasubrahmanyam",
+      "Lata Mangeshkar"
+    ],
+    "composers": [
+      "Raamlaxman"
+    ],
+    "tags": [
+      "romantic"
+    ],
+    "tier": 2
+  },
+  {
+    "title": "Mere Haathon Mein Nau Nau Chooriyan",
+    "alt_titles": [
+      "Mere Hathon Mein Nau Nau Chudiyan Hain",
+      "मेरे हाथों में नौ नौ चूड़ियाँ"
+    ],
+    "movie": "Chandni",
+    "year": 1989,
+    "singers": [
+      "Lata Mangeshkar"
+    ],
+    "composers": [
+      "Shiv-Hari"
+    ],
+    "tags": [
+      "wedding",
+      "dance"
+    ],
+    "tier": 1
+  },
+  {
+    "title": "Tere Mere Hothon Pe",
+    "alt_titles": [
+      "Tere Mere Honthon Pe Mitwa",
+      "तेरे मेरे होठों पे"
+    ],
+    "movie": "Chandni",
+    "year": 1989,
+    "singers": [
+      "Lata Mangeshkar",
+      "Babla Mehta"
+    ],
+    "composers": [
+      "Shiv-Hari"
+    ],
+    "tags": [
+      "romantic"
+    ],
+    "tier": 3
+  },
+  {
+    "title": "My Name Is Lakhan",
+    "alt_titles": [
+      "One Two Ka Four",
+      "Ek Do Teen Char",
+      "माय नेम इज़ लखन"
+    ],
+    "movie": "Ram Lakhan",
+    "year": 1989,
+    "singers": [
+      "Mohammed Aziz"
+    ],
+    "composers": [
+      "Laxmikant-Pyarelal"
+    ],
+    "tags": [
+      "dance",
+      "party"
+    ],
+    "tier": 1
+  },
+  {
+    "title": "Bada Dukh Dina",
+    "alt_titles": [
+      "Bada Dukh Dina O Ramji",
+      "बड़ा दुख दीना"
+    ],
+    "movie": "Ram Lakhan",
+    "year": 1989,
+    "singers": [
+      "Lata Mangeshkar"
+    ],
+    "composers": [
+      "Laxmikant-Pyarelal"
+    ],
+    "tags": [
+      "sad"
+    ],
+    "tier": 4
+  },
+  {
+    "title": "Tirchi Topiwale",
+    "alt_titles": [
+      "Tirchhi Topi Wale",
+      "तिरछी टोपीवाले"
+    ],
+    "movie": "Tridev",
+    "year": 1989,
+    "singers": [
+      "Amit Kumar",
+      "Sapna Mukherjee"
+    ],
+    "composers": [
+      "Kalyanji-Anandji",
+      "Viju Shah"
+    ],
+    "tags": [
+      "dance",
+      "party"
+    ],
+    "tier": 1
+  },
+  {
+    "title": "Oye Oye",
+    "alt_titles": [
+      "Oye Oye Tirchi Topi",
+      "ओए ओए"
+    ],
+    "movie": "Tridev",
+    "year": 1989,
+    "singers": [
+      "Udit Narayan",
+      "Amit Kumar",
+      "Jolly Mukherjee"
+    ],
+    "composers": [
+      "Kalyanji-Anandji",
+      "Viju Shah"
+    ],
+    "tags": [
+      "dance",
+      "party"
+    ],
+    "tier": 2
+  },
+  {
+    "title": "Main Teri Mohabbat Mein",
+    "alt_titles": [
+      "Main Teri Mohabbat Mein Pagal Ho Jaunga",
+      "मैं तेरी मोहब्बत में"
+    ],
+    "movie": "Tridev",
+    "year": 1989,
+    "singers": [
+      "Mohammed Aziz",
+      "Sadhana Sargam"
+    ],
+    "composers": [
+      "Kalyanji-Anandji",
+      "Viju Shah"
+    ],
+    "tags": [
+      "romantic"
+    ],
+    "tier": 4
+  },
+  {
+    "title": "Tumse Milke",
+    "alt_titles": [
+      "Tumse Milke Aisa Laga Tumse Milke",
+      "तुमसे मिलके"
+    ],
+    "movie": "Parinda",
+    "year": 1989,
+    "singers": [
+      "Suresh Wadkar",
+      "Asha Bhosle"
+    ],
+    "composers": [
+      "R. D. Burman"
+    ],
+    "tags": [
+      "romantic"
+    ],
+    "tier": 3
+  }
+]

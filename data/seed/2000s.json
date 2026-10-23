@@ -1,0 +1,4219 @@
+[
+  {
+    "title": "Kaho Naa Pyaar Hai",
+    "alt_titles": [
+      "Kaho Na Pyar Hai",
+      "कहो ना प्यार है"
+    ],
+    "movie": "Kaho Naa... Pyaar Hai",
+    "year": 2000,
+    "singers": [
+      "Udit Narayan",
+      "Alka Yagnik"
+    ],
+    "composers": [
+      "Rajesh Roshan"
+    ],
+    "tags": [
+      "romantic"
+    ],
+    "tier": 1
+  },
+  {
+    "title": "Ek Pal Ka Jeena",
+    "alt_titles": [
+      "Ek Pal Ka Jeena Phir To Hai Jaana",
+      "एक पल का जीना"
+    ],
+    "movie": "Kaho Naa... Pyaar Hai",
+    "year": 2000,
+    "singers": [
+      "Lucky Ali"
+    ],
+    "composers": [
+      "Rajesh Roshan"
+    ],
+    "tags": [
+      "party",
+      "dance"
+    ],
+    "tier": 1
+  },
+  {
+    "title": "Na Tum Jaano Na Hum",
+    "alt_titles": [
+      "Na Tum Jano Na Hum",
+      "न तुम जानो न हम"
+    ],
+    "movie": "Kaho Naa... Pyaar Hai",
+    "year": 2000,
+    "singers": [
+      "Lucky Ali"
+    ],
+    "composers": [
+      "Rajesh Roshan"
+    ],
+    "tags": [
+      "romantic"
+    ],
+    "tier": 2
+  },
+  {
+    "title": "Humko Humise Chura Lo",
+    "alt_titles": [
+      "हमको हमीं से चुरा लो"
+    ],
+    "movie": "Mohabbatein",
+    "year": 2000,
+    "singers": [
+      "Lata Mangeshkar",
+      "Udit Narayan"
+    ],
+    "composers": [
+      "Jatin-Lalit"
+    ],
+    "tags": [
+      "romantic"
+    ],
+    "tier": 2
+  },
+  {
+    "title": "Aankhein Khuli",
+    "alt_titles": [
+      "Aankhein Khuli Ho Ya Ho Band",
+      "आँखें खुली"
+    ],
+    "movie": "Mohabbatein",
+    "year": 2000,
+    "singers": [
+      "Lata Mangeshkar",
+      "Udit Narayan",
+      "Ishaan",
+      "Manohar Shetty",
+      "Pritha Mazumdar",
+      "Shweta Pandit",
+      "Sonali Bhatawdekar",
+      "Udbhav"
+    ],
+    "composers": [
+      "Jatin-Lalit"
+    ],
+    "tags": [
+      "romantic",
+      "party"
+    ],
+    "tier": 2
+  },
+  {
+    "title": "Soni Soni",
+    "alt_titles": [
+      "Soni Soni Akhiyon Wali",
+      "सोनी सोनी"
+    ],
+    "movie": "Mohabbatein",
+    "year": 2000,
+    "singers": [
+      "Udit Narayan",
+      "Jaspinder Narula",
+      "Ishaan",
+      "Manohar Shetty",
+      "Pritha Mazumdar",
+      "Shweta Pandit",
+      "Sonali Bhatawdekar",
+      "Udbhav"
+    ],
+    "composers": [
+      "Jatin-Lalit"
+    ],
+    "tags": [
+      "festive",
+      "dance"
+    ],
+    "tier": 2
+  },
+  {
+    "title": "Bumbro",
+    "alt_titles": [
+      "Bumbro Bumbro",
+      "बुम्बरो"
+    ],
+    "movie": "Mission Kashmir",
+    "year": 2000,
+    "singers": [
+      "Shankar Mahadevan",
+      "Jaspinder Narula",
+      "Sunidhi Chauhan"
+    ],
+    "composers": [
+      "Shankar-Ehsaan-Loy"
+    ],
+    "tags": [
+      "wedding",
+      "dance"
+    ],
+    "tier": 3
+  },
+  {
+    "title": "Panchhi Nadiyaan",
+    "alt_titles": [
+      "Panchhi Nadiya Pawan Ke Jhonke",
+      "पंछी नदियाँ"
+    ],
+    "movie": "Refugee",
+    "year": 2000,
+    "singers": [
+      "Sonu Nigam",
+      "Alka Yagnik"
+    ],
+    "composers": [
+      "Anu Malik"
+    ],
+    "tags": [
+      "romantic"
+    ],
+    "tier": 3
+  },
+  {
+    "title": "Aisa Lagta Hai",
+    "alt_titles": [
+      "ऐसा लगता है"
+    ],
+    "movie": "Refugee",
+    "year": 2000,
+    "singers": [
+      "Sonu Nigam",
+      "Alka Yagnik"
+    ],
+    "composers": [
+      "Anu Malik"
+    ],
+    "tags": [
+      "romantic"
+    ],
+    "tier": 4
+  },
+  {
+    "title": "Aaja Mahiya",
+    "alt_titles": [
+      "आजा माहिया"
+    ],
+    "movie": "Fiza",
+    "year": 2000,
+    "singers": [
+      "Udit Narayan",
+      "Alka Yagnik"
+    ],
+    "composers": [
+      "Anu Malik"
+    ],
+    "tags": [
+      "romantic"
+    ],
+    "tier": 2
+  },
+  {
+    "title": "Dil Ne Yeh Kaha Hai Dil Se",
+    "alt_titles": [
+      "Dil Ne Ye Kaha Hai Dil Se",
+      "दिल ने ये कहा है दिल से"
+    ],
+    "movie": "Dhadkan",
+    "year": 2000,
+    "singers": [
+      "Udit Narayan",
+      "Kumar Sanu",
+      "Alka Yagnik"
+    ],
+    "composers": [
+      "Nadeem-Shravan"
+    ],
+    "tags": [
+      "romantic"
+    ],
+    "tier": 2
+  },
+  {
+    "title": "Tum Dil Ki Dhadkan Mein",
+    "alt_titles": [
+      "तुम दिल की धड़कन में"
+    ],
+    "movie": "Dhadkan",
+    "year": 2000,
+    "singers": [
+      "Abhijeet Bhattacharya",
+      "Alka Yagnik"
+    ],
+    "composers": [
+      "Nadeem-Shravan"
+    ],
+    "tags": [
+      "romantic"
+    ],
+    "tier": 2
+  },
+  {
+    "title": "Dulhe Ka Sehra",
+    "alt_titles": [
+      "Dulhe Ka Sehra Suhana Lagta Hai",
+      "दूल्हे का सेहरा"
+    ],
+    "movie": "Dhadkan",
+    "year": 2000,
+    "singers": [
+      "Nusrat Fateh Ali Khan"
+    ],
+    "composers": [
+      "Nadeem-Shravan"
+    ],
+    "tags": [
+      "wedding"
+    ],
+    "tier": 3
+  },
+  {
+    "title": "Kahin Pyaar Na Ho Jaaye",
+    "alt_titles": [
+      "Kahin Pyar Na Ho Jaaye",
+      "कहीं प्यार न हो जाए"
+    ],
+    "movie": "Kahin Pyaar Na Ho Jaaye",
+    "year": 2000,
+    "singers": [
+      "Alka Yagnik",
+      "Kumar Sanu"
+    ],
+    "composers": [
+      "Himesh Reshammiya"
+    ],
+    "tags": [
+      "romantic"
+    ],
+    "tier": 4
+  },
+  {
+    "title": "Tanha Dil",
+    "alt_titles": [
+      "Tanha Dil Tanha Safar",
+      "तन्हा दिल"
+    ],
+    "movie": "Tanha Dil",
+    "year": 2000,
+    "singers": [
+      "Shaan"
+    ],
+    "composers": [
+      "Ram Sampath"
+    ],
+    "tags": [
+      "friendship",
+      "indipop",
+      "non-film"
+    ],
+    "tier": 2
+  },
+  {
+    "title": "Maaeri",
+    "alt_titles": [
+      "Maeri",
+      "माएरी"
+    ],
+    "movie": "Phir Dhoom",
+    "year": 2000,
+    "singers": [
+      "Palash Sen"
+    ],
+    "composers": [
+      "Palash Sen"
+    ],
+    "tags": [
+      "sad",
+      "indipop",
+      "non-film"
+    ],
+    "tier": 2
+  },
+  {
+    "title": "Piya Basanti",
+    "alt_titles": [
+      "Piya Basanti Re",
+      "पिया बसंती"
+    ],
+    "movie": "Piya Basanti",
+    "year": 2000,
+    "singers": [
+      "Sultan Khan",
+      "K. S. Chithra"
+    ],
+    "composers": [
+      "Sandesh Shandilya",
+      "Kishan Rajbhatt"
+    ],
+    "tags": [
+      "classical",
+      "indipop",
+      "non-film"
+    ],
+    "tier": 3
+  },
+  {
+    "title": "Bole Chudiyan",
+    "alt_titles": [
+      "Bole Chudiyan Bole Kangana",
+      "बोले चूड़ियाँ"
+    ],
+    "movie": "Kabhi Khushi Kabhie Gham",
+    "year": 2001,
+    "singers": [
+      "Kavita Krishnamurthy",
+      "Alka Yagnik",
+      "Sonu Nigam",
+      "Udit Narayan",
+      "Amit Kumar"
+    ],
+    "composers": [
+      "Jatin-Lalit"
+    ],
+    "tags": [
+      "wedding",
+      "festive"
+    ],
+    "tier": 1
+  },
+  {
+    "title": "Suraj Hua Maddham",
+    "alt_titles": [
+      "सूरज हुआ मद्धम"
+    ],
+    "movie": "Kabhi Khushi Kabhie Gham",
+    "year": 2001,
+    "singers": [
+      "Alka Yagnik",
+      "Sonu Nigam"
+    ],
+    "composers": [
+      "Sandesh Shandilya"
+    ],
+    "tags": [
+      "romantic"
+    ],
+    "tier": 1
+  },
+  {
+    "title": "You Are My Soniya",
+    "alt_titles": [
+      "यू आर माय सोनिया"
+    ],
+    "movie": "Kabhi Khushi Kabhie Gham",
+    "year": 2001,
+    "singers": [
+      "Alka Yagnik",
+      "Sonu Nigam"
+    ],
+    "composers": [
+      "Sandesh Shandilya"
+    ],
+    "tags": [
+      "dance",
+      "romantic"
+    ],
+    "tier": 1
+  },
+  {
+    "title": "Kabhi Khushi Kabhie Gham",
+    "alt_titles": [
+      "कभी ख़ुशी कभी ग़म"
+    ],
+    "movie": "Kabhi Khushi Kabhie Gham",
+    "year": 2001,
+    "singers": [
+      "Lata Mangeshkar"
+    ],
+    "composers": [
+      "Jatin-Lalit"
+    ],
+    "tags": [
+      "festive"
+    ],
+    "tier": 2
+  },
+  {
+    "title": "Say Shava Shava",
+    "alt_titles": [
+      "Shava Shava",
+      "से शावा शावा"
+    ],
+    "movie": "Kabhi Khushi Kabhie Gham",
+    "year": 2001,
+    "singers": [
+      "Alka Yagnik",
+      "Sunidhi Chauhan",
+      "Udit Narayan",
+      "Sudesh Bhosle",
+      "Aadesh Shrivastava",
+      "Amitabh Bachchan"
+    ],
+    "composers": [
+      "Aadesh Shrivastava"
+    ],
+    "tags": [
+      "wedding",
+      "dance"
+    ],
+    "tier": 1
+  },
+  {
+    "title": "Ghanan Ghanan",
+    "alt_titles": [
+      "घनन घनन"
+    ],
+    "movie": "Lagaan",
+    "year": 2001,
+    "singers": [
+      "Udit Narayan",
+      "Sukhwinder Singh",
+      "Alka Yagnik",
+      "Shankar Mahadevan",
+      "Shaan"
+    ],
+    "composers": [
+      "A. R. Rahman"
+    ],
+    "tags": [
+      "rain",
+      "festive"
+    ],
+    "tier": 2
+  },
+  {
+    "title": "Radha Kaise Na Jale",
+    "alt_titles": [
+      "राधा कैसे न जले"
+    ],
+    "movie": "Lagaan",
+    "year": 2001,
+    "singers": [
+      "Asha Bhosle",
+      "Udit Narayan",
+      "Vaishali Samant"
+    ],
+    "composers": [
+      "A. R. Rahman"
+    ],
+    "tags": [
+      "romantic",
+      "festive"
+    ],
+    "tier": 3
+  },
+  {
+    "title": "Dil Chahta Hai",
+    "alt_titles": [
+      "दिल चाहता है"
+    ],
+    "movie": "Dil Chahta Hai",
+    "year": 2001,
+    "singers": [
+      "Shankar Mahadevan"
+    ],
+    "composers": [
+      "Shankar-Ehsaan-Loy"
+    ],
+    "tags": [
+      "friendship"
+    ],
+    "tier": 1
+  },
+  {
+    "title": "Koi Kahe Kehta Rahe",
+    "alt_titles": [
+      "कोई कहे कहता रहे"
+    ],
+    "movie": "Dil Chahta Hai",
+    "year": 2001,
+    "singers": [
+      "Shankar Mahadevan",
+      "Shaan",
+      "KK"
+    ],
+    "composers": [
+      "Shankar-Ehsaan-Loy"
+    ],
+    "tags": [
+      "party",
+      "friendship"
+    ],
+    "tier": 2
+  },
+  {
+    "title": "Woh Ladki Hai Kahan",
+    "alt_titles": [
+      "Wo Ladki Hai Kahan",
+      "वो लड़की है कहाँ"
+    ],
+    "movie": "Dil Chahta Hai",
+    "year": 2001,
+    "singers": [
+      "Shaan",
+      "Kavita Krishnamurthy"
+    ],
+    "composers": [
+      "Shankar-Ehsaan-Loy"
+    ],
+    "tags": [
+      "romantic"
+    ],
+    "tier": 2
+  },
+  {
+    "title": "Jaane Kyun",
+    "alt_titles": [
+      "Jaane Kyon",
+      "जाने क्यों"
+    ],
+    "movie": "Dil Chahta Hai",
+    "year": 2001,
+    "singers": [
+      "Udit Narayan",
+      "Alka Yagnik",
+      "Caralisa Monteiro"
+    ],
+    "composers": [
+      "Shankar-Ehsaan-Loy"
+    ],
+    "tags": [
+      "romantic"
+    ],
+    "tier": 3
+  },
+  {
+    "title": "Tanhayee",
+    "alt_titles": [
+      "Tanhai",
+      "तन्हाई"
+    ],
+    "movie": "Dil Chahta Hai",
+    "year": 2001,
+    "singers": [
+      "Sonu Nigam"
+    ],
+    "composers": [
+      "Shankar-Ehsaan-Loy"
+    ],
+    "tags": [
+      "sad"
+    ],
+    "tier": 2
+  },
+  {
+    "title": "Udja Kale Kawan",
+    "alt_titles": [
+      "उड़ जा काले कावाँ"
+    ],
+    "movie": "Gadar: Ek Prem Katha",
+    "year": 2001,
+    "singers": [
+      "Udit Narayan"
+    ],
+    "composers": [
+      "Uttam Singh"
+    ],
+    "tags": [
+      "sad",
+      "patriotic"
+    ],
+    "tier": 3
+  },
+  {
+    "title": "Main Nikla Gaddi Leke",
+    "alt_titles": [
+      "मैं निकला गड्डी लेके"
+    ],
+    "movie": "Gadar: Ek Prem Katha",
+    "year": 2001,
+    "singers": [
+      "Udit Narayan"
+    ],
+    "composers": [
+      "Uttam Singh"
+    ],
+    "tags": [
+      "dance",
+      "party"
+    ],
+    "tier": 2
+  },
+  {
+    "title": "Sach Keh Raha Hai Deewana",
+    "alt_titles": [
+      "सच कह रहा है दीवाना"
+    ],
+    "movie": "Rehnaa Hai Terre Dil Mein",
+    "year": 2001,
+    "singers": [
+      "KK"
+    ],
+    "composers": [
+      "Harris Jayaraj"
+    ],
+    "tags": [
+      "sad",
+      "romantic"
+    ],
+    "tier": 1
+  },
+  {
+    "title": "Zara Zara",
+    "alt_titles": [
+      "Zara Zara Behekta Hai",
+      "ज़रा ज़रा"
+    ],
+    "movie": "Rehnaa Hai Terre Dil Mein",
+    "year": 2001,
+    "singers": [
+      "Bombay Jayashri"
+    ],
+    "composers": [
+      "Harris Jayaraj"
+    ],
+    "tags": [
+      "romantic",
+      "rain"
+    ],
+    "tier": 2
+  },
+  {
+    "title": "Mehbooba Mehbooba",
+    "alt_titles": [
+      "महबूबा महबूबा"
+    ],
+    "movie": "Ajnabee",
+    "year": 2001,
+    "singers": [
+      "Adnan Sami",
+      "Sunidhi Chauhan"
+    ],
+    "composers": [
+      "Anu Malik"
+    ],
+    "tags": [
+      "party",
+      "dance"
+    ],
+    "tier": 3
+  },
+  {
+    "title": "Koi Fariyaad",
+    "alt_titles": [
+      "Koi Fariyad",
+      "कोई फ़रियाद"
+    ],
+    "movie": "Tum Bin",
+    "year": 2001,
+    "singers": [
+      "Jagjit Singh"
+    ],
+    "composers": [
+      "Nikhil-Vinay"
+    ],
+    "tags": [
+      "ghazal",
+      "sad"
+    ],
+    "tier": 3
+  },
+  {
+    "title": "Dola Re Dola",
+    "alt_titles": [
+      "डोला रे डोला"
+    ],
+    "movie": "Devdas",
+    "year": 2002,
+    "singers": [
+      "Kavita Krishnamurthy",
+      "Shreya Ghoshal",
+      "KK"
+    ],
+    "composers": [
+      "Ismail Darbar"
+    ],
+    "tags": [
+      "dance",
+      "festive"
+    ],
+    "tier": 1
+  },
+  {
+    "title": "Silsila Ye Chaahat Ka",
+    "alt_titles": [
+      "Silsila Ye Chahat Ka",
+      "सिलसिला ये चाहत का"
+    ],
+    "movie": "Devdas",
+    "year": 2002,
+    "singers": [
+      "Shreya Ghoshal"
+    ],
+    "composers": [
+      "Ismail Darbar"
+    ],
+    "tags": [
+      "romantic"
+    ],
+    "tier": 2
+  },
+  {
+    "title": "Bairi Piya",
+    "alt_titles": [
+      "बैरी पिया"
+    ],
+    "movie": "Devdas",
+    "year": 2002,
+    "singers": [
+      "Udit Narayan",
+      "Shreya Ghoshal"
+    ],
+    "composers": [
+      "Ismail Darbar"
+    ],
+    "tags": [
+      "romantic"
+    ],
+    "tier": 3
+  },
+  {
+    "title": "Maar Daala",
+    "alt_titles": [
+      "मार डाला"
+    ],
+    "movie": "Devdas",
+    "year": 2002,
+    "singers": [
+      "Kavita Krishnamurthy",
+      "KK"
+    ],
+    "composers": [
+      "Ismail Darbar"
+    ],
+    "tags": [
+      "sad",
+      "dance"
+    ],
+    "tier": 3
+  },
+  {
+    "title": "Saathiya",
+    "alt_titles": [
+      "साथिया"
+    ],
+    "movie": "Saathiya",
+    "year": 2002,
+    "singers": [
+      "Sonu Nigam",
+      "Clinton Cerejo"
+    ],
+    "composers": [
+      "A. R. Rahman"
+    ],
+    "tags": [
+      "romantic"
+    ],
+    "tier": 2
+  },
+  {
+    "title": "Chupke Se",
+    "alt_titles": [
+      "चुपके से"
+    ],
+    "movie": "Saathiya",
+    "year": 2002,
+    "singers": [
+      "Sadhana Sargam",
+      "Murtuza Khan",
+      "Qadir Khan"
+    ],
+    "composers": [
+      "A. R. Rahman"
+    ],
+    "tags": [
+      "romantic"
+    ],
+    "tier": 2
+  },
+  {
+    "title": "O Humdum Suniyo Re",
+    "alt_titles": [
+      "O Humdum Soniyo Re",
+      "ओ हमदम सुनियो रे"
+    ],
+    "movie": "Saathiya",
+    "year": 2002,
+    "singers": [
+      "KK",
+      "Kunal Ganjawala",
+      "Shaan"
+    ],
+    "composers": [
+      "A. R. Rahman"
+    ],
+    "tags": [
+      "romantic"
+    ],
+    "tier": 4
+  },
+  {
+    "title": "Aye Udi Udi Udi",
+    "alt_titles": [
+      "Ae Udi Udi",
+      "ऐ उड़ी उड़ी उड़ी"
+    ],
+    "movie": "Saathiya",
+    "year": 2002,
+    "singers": [
+      "Adnan Sami"
+    ],
+    "composers": [
+      "A. R. Rahman"
+    ],
+    "tags": [
+      "romantic"
+    ],
+    "tier": 3
+  },
+  {
+    "title": "Aapke Pyaar Mein",
+    "alt_titles": [
+      "Aapke Pyaar Mein Hum Sawarne Lage",
+      "आपके प्यार में"
+    ],
+    "movie": "Raaz",
+    "year": 2002,
+    "singers": [
+      "Alka Yagnik"
+    ],
+    "composers": [
+      "Nadeem-Shravan"
+    ],
+    "tags": [
+      "romantic"
+    ],
+    "tier": 2
+  },
+  {
+    "title": "Bardaasht Nahi Kar Sakta",
+    "alt_titles": [
+      "Bardaasht Nahin Kar Sakta",
+      "बर्दाश्त नहीं कर सकता"
+    ],
+    "movie": "Humraaz",
+    "year": 2002,
+    "singers": [
+      "KK",
+      "Sunidhi Chauhan"
+    ],
+    "composers": [
+      "Himesh Reshammiya"
+    ],
+    "tags": [
+      "romantic"
+    ],
+    "tier": 4
+  },
+  {
+    "title": "Sanam Mere Humraaz",
+    "alt_titles": [
+      "सनम मेरे हमराज़"
+    ],
+    "movie": "Humraaz",
+    "year": 2002,
+    "singers": [
+      "Kumar Sanu",
+      "Alka Yagnik"
+    ],
+    "composers": [
+      "Himesh Reshammiya"
+    ],
+    "tags": [
+      "romantic"
+    ],
+    "tier": 4
+  },
+  {
+    "title": "Khallas",
+    "alt_titles": [
+      "ख़ल्लास"
+    ],
+    "movie": "Company",
+    "year": 2002,
+    "singers": [
+      "Asha Bhosle",
+      "Sudesh Bhosle",
+      "Sapna Awasthi"
+    ],
+    "composers": [
+      "Sandeep Chowta"
+    ],
+    "tags": [
+      "item",
+      "dance"
+    ],
+    "tier": 3
+  },
+  {
+    "title": "Sharara Sharara",
+    "alt_titles": [
+      "Sharara",
+      "शरारा शरारा"
+    ],
+    "movie": "Mere Yaar Ki Shaadi Hai",
+    "year": 2002,
+    "singers": [
+      "Sonu Nigam",
+      "Asha Bhosle"
+    ],
+    "composers": [
+      "Jeet-Pritam"
+    ],
+    "tags": [
+      "dance",
+      "party"
+    ],
+    "tier": 2
+  },
+  {
+    "title": "Mera Rang De Basanti Chola",
+    "alt_titles": [
+      "Mera Rang De Basanti",
+      "मेरा रंग दे बसंती चोला"
+    ],
+    "movie": "The Legend of Bhagat Singh",
+    "year": 2002,
+    "singers": [
+      "Sonu Nigam",
+      "Manmohan Waris"
+    ],
+    "composers": [
+      "A. R. Rahman"
+    ],
+    "tags": [
+      "patriotic"
+    ],
+    "tier": 3
+  },
+  {
+    "title": "Ishq Kamina",
+    "alt_titles": [
+      "इश्क़ कमीना"
+    ],
+    "movie": "Shakti: The Power",
+    "year": 2002,
+    "singers": [
+      "Sonu Nigam",
+      "Alka Yagnik"
+    ],
+    "composers": [
+      "Anu Malik"
+    ],
+    "tags": [
+      "item",
+      "dance"
+    ],
+    "tier": 4
+  },
+  {
+    "title": "Lift Karadey",
+    "alt_titles": [
+      "Lift Kara De",
+      "लिफ़्ट करा दे"
+    ],
+    "movie": "Tera Chehra",
+    "year": 2002,
+    "singers": [
+      "Adnan Sami"
+    ],
+    "composers": [
+      "Adnan Sami"
+    ],
+    "tags": [
+      "indipop",
+      "non-film"
+    ],
+    "tier": 2
+  },
+  {
+    "title": "Kal Ho Naa Ho",
+    "alt_titles": [
+      "कल हो न हो"
+    ],
+    "movie": "Kal Ho Naa Ho",
+    "year": 2003,
+    "singers": [
+      "Sonu Nigam"
+    ],
+    "composers": [
+      "Shankar-Ehsaan-Loy"
+    ],
+    "tags": [
+      "sad",
+      "romantic"
+    ],
+    "tier": 1
+  },
+  {
+    "title": "Maahi Ve",
+    "alt_titles": [
+      "माही वे"
+    ],
+    "movie": "Kal Ho Naa Ho",
+    "year": 2003,
+    "singers": [
+      "Sonu Nigam",
+      "Sadhana Sargam",
+      "Udit Narayan",
+      "Shankar Mahadevan"
+    ],
+    "composers": [
+      "Shankar-Ehsaan-Loy"
+    ],
+    "tags": [
+      "wedding"
+    ],
+    "tier": 1
+  },
+  {
+    "title": "It's the Time to Disco",
+    "alt_titles": [
+      "Its The Time To Disco",
+      "इट्स द टाइम टू डिस्को"
+    ],
+    "movie": "Kal Ho Naa Ho",
+    "year": 2003,
+    "singers": [
+      "Shaan",
+      "Vasundhara Das",
+      "KK",
+      "Loy Mendonsa"
+    ],
+    "composers": [
+      "Shankar-Ehsaan-Loy"
+    ],
+    "tags": [
+      "party",
+      "dance"
+    ],
+    "tier": 1
+  },
+  {
+    "title": "Kuch To Hua Hai",
+    "alt_titles": [
+      "Kuch Toh Hua Hai",
+      "कुछ तो हुआ है"
+    ],
+    "movie": "Kal Ho Naa Ho",
+    "year": 2003,
+    "singers": [
+      "Alka Yagnik",
+      "Shaan"
+    ],
+    "composers": [
+      "Shankar-Ehsaan-Loy"
+    ],
+    "tags": [
+      "romantic"
+    ],
+    "tier": 3
+  },
+  {
+    "title": "Pretty Woman",
+    "alt_titles": [
+      "प्रिटी वुमन"
+    ],
+    "movie": "Kal Ho Naa Ho",
+    "year": 2003,
+    "singers": [
+      "Shankar Mahadevan",
+      "Ravi Khote"
+    ],
+    "composers": [
+      "Shankar-Ehsaan-Loy"
+    ],
+    "tags": [
+      "party",
+      "dance"
+    ],
+    "tier": 2
+  },
+  {
+    "title": "Koi Mil Gaya",
+    "alt_titles": [
+      "कोई मिल गया"
+    ],
+    "movie": "Koi... Mil Gaya",
+    "year": 2003,
+    "singers": [
+      "Udit Narayan",
+      "K. S. Chithra"
+    ],
+    "composers": [
+      "Rajesh Roshan"
+    ],
+    "tags": [
+      "romantic"
+    ],
+    "tier": 3
+  },
+  {
+    "title": "Tauba Tumhare Yeh Ishaare",
+    "alt_titles": [
+      "Tauba Tumhare Ishare",
+      "तौबा तुम्हारे ये इशारे"
+    ],
+    "movie": "Chalte Chalte",
+    "year": 2003,
+    "singers": [
+      "Abhijeet Bhattacharya",
+      "Alka Yagnik"
+    ],
+    "composers": [
+      "Jatin-Lalit"
+    ],
+    "tags": [
+      "romantic"
+    ],
+    "tier": 3
+  },
+  {
+    "title": "Suno Na Suno Na",
+    "alt_titles": [
+      "Suno Na",
+      "सुनो ना सुनो ना"
+    ],
+    "movie": "Chalte Chalte",
+    "year": 2003,
+    "singers": [
+      "Abhijeet Bhattacharya"
+    ],
+    "composers": [
+      "Aadesh Shrivastava"
+    ],
+    "tags": [
+      "romantic"
+    ],
+    "tier": 2
+  },
+  {
+    "title": "Tere Naam",
+    "alt_titles": [
+      "Tere Naam Humne Kiya Hai",
+      "तेरे नाम"
+    ],
+    "movie": "Tere Naam",
+    "year": 2003,
+    "singers": [
+      "Udit Narayan",
+      "Alka Yagnik"
+    ],
+    "composers": [
+      "Himesh Reshammiya"
+    ],
+    "tags": [
+      "romantic",
+      "sad"
+    ],
+    "tier": 1
+  },
+  {
+    "title": "Kyun Kisi Ko",
+    "alt_titles": [
+      "Kyun Kisi Ko Wafa Ke Badle Wafa Nahi Milti",
+      "क्यूँ किसी को"
+    ],
+    "movie": "Tere Naam",
+    "year": 2003,
+    "singers": [
+      "Udit Narayan"
+    ],
+    "composers": [
+      "Himesh Reshammiya"
+    ],
+    "tags": [
+      "sad"
+    ],
+    "tier": 2
+  },
+  {
+    "title": "O Jaana",
+    "alt_titles": [
+      "ओ जाना"
+    ],
+    "movie": "Tere Naam",
+    "year": 2003,
+    "singers": [
+      "Udit Narayan",
+      "Alka Yagnik",
+      "KK",
+      "Shaan",
+      "Kamaal Khan"
+    ],
+    "composers": [
+      "Himesh Reshammiya"
+    ],
+    "tags": [
+      "romantic"
+    ],
+    "tier": 3
+  },
+  {
+    "title": "Holi Khele Raghuveera",
+    "alt_titles": [
+      "होली खेले रघुवीरा"
+    ],
+    "movie": "Baghban",
+    "year": 2003,
+    "singers": [
+      "Amitabh Bachchan",
+      "Sudesh Bhosle",
+      "Sukhwinder Singh",
+      "Alka Yagnik",
+      "Udit Narayan"
+    ],
+    "composers": [
+      "Aadesh Shrivastava"
+    ],
+    "tags": [
+      "festive",
+      "dance"
+    ],
+    "tier": 1
+  },
+  {
+    "title": "Jaadu Hai Nasha Hai",
+    "alt_titles": [
+      "जादू है नशा है"
+    ],
+    "movie": "Jism",
+    "year": 2003,
+    "singers": [
+      "Shreya Ghoshal"
+    ],
+    "composers": [
+      "M. M. Kreem"
+    ],
+    "tags": [
+      "romantic"
+    ],
+    "tier": 2
+  },
+  {
+    "title": "Awarapan Banjarapan",
+    "alt_titles": [
+      "Awaarapan Banjaarapan",
+      "आवारापन बंजारापन"
+    ],
+    "movie": "Jism",
+    "year": 2003,
+    "singers": [
+      "KK"
+    ],
+    "composers": [
+      "M. M. Kreem"
+    ],
+    "tags": [
+      "sad"
+    ],
+    "tier": 3
+  },
+  {
+    "title": "Tu Aashiqui Hai",
+    "alt_titles": [
+      "तू आशिक़ी है"
+    ],
+    "movie": "Jhankaar Beats",
+    "year": 2003,
+    "singers": [
+      "KK"
+    ],
+    "composers": [
+      "Vishal-Shekhar"
+    ],
+    "tags": [
+      "romantic"
+    ],
+    "tier": 2
+  },
+  {
+    "title": "Allah Ke Bande",
+    "alt_titles": [
+      "Allah Ke Bande Hasde",
+      "अल्लाह के बंदे"
+    ],
+    "movie": "Waisa Bhi Hota Hai Part II",
+    "year": 2003,
+    "singers": [
+      "Kailash Kher"
+    ],
+    "composers": [
+      "Vishal-Shekhar"
+    ],
+    "tags": [
+      "sufi"
+    ],
+    "tier": 1
+  },
+  {
+    "title": "Rabba Ishq Na Hove",
+    "alt_titles": [
+      "रब्बा इश्क़ न होवे"
+    ],
+    "movie": "Andaaz",
+    "year": 2003,
+    "singers": [
+      "Sonu Nigam",
+      "Kailash Kher",
+      "Alka Yagnik",
+      "Sapna Mukherjee"
+    ],
+    "composers": [
+      "Nadeem-Shravan"
+    ],
+    "tags": [
+      "dance"
+    ],
+    "tier": 4
+  },
+  {
+    "title": "Allah Kare Dil Na Lage",
+    "alt_titles": [
+      "अल्लाह करे दिल न लगे"
+    ],
+    "movie": "Andaaz",
+    "year": 2003,
+    "singers": [
+      "Sonu Nigam",
+      "Alka Yagnik"
+    ],
+    "composers": [
+      "Nadeem-Shravan"
+    ],
+    "tags": [
+      "romantic"
+    ],
+    "tier": 4
+  },
+  {
+    "title": "Babuji Zara Dheere Chalo",
+    "alt_titles": [
+      "Babuji Zara Dheere Chalo Bijli Khadi",
+      "बाबूजी ज़रा धीरे चलो"
+    ],
+    "movie": "Dum",
+    "year": 2003,
+    "singers": [
+      "Sukhwinder Singh",
+      "Sonu Kakkar"
+    ],
+    "composers": [
+      "Sandeep Chowta"
+    ],
+    "tags": [
+      "item",
+      "dance"
+    ],
+    "tier": 3
+  },
+  {
+    "title": "Tere Liye",
+    "alt_titles": [
+      "तेरे लिए"
+    ],
+    "movie": "Veer-Zaara",
+    "year": 2004,
+    "singers": [
+      "Lata Mangeshkar",
+      "Roop Kumar Rathod"
+    ],
+    "composers": [
+      "Madan Mohan"
+    ],
+    "tags": [
+      "romantic"
+    ],
+    "tier": 1
+  },
+  {
+    "title": "Main Yahaan Hoon",
+    "alt_titles": [
+      "Main Yahan Hoon",
+      "मैं यहाँ हूँ"
+    ],
+    "movie": "Veer-Zaara",
+    "year": 2004,
+    "singers": [
+      "Udit Narayan"
+    ],
+    "composers": [
+      "Madan Mohan"
+    ],
+    "tags": [
+      "romantic"
+    ],
+    "tier": 2
+  },
+  {
+    "title": "Do Pal",
+    "alt_titles": [
+      "Do Pal Ruka Khwabon Ka Karwan",
+      "दो पल"
+    ],
+    "movie": "Veer-Zaara",
+    "year": 2004,
+    "singers": [
+      "Lata Mangeshkar",
+      "Sonu Nigam"
+    ],
+    "composers": [
+      "Madan Mohan"
+    ],
+    "tags": [
+      "romantic",
+      "sad"
+    ],
+    "tier": 1
+  },
+  {
+    "title": "Kyon Hawa",
+    "alt_titles": [
+      "Kyon Hawa Aaj Yun Gaa Rahi Hai",
+      "क्यों हवा"
+    ],
+    "movie": "Veer-Zaara",
+    "year": 2004,
+    "singers": [
+      "Lata Mangeshkar",
+      "Sonu Nigam",
+      "Yash Chopra"
+    ],
+    "composers": [
+      "Madan Mohan"
+    ],
+    "tags": [
+      "romantic"
+    ],
+    "tier": 4
+  },
+  {
+    "title": "Main Hoon Na",
+    "alt_titles": [
+      "मैं हूँ ना"
+    ],
+    "movie": "Main Hoon Na",
+    "year": 2004,
+    "singers": [
+      "Sonu Nigam",
+      "Shreya Ghoshal"
+    ],
+    "composers": [
+      "Anu Malik"
+    ],
+    "tags": [
+      "romantic"
+    ],
+    "tier": 1
+  },
+  {
+    "title": "Tumse Milke Dil Ka Jo Haal",
+    "alt_titles": [
+      "Tumse Milke Dilka Jo Haal",
+      "तुमसे मिलके दिल का जो हाल"
+    ],
+    "movie": "Main Hoon Na",
+    "year": 2004,
+    "singers": [
+      "Sonu Nigam",
+      "Altaf Sabri",
+      "Hashim Sabri",
+      "Ravi Khote"
+    ],
+    "composers": [
+      "Anu Malik"
+    ],
+    "tags": [
+      "qawwali"
+    ],
+    "tier": 1
+  },
+  {
+    "title": "Tumhe Jo Maine Dekha",
+    "alt_titles": [
+      "तुम्हें जो मैंने देखा"
+    ],
+    "movie": "Main Hoon Na",
+    "year": 2004,
+    "singers": [
+      "Abhijeet Bhattacharya",
+      "Shreya Ghoshal"
+    ],
+    "composers": [
+      "Anu Malik"
+    ],
+    "tags": [
+      "romantic"
+    ],
+    "tier": 3
+  },
+  {
+    "title": "Chale Jaise Hawaien",
+    "alt_titles": [
+      "Chale Jaise Hawayein",
+      "चले जैसे हवाएँ"
+    ],
+    "movie": "Main Hoon Na",
+    "year": 2004,
+    "singers": [
+      "Vasundhara Das",
+      "KK"
+    ],
+    "composers": [
+      "Anu Malik"
+    ],
+    "tags": [
+      "friendship"
+    ],
+    "tier": 3
+  },
+  {
+    "title": "Dhoom Machale",
+    "alt_titles": [
+      "Dhoom Machale Dhoom",
+      "धूम मचाले"
+    ],
+    "movie": "Dhoom",
+    "year": 2004,
+    "singers": [
+      "Sunidhi Chauhan",
+      "Shankar Mahadevan"
+    ],
+    "composers": [
+      "Pritam"
+    ],
+    "tags": [
+      "party",
+      "dance"
+    ],
+    "tier": 1
+  },
+  {
+    "title": "Shikdum",
+    "alt_titles": [
+      "शिकदुम"
+    ],
+    "movie": "Dhoom",
+    "year": 2004,
+    "singers": [
+      "Shaan",
+      "Shreya Ghoshal"
+    ],
+    "composers": [
+      "Pritam"
+    ],
+    "tags": [
+      "romantic",
+      "dance"
+    ],
+    "tier": 3
+  },
+  {
+    "title": "Hum Tum",
+    "alt_titles": [
+      "हम तुम"
+    ],
+    "movie": "Hum Tum",
+    "year": 2004,
+    "singers": [
+      "Alka Yagnik",
+      "Babul Supriyo"
+    ],
+    "composers": [
+      "Jatin-Lalit"
+    ],
+    "tags": [
+      "romantic"
+    ],
+    "tier": 3
+  },
+  {
+    "title": "Ladki Kyon",
+    "alt_titles": [
+      "Ladki Kyon Na Jaane Kyon",
+      "लड़की क्यों"
+    ],
+    "movie": "Hum Tum",
+    "year": 2004,
+    "singers": [
+      "Shaan",
+      "Saif Ali Khan",
+      "Alka Yagnik",
+      "Rani Mukerji"
+    ],
+    "composers": [
+      "Jatin-Lalit"
+    ],
+    "tags": [
+      "romantic"
+    ],
+    "tier": 4
+  },
+  {
+    "title": "Main Aisa Kyun Hoon",
+    "alt_titles": [
+      "मैं ऐसा क्यों हूँ"
+    ],
+    "movie": "Lakshya",
+    "year": 2004,
+    "singers": [
+      "Shaan"
+    ],
+    "composers": [
+      "Shankar-Ehsaan-Loy"
+    ],
+    "tags": [
+      "dance"
+    ],
+    "tier": 3
+  },
+  {
+    "title": "Kandhon Se Milte Hain Kandhe",
+    "alt_titles": [
+      "कंधों से मिलते हैं कंधे"
+    ],
+    "movie": "Lakshya",
+    "year": 2004,
+    "singers": [
+      "Kunal Ganjawala",
+      "Sonu Nigam",
+      "Roop Kumar Rathod",
+      "Kumar Sanu",
+      "Hariharan",
+      "Shankar Mahadevan"
+    ],
+    "composers": [
+      "Shankar-Ehsaan-Loy"
+    ],
+    "tags": [
+      "patriotic"
+    ],
+    "tier": 4
+  },
+  {
+    "title": "Laal Dupatta",
+    "alt_titles": [
+      "Lal Dupatta",
+      "लाल दुपट्टा"
+    ],
+    "movie": "Mujhse Shaadi Karogi",
+    "year": 2004,
+    "singers": [
+      "Udit Narayan",
+      "Alka Yagnik"
+    ],
+    "composers": [
+      "Sajid-Wajid"
+    ],
+    "tags": [
+      "romantic"
+    ],
+    "tier": 2
+  },
+  {
+    "title": "Mujhse Shaadi Karogi",
+    "alt_titles": [
+      "मुझसे शादी करोगी"
+    ],
+    "movie": "Mujhse Shaadi Karogi",
+    "year": 2004,
+    "singers": [
+      "Udit Narayan",
+      "Sonu Nigam",
+      "Sunidhi Chauhan"
+    ],
+    "composers": [
+      "Sajid-Wajid"
+    ],
+    "tags": [
+      "wedding",
+      "party"
+    ],
+    "tier": 3
+  },
+  {
+    "title": "Jeene Ke Hain Chaar Din",
+    "alt_titles": [
+      "जीने के हैं चार दिन"
+    ],
+    "movie": "Mujhse Shaadi Karogi",
+    "year": 2004,
+    "singers": [
+      "Sonu Nigam",
+      "Sunidhi Chauhan"
+    ],
+    "composers": [
+      "Anu Malik"
+    ],
+    "tags": [
+      "party"
+    ],
+    "tier": 4
+  },
+  {
+    "title": "Yeh Jo Des Hai Tera",
+    "alt_titles": [
+      "Ye Jo Des Hai Tera",
+      "ये जो देस है तेरा"
+    ],
+    "movie": "Swades",
+    "year": 2004,
+    "singers": [
+      "A. R. Rahman"
+    ],
+    "composers": [
+      "A. R. Rahman"
+    ],
+    "tags": [
+      "patriotic",
+      "sad"
+    ],
+    "tier": 2
+  },
+  {
+    "title": "Yuhi Chala Chal",
+    "alt_titles": [
+      "Yun Hi Chala Chal",
+      "यूँ ही चला चल"
+    ],
+    "movie": "Swades",
+    "year": 2004,
+    "singers": [
+      "Udit Narayan",
+      "Kailash Kher",
+      "Hariharan"
+    ],
+    "composers": [
+      "A. R. Rahman"
+    ],
+    "tags": [
+      "friendship"
+    ],
+    "tier": 3
+  },
+  {
+    "title": "Gela Gela Gela",
+    "alt_titles": [
+      "गेला गेला गेला"
+    ],
+    "movie": "Aitraaz",
+    "year": 2004,
+    "singers": [
+      "Adnan Sami",
+      "Sunidhi Chauhan"
+    ],
+    "composers": [
+      "Himesh Reshammiya"
+    ],
+    "tags": [
+      "party",
+      "dance"
+    ],
+    "tier": 4
+  },
+  {
+    "title": "Dil De Diya Hai",
+    "alt_titles": [
+      "Dil De Diya Hai Jaan Tumhe Denge",
+      "दिल दे दिया है"
+    ],
+    "movie": "Masti",
+    "year": 2004,
+    "singers": [
+      "Anand Raj Anand"
+    ],
+    "composers": [
+      "Anand Raj Anand"
+    ],
+    "tags": [
+      "sad",
+      "romantic"
+    ],
+    "tier": 2
+  },
+  {
+    "title": "Bheege Hont Tere",
+    "alt_titles": [
+      "भीगे होंठ तेरे"
+    ],
+    "movie": "Murder",
+    "year": 2004,
+    "singers": [
+      "Kunal Ganjawala"
+    ],
+    "composers": [
+      "Anu Malik"
+    ],
+    "tags": [
+      "romantic"
+    ],
+    "tier": 2
+  },
+  {
+    "title": "Saaki",
+    "alt_titles": [
+      "Saaki Saaki",
+      "साक़ी"
+    ],
+    "movie": "Musafir",
+    "year": 2004,
+    "singers": [
+      "Sukhwinder Singh",
+      "Sunidhi Chauhan"
+    ],
+    "composers": [
+      "Vishal-Shekhar"
+    ],
+    "tags": [
+      "item",
+      "dance"
+    ],
+    "tier": 4
+  },
+  {
+    "title": "Aadat",
+    "alt_titles": [
+      "आदत"
+    ],
+    "movie": "Jal Pari",
+    "year": 2004,
+    "singers": [
+      "Atif Aslam"
+    ],
+    "composers": [
+      "Goher Mumtaz",
+      "Atif Aslam"
+    ],
+    "tags": [
+      "sad",
+      "indipop",
+      "non-film"
+    ],
+    "tier": 1
+  },
+  {
+    "title": "Bulla Ki Jaana",
+    "alt_titles": [
+      "Bullah Ki Jaana",
+      "बुल्ला की जाणा"
+    ],
+    "movie": "Rabbi",
+    "year": 2004,
+    "singers": [
+      "Rabbi Shergill"
+    ],
+    "composers": [
+      "Rabbi Shergill"
+    ],
+    "tags": [
+      "sufi",
+      "indipop",
+      "non-film"
+    ],
+    "tier": 2
+  },
+  {
+    "title": "Kajra Re",
+    "alt_titles": [
+      "कजरा रे"
+    ],
+    "movie": "Bunty Aur Babli",
+    "year": 2005,
+    "singers": [
+      "Alisha Chinai",
+      "Shankar Mahadevan",
+      "Javed Ali"
+    ],
+    "composers": [
+      "Shankar-Ehsaan-Loy"
+    ],
+    "tags": [
+      "item",
+      "dance"
+    ],
+    "tier": 1
+  },
+  {
+    "title": "Dhadak Dhadak",
+    "alt_titles": [
+      "धड़क धड़क"
+    ],
+    "movie": "Bunty Aur Babli",
+    "year": 2005,
+    "singers": [
+      "Udit Narayan",
+      "Sunidhi Chauhan",
+      "Nihira Joshi"
+    ],
+    "composers": [
+      "Shankar-Ehsaan-Loy"
+    ],
+    "tags": [
+      "dance"
+    ],
+    "tier": 2
+  },
+  {
+    "title": "My Dil Goes Mmmm",
+    "alt_titles": [
+      "My Dil Goes Hmmm",
+      "माय दिल गोज़ म्म्म"
+    ],
+    "movie": "Salaam Namaste",
+    "year": 2005,
+    "singers": [
+      "Shaan",
+      "Gayatri Iyer"
+    ],
+    "composers": [
+      "Vishal-Shekhar"
+    ],
+    "tags": [
+      "romantic"
+    ],
+    "tier": 2
+  },
+  {
+    "title": "Salaam Namaste",
+    "alt_titles": [
+      "सलाम नमस्ते"
+    ],
+    "movie": "Salaam Namaste",
+    "year": 2005,
+    "singers": [
+      "Kunal Ganjawala",
+      "Vasundhara Das"
+    ],
+    "composers": [
+      "Vishal-Shekhar"
+    ],
+    "tags": [
+      "party",
+      "dance"
+    ],
+    "tier": 3
+  },
+  {
+    "title": "Tu Jahan",
+    "alt_titles": [
+      "Tu Jahaan",
+      "तू जहाँ"
+    ],
+    "movie": "Salaam Namaste",
+    "year": 2005,
+    "singers": [
+      "Sonu Nigam",
+      "Mahalakshmi Iyer"
+    ],
+    "composers": [
+      "Vishal-Shekhar"
+    ],
+    "tags": [
+      "romantic"
+    ],
+    "tier": 4
+  },
+  {
+    "title": "Dus Bahane",
+    "alt_titles": [
+      "Dus Bahane Karke Le Gaye Dil",
+      "दस बहाने"
+    ],
+    "movie": "Dus",
+    "year": 2005,
+    "singers": [
+      "KK",
+      "Shaan"
+    ],
+    "composers": [
+      "Vishal-Shekhar"
+    ],
+    "tags": [
+      "party",
+      "dance"
+    ],
+    "tier": 1
+  },
+  {
+    "title": "Deedar De",
+    "alt_titles": [
+      "दीदार दे"
+    ],
+    "movie": "Dus",
+    "year": 2005,
+    "singers": [
+      "Sunidhi Chauhan",
+      "Krishna Beura"
+    ],
+    "composers": [
+      "Vishal-Shekhar"
+    ],
+    "tags": [
+      "dance",
+      "item"
+    ],
+    "tier": 3
+  },
+  {
+    "title": "Piyu Bole",
+    "alt_titles": [
+      "पियु बोले"
+    ],
+    "movie": "Parineeta",
+    "year": 2005,
+    "singers": [
+      "Sonu Nigam",
+      "Shreya Ghoshal"
+    ],
+    "composers": [
+      "Shantanu Moitra"
+    ],
+    "tags": [
+      "romantic"
+    ],
+    "tier": 2
+  },
+  {
+    "title": "Kasto Mazza",
+    "alt_titles": [
+      "Kasto Mazza Hai Railgadi Mein",
+      "कस्तो मज़ा"
+    ],
+    "movie": "Parineeta",
+    "year": 2005,
+    "singers": [
+      "Sonu Nigam",
+      "Shreya Ghoshal"
+    ],
+    "composers": [
+      "Shantanu Moitra"
+    ],
+    "tags": [
+      "romantic"
+    ],
+    "tier": 3
+  },
+  {
+    "title": "Kaisi Paheli Zindagani",
+    "alt_titles": [
+      "कैसी पहेली ज़िंदगानी"
+    ],
+    "movie": "Parineeta",
+    "year": 2005,
+    "singers": [
+      "Sunidhi Chauhan"
+    ],
+    "composers": [
+      "Shantanu Moitra"
+    ],
+    "tags": [
+      "dance"
+    ],
+    "tier": 4
+  },
+  {
+    "title": "Aashiq Banaya Aapne",
+    "alt_titles": [
+      "आशिक़ बनाया आपने"
+    ],
+    "movie": "Aashiq Banaya Aapne",
+    "year": 2005,
+    "singers": [
+      "Himesh Reshammiya",
+      "Shreya Ghoshal"
+    ],
+    "composers": [
+      "Himesh Reshammiya"
+    ],
+    "tags": [
+      "romantic"
+    ],
+    "tier": 1
+  },
+  {
+    "title": "Aap Ki Kashish",
+    "alt_titles": [
+      "Aapki Kashish",
+      "आपकी कशिश"
+    ],
+    "movie": "Aashiq Banaya Aapne",
+    "year": 2005,
+    "singers": [
+      "Himesh Reshammiya",
+      "Krishna Beura",
+      "Ahir"
+    ],
+    "composers": [
+      "Himesh Reshammiya"
+    ],
+    "tags": [
+      "romantic",
+      "sad"
+    ],
+    "tier": 3
+  },
+  {
+    "title": "Jiya Dhadak Dhadak Jaye",
+    "alt_titles": [
+      "Jiya Dhadak Dhadak Jaaye",
+      "जिया धड़क धड़क जाए"
+    ],
+    "movie": "Kalyug",
+    "year": 2005,
+    "singers": [
+      "Rahat Fateh Ali Khan"
+    ],
+    "composers": [
+      "Rohail Hyatt"
+    ],
+    "tags": [
+      "romantic",
+      "sufi"
+    ],
+    "tier": 2
+  },
+  {
+    "title": "Do Me A Favour Let's Play Holi",
+    "alt_titles": [
+      "Let's Play Holi",
+      "डू मी अ फ़ेवर लेट्स प्ले होली"
+    ],
+    "movie": "Waqt: The Race Against Time",
+    "year": 2005,
+    "singers": [
+      "Anu Malik",
+      "Sunidhi Chauhan"
+    ],
+    "composers": [
+      "Anu Malik"
+    ],
+    "tags": [
+      "festive",
+      "dance"
+    ],
+    "tier": 4
+  },
+  {
+    "title": "Dheere Jalna",
+    "alt_titles": [
+      "धीरे जलना"
+    ],
+    "movie": "Paheli",
+    "year": 2005,
+    "singers": [
+      "Sonu Nigam",
+      "Shreya Ghoshal"
+    ],
+    "composers": [
+      "M. M. Kreem"
+    ],
+    "tags": [
+      "romantic"
+    ],
+    "tier": 3
+  },
+  {
+    "title": "Chand Sifarish",
+    "alt_titles": [
+      "चाँद सिफ़ारिश"
+    ],
+    "movie": "Fanaa",
+    "year": 2006,
+    "singers": [
+      "Shaan",
+      "Kailash Kher"
+    ],
+    "composers": [
+      "Jatin-Lalit"
+    ],
+    "tags": [
+      "romantic",
+      "sufi"
+    ],
+    "tier": 1
+  },
+  {
+    "title": "Mere Haath Mein",
+    "alt_titles": [
+      "Mere Haath Mein Tera Haath Ho",
+      "मेरे हाथ में"
+    ],
+    "movie": "Fanaa",
+    "year": 2006,
+    "singers": [
+      "Sonu Nigam",
+      "Sunidhi Chauhan"
+    ],
+    "composers": [
+      "Jatin-Lalit"
+    ],
+    "tags": [
+      "romantic"
+    ],
+    "tier": 2
+  },
+  {
+    "title": "Dekho Na",
+    "alt_titles": [
+      "देखो ना"
+    ],
+    "movie": "Fanaa",
+    "year": 2006,
+    "singers": [
+      "Sonu Nigam",
+      "Sunidhi Chauhan"
+    ],
+    "composers": [
+      "Jatin-Lalit"
+    ],
+    "tags": [
+      "romantic",
+      "rain"
+    ],
+    "tier": 3
+  },
+  {
+    "title": "Rang De Basanti",
+    "alt_titles": [
+      "रंग दे बसंती"
+    ],
+    "movie": "Rang De Basanti",
+    "year": 2006,
+    "singers": [
+      "Daler Mehndi",
+      "K. S. Chithra"
+    ],
+    "composers": [
+      "A. R. Rahman"
+    ],
+    "tags": [
+      "patriotic",
+      "dance"
+    ],
+    "tier": 2
+  },
+  {
+    "title": "Masti Ki Paathshaala",
+    "alt_titles": [
+      "Paathshaala",
+      "मस्ती की पाठशाला"
+    ],
+    "movie": "Rang De Basanti",
+    "year": 2006,
+    "singers": [
+      "Naresh Iyer",
+      "Mohammed Aslam"
+    ],
+    "composers": [
+      "A. R. Rahman"
+    ],
+    "tags": [
+      "friendship",
+      "party"
+    ],
+    "tier": 1
+  },
+  {
+    "title": "Roobaroo",
+    "alt_titles": [
+      "रूबरू"
+    ],
+    "movie": "Rang De Basanti",
+    "year": 2006,
+    "singers": [
+      "A. R. Rahman",
+      "Naresh Iyer"
+    ],
+    "composers": [
+      "A. R. Rahman"
+    ],
+    "tags": [
+      "friendship"
+    ],
+    "tier": 3
+  },
+  {
+    "title": "Luka Chuppi",
+    "alt_titles": [
+      "लुका छुपी"
+    ],
+    "movie": "Rang De Basanti",
+    "year": 2006,
+    "singers": [
+      "Lata Mangeshkar",
+      "A. R. Rahman"
+    ],
+    "composers": [
+      "A. R. Rahman"
+    ],
+    "tags": [
+      "sad",
+      "patriotic"
+    ],
+    "tier": 2
+  },
+  {
+    "title": "Mitwa",
+    "alt_titles": [
+      "Mitwa Sun Mitwa",
+      "मितवा"
+    ],
+    "movie": "Kabhi Alvida Naa Kehna",
+    "year": 2006,
+    "singers": [
+      "Shafqat Amanat Ali",
+      "Shankar Mahadevan",
+      "Caralisa Monteiro"
+    ],
+    "composers": [
+      "Shankar-Ehsaan-Loy"
+    ],
+    "tags": [
+      "romantic",
+      "sufi"
+    ],
+    "tier": 1
+  },
+  {
+    "title": "Kabhi Alvida Naa Kehna",
+    "alt_titles": [
+      "कभी अलविदा ना कहना"
+    ],
+    "movie": "Kabhi Alvida Naa Kehna",
+    "year": 2006,
+    "singers": [
+      "Sonu Nigam",
+      "Alka Yagnik"
+    ],
+    "composers": [
+      "Shankar-Ehsaan-Loy"
+    ],
+    "tags": [
+      "romantic",
+      "sad"
+    ],
+    "tier": 2
+  },
+  {
+    "title": "Tumhi Dekho Naa",
+    "alt_titles": [
+      "Tumhi Dekho Na",
+      "तुम्हीं देखो ना"
+    ],
+    "movie": "Kabhi Alvida Naa Kehna",
+    "year": 2006,
+    "singers": [
+      "Sonu Nigam",
+      "Alka Yagnik"
+    ],
+    "composers": [
+      "Shankar-Ehsaan-Loy"
+    ],
+    "tags": [
+      "romantic"
+    ],
+    "tier": 3
+  },
+  {
+    "title": "Rock N Roll Soniye",
+    "alt_titles": [
+      "Rock 'N' Roll Soniye",
+      "रॉक एन रोल सोणिये"
+    ],
+    "movie": "Kabhi Alvida Naa Kehna",
+    "year": 2006,
+    "singers": [
+      "Mahalakshmi Iyer",
+      "Shankar Mahadevan",
+      "Shaan"
+    ],
+    "composers": [
+      "Shankar-Ehsaan-Loy"
+    ],
+    "tags": [
+      "party",
+      "dance"
+    ],
+    "tier": 3
+  },
+  {
+    "title": "Crazy Kiya Re",
+    "alt_titles": [
+      "क्रेज़ी किया रे"
+    ],
+    "movie": "Dhoom 2",
+    "year": 2006,
+    "singers": [
+      "Sunidhi Chauhan",
+      "Ravi Khote"
+    ],
+    "composers": [
+      "Pritam"
+    ],
+    "tags": [
+      "dance",
+      "party"
+    ],
+    "tier": 1
+  },
+  {
+    "title": "Dhoom Again",
+    "alt_titles": [
+      "धूम अगेन"
+    ],
+    "movie": "Dhoom 2",
+    "year": 2006,
+    "singers": [
+      "Vishal Dadlani",
+      "Dominique Cerejo"
+    ],
+    "composers": [
+      "Pritam"
+    ],
+    "tags": [
+      "party",
+      "dance"
+    ],
+    "tier": 2
+  },
+  {
+    "title": "Pyaar Ki Ek Kahani",
+    "alt_titles": [
+      "Pyaar Ki Ek Kahaani",
+      "प्यार की एक कहानी"
+    ],
+    "movie": "Krrish",
+    "year": 2006,
+    "singers": [
+      "Sonu Nigam",
+      "Shreya Ghoshal"
+    ],
+    "composers": [
+      "Rajesh Roshan"
+    ],
+    "tags": [
+      "romantic"
+    ],
+    "tier": 2
+  },
+  {
+    "title": "Pal Pal Har Pal",
+    "alt_titles": [
+      "Pal Pal... Har Pal",
+      "पल पल हर पल"
+    ],
+    "movie": "Lage Raho Munna Bhai",
+    "year": 2006,
+    "singers": [
+      "Sonu Nigam",
+      "Shreya Ghoshal"
+    ],
+    "composers": [
+      "Shantanu Moitra"
+    ],
+    "tags": [
+      "romantic"
+    ],
+    "tier": 2
+  },
+  {
+    "title": "Ya Ali",
+    "alt_titles": [
+      "Ya Ali Reham Ali",
+      "या अली"
+    ],
+    "movie": "Gangster",
+    "year": 2006,
+    "singers": [
+      "Zubeen Garg"
+    ],
+    "composers": [
+      "Pritam"
+    ],
+    "tags": [
+      "romantic",
+      "sad"
+    ],
+    "tier": 1
+  },
+  {
+    "title": "Bheegi Bheegi",
+    "alt_titles": [
+      "भीगी भीगी"
+    ],
+    "movie": "Gangster",
+    "year": 2006,
+    "singers": [
+      "James"
+    ],
+    "composers": [
+      "Pritam"
+    ],
+    "tags": [
+      "rain",
+      "sad"
+    ],
+    "tier": 1
+  },
+  {
+    "title": "Tu Hi Meri Shab Hai",
+    "alt_titles": [
+      "तू ही मेरी शब है"
+    ],
+    "movie": "Gangster",
+    "year": 2006,
+    "singers": [
+      "KK"
+    ],
+    "composers": [
+      "Pritam"
+    ],
+    "tags": [
+      "romantic"
+    ],
+    "tier": 2
+  },
+  {
+    "title": "Kya Mujhe Pyaar Hai",
+    "alt_titles": [
+      "Kya Mujhe Pyar Hai",
+      "क्या मुझे प्यार है"
+    ],
+    "movie": "Woh Lamhe",
+    "year": 2006,
+    "singers": [
+      "KK"
+    ],
+    "composers": [
+      "Pritam"
+    ],
+    "tags": [
+      "romantic"
+    ],
+    "tier": 2
+  },
+  {
+    "title": "Beedi",
+    "alt_titles": [
+      "Beedi Jalaile",
+      "बीड़ी"
+    ],
+    "movie": "Omkara",
+    "year": 2006,
+    "singers": [
+      "Sunidhi Chauhan",
+      "Sukhwinder Singh",
+      "Nachiketa Chakraborty",
+      "Clinton Cerejo",
+      "Vishal Dadlani"
+    ],
+    "composers": [
+      "Vishal Bhardwaj"
+    ],
+    "tags": [
+      "item",
+      "dance"
+    ],
+    "tier": 1
+  },
+  {
+    "title": "O Saathi Re",
+    "alt_titles": [
+      "ओ साथी रे"
+    ],
+    "movie": "Omkara",
+    "year": 2006,
+    "singers": [
+      "Shreya Ghoshal",
+      "Vishal Bhardwaj"
+    ],
+    "composers": [
+      "Vishal Bhardwaj"
+    ],
+    "tags": [
+      "romantic"
+    ],
+    "tier": 3
+  },
+  {
+    "title": "Aaj Ki Raat",
+    "alt_titles": [
+      "आज की रात"
+    ],
+    "movie": "Don",
+    "year": 2006,
+    "singers": [
+      "Alisha Chinai",
+      "Mahalakshmi Iyer",
+      "Sonu Nigam"
+    ],
+    "composers": [
+      "Shankar-Ehsaan-Loy"
+    ],
+    "tags": [
+      "party",
+      "dance"
+    ],
+    "tier": 2
+  },
+  {
+    "title": "Jhalak Dikhlaja",
+    "alt_titles": [
+      "Jhalak Dikhla Jaa",
+      "झलक दिखला जा"
+    ],
+    "movie": "Aksar",
+    "year": 2006,
+    "singers": [
+      "Himesh Reshammiya"
+    ],
+    "composers": [
+      "Himesh Reshammiya"
+    ],
+    "tags": [
+      "romantic",
+      "party"
+    ],
+    "tier": 2
+  },
+  {
+    "title": "Tere Bin",
+    "alt_titles": [
+      "तेरे बिन"
+    ],
+    "movie": "Bas Ek Pal",
+    "year": 2006,
+    "singers": [
+      "Atif Aslam"
+    ],
+    "composers": [
+      "Mithoon"
+    ],
+    "tags": [
+      "sad",
+      "romantic"
+    ],
+    "tier": 2
+  },
+  {
+    "title": "Mujhe Haq Hai",
+    "alt_titles": [
+      "मुझे हक़ है"
+    ],
+    "movie": "Vivah",
+    "year": 2006,
+    "singers": [
+      "Udit Narayan",
+      "Shreya Ghoshal"
+    ],
+    "composers": [
+      "Ravindra Jain"
+    ],
+    "tags": [
+      "romantic",
+      "wedding"
+    ],
+    "tier": 4
+  },
+  {
+    "title": "Teri Deewani",
+    "alt_titles": [
+      "तेरी दीवानी"
+    ],
+    "movie": "Kailasa",
+    "year": 2006,
+    "singers": [
+      "Kailash Kher"
+    ],
+    "composers": [
+      "Kailash Kher",
+      "Paresh Kamath",
+      "Naresh Kamath"
+    ],
+    "tags": [
+      "sufi",
+      "indipop",
+      "non-film"
+    ],
+    "tier": 1
+  },
+  {
+    "title": "Doorie",
+    "alt_titles": [
+      "दूरी"
+    ],
+    "movie": "Doorie",
+    "year": 2006,
+    "singers": [
+      "Atif Aslam"
+    ],
+    "composers": [
+      "Sachin Gupta"
+    ],
+    "tags": [
+      "sad",
+      "indipop",
+      "non-film"
+    ],
+    "tier": 3
+  },
+  {
+    "title": "Kuch Is Tarah",
+    "alt_titles": [
+      "कुछ इस तरह"
+    ],
+    "movie": "Doorie",
+    "year": 2006,
+    "singers": [
+      "Atif Aslam"
+    ],
+    "composers": [
+      "Mithoon"
+    ],
+    "tags": [
+      "romantic",
+      "indipop",
+      "non-film"
+    ],
+    "tier": 4
+  },
+  {
+    "title": "Dard-e-Disco",
+    "alt_titles": [
+      "दर्द-ए-डिस्को"
+    ],
+    "movie": "Om Shanti Om",
+    "year": 2007,
+    "singers": [
+      "Sukhwinder Singh",
+      "Caralisa Monteiro",
+      "Nisha Mascarenhas",
+      "Marianne D'Cruz"
+    ],
+    "composers": [
+      "Vishal-Shekhar"
+    ],
+    "tags": [
+      "party",
+      "dance"
+    ],
+    "tier": 1
+  },
+  {
+    "title": "Ajab Si",
+    "alt_titles": [
+      "Aankhon Mein Teri Ajab Si",
+      "अजब सी"
+    ],
+    "movie": "Om Shanti Om",
+    "year": 2007,
+    "singers": [
+      "KK"
+    ],
+    "composers": [
+      "Vishal-Shekhar"
+    ],
+    "tags": [
+      "romantic"
+    ],
+    "tier": 1
+  },
+  {
+    "title": "Main Agar Kahoon",
+    "alt_titles": [
+      "मैं अगर कहूँ"
+    ],
+    "movie": "Om Shanti Om",
+    "year": 2007,
+    "singers": [
+      "Sonu Nigam",
+      "Shreya Ghoshal"
+    ],
+    "composers": [
+      "Vishal-Shekhar"
+    ],
+    "tags": [
+      "romantic"
+    ],
+    "tier": 1
+  },
+  {
+    "title": "Deewangi Deewangi",
+    "alt_titles": [
+      "दीवानगी दीवानगी"
+    ],
+    "movie": "Om Shanti Om",
+    "year": 2007,
+    "singers": [
+      "Shaan",
+      "Udit Narayan",
+      "Shreya Ghoshal",
+      "Sunidhi Chauhan",
+      "Rahul Saxena"
+    ],
+    "composers": [
+      "Vishal-Shekhar"
+    ],
+    "tags": [
+      "party",
+      "dance"
+    ],
+    "tier": 2
+  },
+  {
+    "title": "Dhoom Taana",
+    "alt_titles": [
+      "धूम ताना"
+    ],
+    "movie": "Om Shanti Om",
+    "year": 2007,
+    "singers": [
+      "Abhijeet Bhattacharya",
+      "Shreya Ghoshal"
+    ],
+    "composers": [
+      "Vishal-Shekhar"
+    ],
+    "tags": [
+      "dance"
+    ],
+    "tier": 4
+  },
+  {
+    "title": "Mauja Hi Mauja",
+    "alt_titles": [
+      "मौजा ही मौजा"
+    ],
+    "movie": "Jab We Met",
+    "year": 2007,
+    "singers": [
+      "Mika Singh"
+    ],
+    "composers": [
+      "Pritam"
+    ],
+    "tags": [
+      "party",
+      "dance"
+    ],
+    "tier": 1
+  },
+  {
+    "title": "Tum Se Hi",
+    "alt_titles": [
+      "Tumse Hi",
+      "तुम से ही"
+    ],
+    "movie": "Jab We Met",
+    "year": 2007,
+    "singers": [
+      "Mohit Chauhan"
+    ],
+    "composers": [
+      "Pritam"
+    ],
+    "tags": [
+      "romantic"
+    ],
+    "tier": 1
+  },
+  {
+    "title": "Yeh Ishq Haaye",
+    "alt_titles": [
+      "Yeh Ishq Hai",
+      "ये इश्क़ हाय"
+    ],
+    "movie": "Jab We Met",
+    "year": 2007,
+    "singers": [
+      "Shreya Ghoshal"
+    ],
+    "composers": [
+      "Pritam"
+    ],
+    "tags": [
+      "romantic"
+    ],
+    "tier": 2
+  },
+  {
+    "title": "Nagada Nagada",
+    "alt_titles": [
+      "Nagada Sang Dhol",
+      "नगाड़ा नगाड़ा"
+    ],
+    "movie": "Jab We Met",
+    "year": 2007,
+    "singers": [
+      "Sonu Nigam",
+      "Javed Ali"
+    ],
+    "composers": [
+      "Pritam"
+    ],
+    "tags": [
+      "wedding",
+      "dance"
+    ],
+    "tier": 2
+  },
+  {
+    "title": "Aaoge Jab Tum",
+    "alt_titles": [
+      "Aaoge Jab Tum O Saajna",
+      "आओगे जब तुम"
+    ],
+    "movie": "Jab We Met",
+    "year": 2007,
+    "singers": [
+      "Rashid Khan"
+    ],
+    "composers": [
+      "Sandesh Shandilya"
+    ],
+    "tags": [
+      "classical",
+      "romantic"
+    ],
+    "tier": 3
+  },
+  {
+    "title": "Chak De! India",
+    "alt_titles": [
+      "Chak De India",
+      "चक दे! इंडिया"
+    ],
+    "movie": "Chak De! India",
+    "year": 2007,
+    "singers": [
+      "Sukhwinder Singh",
+      "Salim Merchant",
+      "Marianne D'Cruz"
+    ],
+    "composers": [
+      "Salim-Sulaiman"
+    ],
+    "tags": [
+      "patriotic"
+    ],
+    "tier": 1
+  },
+  {
+    "title": "Tere Bina",
+    "alt_titles": [
+      "तेरे बिना"
+    ],
+    "movie": "Guru",
+    "year": 2007,
+    "singers": [
+      "A. R. Rahman",
+      "Chinmayi",
+      "Murtuza Khan",
+      "Qadir Khan"
+    ],
+    "composers": [
+      "A. R. Rahman"
+    ],
+    "tags": [
+      "romantic"
+    ],
+    "tier": 2
+  },
+  {
+    "title": "Barso Re",
+    "alt_titles": [
+      "बरसो रे"
+    ],
+    "movie": "Guru",
+    "year": 2007,
+    "singers": [
+      "Shreya Ghoshal",
+      "Uday Mazumdar"
+    ],
+    "composers": [
+      "A. R. Rahman"
+    ],
+    "tags": [
+      "rain",
+      "dance"
+    ],
+    "tier": 2
+  },
+  {
+    "title": "Maa",
+    "alt_titles": [
+      "माँ"
+    ],
+    "movie": "Taare Zameen Par",
+    "year": 2007,
+    "singers": [
+      "Shankar Mahadevan"
+    ],
+    "composers": [
+      "Shankar-Ehsaan-Loy"
+    ],
+    "tags": [
+      "sad"
+    ],
+    "tier": 2
+  },
+  {
+    "title": "Main Jahaan Rahoon",
+    "alt_titles": [
+      "मैं जहाँ रहूँ"
+    ],
+    "movie": "Namastey London",
+    "year": 2007,
+    "singers": [
+      "Rahat Fateh Ali Khan",
+      "Krishna Beura"
+    ],
+    "composers": [
+      "Himesh Reshammiya"
+    ],
+    "tags": [
+      "sad"
+    ],
+    "tier": 2
+  },
+  {
+    "title": "Jab Se Tere Naina",
+    "alt_titles": [
+      "जब से तेरे नैना"
+    ],
+    "movie": "Saawariya",
+    "year": 2007,
+    "singers": [
+      "Shaan"
+    ],
+    "composers": [
+      "Monty Sharma"
+    ],
+    "tags": [
+      "romantic"
+    ],
+    "tier": 2
+  },
+  {
+    "title": "Masha-Allah",
+    "alt_titles": [
+      "Masha Allah",
+      "माशा-अल्लाह"
+    ],
+    "movie": "Saawariya",
+    "year": 2007,
+    "singers": [
+      "Kunal Ganjawala",
+      "Shreya Ghoshal"
+    ],
+    "composers": [
+      "Monty Sharma"
+    ],
+    "tags": [
+      "romantic"
+    ],
+    "tier": 4
+  },
+  {
+    "title": "Labon Ko",
+    "alt_titles": [
+      "Labon Ko Labon Pe",
+      "लबों को"
+    ],
+    "movie": "Bhool Bhulaiyaa",
+    "year": 2007,
+    "singers": [
+      "KK"
+    ],
+    "composers": [
+      "Pritam"
+    ],
+    "tags": [
+      "romantic"
+    ],
+    "tier": 1
+  },
+  {
+    "title": "Ami Je Tomar",
+    "alt_titles": [
+      "Mere Dholna",
+      "आमी जे तोमार"
+    ],
+    "movie": "Bhool Bhulaiyaa",
+    "year": 2007,
+    "singers": [
+      "Shreya Ghoshal",
+      "M. G. Sreekumar"
+    ],
+    "composers": [
+      "Pritam"
+    ],
+    "tags": [
+      "classical",
+      "dance"
+    ],
+    "tier": 2
+  },
+  {
+    "title": "In Dino",
+    "alt_titles": [
+      "इन दिनों"
+    ],
+    "movie": "Life in a... Metro",
+    "year": 2007,
+    "singers": [
+      "Soham Chakraborty"
+    ],
+    "composers": [
+      "Pritam"
+    ],
+    "tags": [
+      "romantic"
+    ],
+    "tier": 3
+  },
+  {
+    "title": "O Meri Jaan",
+    "alt_titles": [
+      "ओ मेरी जान"
+    ],
+    "movie": "Life in a... Metro",
+    "year": 2007,
+    "singers": [
+      "KK"
+    ],
+    "composers": [
+      "Pritam"
+    ],
+    "tags": [
+      "romantic"
+    ],
+    "tier": 3
+  },
+  {
+    "title": "Hey Shona",
+    "alt_titles": [
+      "हे शोना"
+    ],
+    "movie": "Ta Ra Rum Pum",
+    "year": 2007,
+    "singers": [
+      "Shaan",
+      "Sunidhi Chauhan"
+    ],
+    "composers": [
+      "Vishal-Shekhar"
+    ],
+    "tags": [
+      "romantic"
+    ],
+    "tier": 2
+  },
+  {
+    "title": "Ya Rabba",
+    "alt_titles": [
+      "या रब्बा"
+    ],
+    "movie": "Salaam-e-Ishq",
+    "year": 2007,
+    "singers": [
+      "Kailash Kher"
+    ],
+    "composers": [
+      "Shankar-Ehsaan-Loy"
+    ],
+    "tags": [
+      "sufi",
+      "sad"
+    ],
+    "tier": 3
+  },
+  {
+    "title": "Bol Na Halke Halke",
+    "alt_titles": [
+      "बोल ना हल्के हल्के"
+    ],
+    "movie": "Jhoom Barabar Jhoom",
+    "year": 2007,
+    "singers": [
+      "Rahat Fateh Ali Khan",
+      "Mahalakshmi Iyer"
+    ],
+    "composers": [
+      "Shankar-Ehsaan-Loy"
+    ],
+    "tags": [
+      "romantic"
+    ],
+    "tier": 3
+  },
+  {
+    "title": "Tera Suroor",
+    "alt_titles": [
+      "Tera Tera Tera Suroor",
+      "तेरा सुरूर"
+    ],
+    "movie": "Aap Kaa Surroor",
+    "year": 2007,
+    "singers": [
+      "Himesh Reshammiya"
+    ],
+    "composers": [
+      "Himesh Reshammiya"
+    ],
+    "tags": [
+      "romantic"
+    ],
+    "tier": 2
+  },
+  {
+    "title": "Jashn-e-Bahaara",
+    "alt_titles": [
+      "Jashn-E-Bahara",
+      "जश्न-ए-बहारा"
+    ],
+    "movie": "Jodhaa Akbar",
+    "year": 2008,
+    "singers": [
+      "Javed Ali"
+    ],
+    "composers": [
+      "A. R. Rahman"
+    ],
+    "tags": [
+      "romantic"
+    ],
+    "tier": 2
+  },
+  {
+    "title": "Khwaja Mere Khwaja",
+    "alt_titles": [
+      "ख़्वाजा मेरे ख़्वाजा"
+    ],
+    "movie": "Jodhaa Akbar",
+    "year": 2008,
+    "singers": [
+      "A. R. Rahman"
+    ],
+    "composers": [
+      "A. R. Rahman"
+    ],
+    "tags": [
+      "sufi",
+      "qawwali"
+    ],
+    "tier": 1
+  },
+  {
+    "title": "In Lamhon Ke Daaman Mein",
+    "alt_titles": [
+      "इन लम्हों के दामन में"
+    ],
+    "movie": "Jodhaa Akbar",
+    "year": 2008,
+    "singers": [
+      "Sonu Nigam",
+      "Madhushree"
+    ],
+    "composers": [
+      "A. R. Rahman"
+    ],
+    "tags": [
+      "romantic"
+    ],
+    "tier": 4
+  },
+  {
+    "title": "Guzarish",
+    "alt_titles": [
+      "Guzaarish",
+      "गुज़ारिश"
+    ],
+    "movie": "Ghajini",
+    "year": 2008,
+    "singers": [
+      "Javed Ali",
+      "Sonu Nigam"
+    ],
+    "composers": [
+      "A. R. Rahman"
+    ],
+    "tags": [
+      "romantic"
+    ],
+    "tier": 2
+  },
+  {
+    "title": "Kaise Mujhe",
+    "alt_titles": [
+      "Kaise Mujhe Tum Mil Gayi",
+      "कैसे मुझे"
+    ],
+    "movie": "Ghajini",
+    "year": 2008,
+    "singers": [
+      "Benny Dayal",
+      "Shreya Ghoshal"
+    ],
+    "composers": [
+      "A. R. Rahman"
+    ],
+    "tags": [
+      "romantic"
+    ],
+    "tier": 3
+  },
+  {
+    "title": "Kabhi Kabhi Aditi",
+    "alt_titles": [
+      "कभी कभी अदिति"
+    ],
+    "movie": "Jaane Tu... Ya Jaane Na",
+    "year": 2008,
+    "singers": [
+      "Rashid Ali"
+    ],
+    "composers": [
+      "A. R. Rahman"
+    ],
+    "tags": [
+      "friendship"
+    ],
+    "tier": 1
+  },
+  {
+    "title": "Pappu Can't Dance",
+    "alt_titles": [
+      "Pappu Can't Dance Saala",
+      "पप्पू कान्ट डांस"
+    ],
+    "movie": "Jaane Tu... Ya Jaane Na",
+    "year": 2008,
+    "singers": [
+      "Naresh Iyer",
+      "Anupama",
+      "Benny Dayal",
+      "Blaaze",
+      "Tanvi Shah",
+      "Darshana KT",
+      "Satish Subrahmanium",
+      "Mohammed Aslam"
+    ],
+    "composers": [
+      "A. R. Rahman"
+    ],
+    "tags": [
+      "party",
+      "dance"
+    ],
+    "tier": 2
+  },
+  {
+    "title": "Socha Hai",
+    "alt_titles": [
+      "सोचा है"
+    ],
+    "movie": "Rock On!!",
+    "year": 2008,
+    "singers": [
+      "Farhan Akhtar"
+    ],
+    "composers": [
+      "Shankar-Ehsaan-Loy"
+    ],
+    "tags": [
+      "friendship"
+    ],
+    "tier": 3
+  },
+  {
+    "title": "Pichhle Saat Dinon Mein",
+    "alt_titles": [
+      "Pichle Saat Dinon Mein",
+      "पिछले सात दिनों में"
+    ],
+    "movie": "Rock On!!",
+    "year": 2008,
+    "singers": [
+      "Farhan Akhtar"
+    ],
+    "composers": [
+      "Shankar-Ehsaan-Loy"
+    ],
+    "tags": [
+      "romantic"
+    ],
+    "tier": 4
+  },
+  {
+    "title": "Pehli Nazar Mein",
+    "alt_titles": [
+      "पहली नज़र में"
+    ],
+    "movie": "Race",
+    "year": 2008,
+    "singers": [
+      "Atif Aslam"
+    ],
+    "composers": [
+      "Pritam"
+    ],
+    "tags": [
+      "romantic"
+    ],
+    "tier": 1
+  },
+  {
+    "title": "Teri Ore",
+    "alt_titles": [
+      "तेरी ओर"
+    ],
+    "movie": "Singh Is Kinng",
+    "year": 2008,
+    "singers": [
+      "Rahat Fateh Ali Khan",
+      "Shreya Ghoshal"
+    ],
+    "composers": [
+      "Pritam"
+    ],
+    "tags": [
+      "romantic"
+    ],
+    "tier": 1
+  },
+  {
+    "title": "Desi Girl",
+    "alt_titles": [
+      "देसी गर्ल"
+    ],
+    "movie": "Dostana",
+    "year": 2008,
+    "singers": [
+      "Shankar Mahadevan",
+      "Sunidhi Chauhan",
+      "Vishal Dadlani"
+    ],
+    "composers": [
+      "Vishal-Shekhar"
+    ],
+    "tags": [
+      "party",
+      "dance"
+    ],
+    "tier": 1
+  },
+  {
+    "title": "Maa Da Laadla",
+    "alt_titles": [
+      "माँ दा लाडला"
+    ],
+    "movie": "Dostana",
+    "year": 2008,
+    "singers": [
+      "Master Saleem",
+      "Sunidhi Chauhan"
+    ],
+    "composers": [
+      "Vishal-Shekhar"
+    ],
+    "tags": [
+      "party"
+    ],
+    "tier": 4
+  },
+  {
+    "title": "Tujh Mein Rab Dikhta Hai",
+    "alt_titles": [
+      "Tujh Mein Rab",
+      "तुझ में रब दिखता है"
+    ],
+    "movie": "Rab Ne Bana Di Jodi",
+    "year": 2008,
+    "singers": [
+      "Roop Kumar Rathod"
+    ],
+    "composers": [
+      "Salim-Sulaiman"
+    ],
+    "tags": [
+      "romantic"
+    ],
+    "tier": 1
+  },
+  {
+    "title": "Haule Haule",
+    "alt_titles": [
+      "हौले हौले"
+    ],
+    "movie": "Rab Ne Bana Di Jodi",
+    "year": 2008,
+    "singers": [
+      "Sukhwinder Singh"
+    ],
+    "composers": [
+      "Salim-Sulaiman"
+    ],
+    "tags": [
+      "romantic"
+    ],
+    "tier": 2
+  },
+  {
+    "title": "Dance Pe Chance",
+    "alt_titles": [
+      "डांस पे चांस"
+    ],
+    "movie": "Rab Ne Bana Di Jodi",
+    "year": 2008,
+    "singers": [
+      "Sunidhi Chauhan",
+      "Labh Janjua"
+    ],
+    "composers": [
+      "Salim-Sulaiman"
+    ],
+    "tags": [
+      "dance"
+    ],
+    "tier": 3
+  },
+  {
+    "title": "Phir Milenge Chalte Chalte",
+    "alt_titles": [
+      "फिर मिलेंगे चलते चलते"
+    ],
+    "movie": "Rab Ne Bana Di Jodi",
+    "year": 2008,
+    "singers": [
+      "Sonu Nigam"
+    ],
+    "composers": [
+      "Salim-Sulaiman"
+    ],
+    "tags": [
+      "dance"
+    ],
+    "tier": 4
+  },
+  {
+    "title": "Khuda Jaane",
+    "alt_titles": [
+      "ख़ुदा जाने"
+    ],
+    "movie": "Bachna Ae Haseeno",
+    "year": 2008,
+    "singers": [
+      "KK",
+      "Shilpa Rao"
+    ],
+    "composers": [
+      "Vishal-Shekhar"
+    ],
+    "tags": [
+      "romantic"
+    ],
+    "tier": 1
+  },
+  {
+    "title": "Aahista Aahista",
+    "alt_titles": [
+      "आहिस्ता आहिस्ता"
+    ],
+    "movie": "Bachna Ae Haseeno",
+    "year": 2008,
+    "singers": [
+      "Lucky Ali",
+      "Shreya Ghoshal"
+    ],
+    "composers": [
+      "Vishal-Shekhar"
+    ],
+    "tags": [
+      "romantic"
+    ],
+    "tier": 4
+  },
+  {
+    "title": "Zara Sa",
+    "alt_titles": [
+      "Zara Sa Dil Mein De Jagah Tu",
+      "ज़रा सा"
+    ],
+    "movie": "Jannat",
+    "year": 2008,
+    "singers": [
+      "KK"
+    ],
+    "composers": [
+      "Pritam"
+    ],
+    "tags": [
+      "romantic"
+    ],
+    "tier": 2
+  },
+  {
+    "title": "Haan Tu Hai",
+    "alt_titles": [
+      "Haan Tu Hain",
+      "हाँ तू है"
+    ],
+    "movie": "Jannat",
+    "year": 2008,
+    "singers": [
+      "KK"
+    ],
+    "composers": [
+      "Pritam"
+    ],
+    "tags": [
+      "romantic"
+    ],
+    "tier": 4
+  },
+  {
+    "title": "Bakhuda Tumhi Ho",
+    "alt_titles": [
+      "बख़ुदा तुम्हीं हो"
+    ],
+    "movie": "Kismat Konnection",
+    "year": 2008,
+    "singers": [
+      "Atif Aslam",
+      "Alka Yagnik"
+    ],
+    "composers": [
+      "Pritam"
+    ],
+    "tags": [
+      "romantic"
+    ],
+    "tier": 2
+  },
+  {
+    "title": "Is This Love",
+    "alt_titles": [
+      "इज़ दिस लव"
+    ],
+    "movie": "Kismat Konnection",
+    "year": 2008,
+    "singers": [
+      "Shreya Ghoshal",
+      "Mohit Chauhan"
+    ],
+    "composers": [
+      "Pritam"
+    ],
+    "tags": [
+      "romantic"
+    ],
+    "tier": 4
+  },
+  {
+    "title": "Tu Meri Dost Hai",
+    "alt_titles": [
+      "तू मेरी दोस्त है"
+    ],
+    "movie": "Yuvvraaj",
+    "year": 2008,
+    "singers": [
+      "Benny Dayal",
+      "Shreya Ghoshal",
+      "A. R. Rahman"
+    ],
+    "composers": [
+      "A. R. Rahman"
+    ],
+    "tags": [
+      "romantic"
+    ],
+    "tier": 4
+  },
+  {
+    "title": "Dil Haara",
+    "alt_titles": [
+      "दिल हारा"
+    ],
+    "movie": "Tashan",
+    "year": 2008,
+    "singers": [
+      "Sukhwinder Singh"
+    ],
+    "composers": [
+      "Vishal-Shekhar"
+    ],
+    "tags": [
+      "romantic"
+    ],
+    "tier": 3
+  },
+  {
+    "title": "Falak Tak",
+    "alt_titles": [
+      "Falak Tak Chal Saath Mere",
+      "फ़लक तक"
+    ],
+    "movie": "Tashan",
+    "year": 2008,
+    "singers": [
+      "Udit Narayan",
+      "Mahalakshmi Iyer"
+    ],
+    "composers": [
+      "Vishal-Shekhar"
+    ],
+    "tags": [
+      "romantic"
+    ],
+    "tier": 3
+  },
+  {
+    "title": "Masakali",
+    "alt_titles": [
+      "मसकली"
+    ],
+    "movie": "Delhi-6",
+    "year": 2009,
+    "singers": [
+      "Mohit Chauhan"
+    ],
+    "composers": [
+      "A. R. Rahman"
+    ],
+    "tags": [
+      "romantic"
+    ],
+    "tier": 1
+  },
+  {
+    "title": "Genda Phool",
+    "alt_titles": [
+      "गेंदा फूल"
+    ],
+    "movie": "Delhi-6",
+    "year": 2009,
+    "singers": [
+      "Rekha Bhardwaj",
+      "Shraddha Pandit",
+      "Sujata Mazumder",
+      "Mahathi"
+    ],
+    "composers": [
+      "A. R. Rahman"
+    ],
+    "tags": [
+      "wedding",
+      "dance"
+    ],
+    "tier": 1
+  },
+  {
+    "title": "Arziyan",
+    "alt_titles": [
+      "अर्ज़ियाँ"
+    ],
+    "movie": "Delhi-6",
+    "year": 2009,
+    "singers": [
+      "Javed Ali",
+      "Kailash Kher"
+    ],
+    "composers": [
+      "A. R. Rahman"
+    ],
+    "tags": [
+      "qawwali",
+      "sufi"
+    ],
+    "tier": 2
+  },
+  {
+    "title": "Ajj Din Chadheya",
+    "alt_titles": [
+      "Aaj Din Chadheya",
+      "अज्ज दिन चढ़िया"
+    ],
+    "movie": "Love Aaj Kal",
+    "year": 2009,
+    "singers": [
+      "Rahat Fateh Ali Khan"
+    ],
+    "composers": [
+      "Pritam"
+    ],
+    "tags": [
+      "romantic"
+    ],
+    "tier": 1
+  },
+  {
+    "title": "Chor Bazaari",
+    "alt_titles": [
+      "चोर बाज़ारी"
+    ],
+    "movie": "Love Aaj Kal",
+    "year": 2009,
+    "singers": [
+      "Neeraj Shridhar",
+      "Sunidhi Chauhan"
+    ],
+    "composers": [
+      "Pritam"
+    ],
+    "tags": [
+      "party",
+      "dance"
+    ],
+    "tier": 2
+  },
+  {
+    "title": "Twist",
+    "alt_titles": [
+      "Twist Kamariya",
+      "ट्विस्ट"
+    ],
+    "movie": "Love Aaj Kal",
+    "year": 2009,
+    "singers": [
+      "Neeraj Shridhar",
+      "Suzanne D'Mello",
+      "Saif Ali Khan"
+    ],
+    "composers": [
+      "Pritam"
+    ],
+    "tags": [
+      "party",
+      "dance"
+    ],
+    "tier": 2
+  },
+  {
+    "title": "Tu Jaane Na",
+    "alt_titles": [
+      "तू जाने ना"
+    ],
+    "movie": "Ajab Prem Ki Ghazab Kahani",
+    "year": 2009,
+    "singers": [
+      "Atif Aslam"
+    ],
+    "composers": [
+      "Pritam"
+    ],
+    "tags": [
+      "sad",
+      "romantic"
+    ],
+    "tier": 1
+  },
+  {
+    "title": "Tera Hone Laga Hoon",
+    "alt_titles": [
+      "तेरा होने लगा हूँ"
+    ],
+    "movie": "Ajab Prem Ki Ghazab Kahani",
+    "year": 2009,
+    "singers": [
+      "Atif Aslam",
+      "Alisha Chinai"
+    ],
+    "composers": [
+      "Pritam"
+    ],
+    "tags": [
+      "romantic"
+    ],
+    "tier": 2
+  },
+  {
+    "title": "All Izz Well",
+    "alt_titles": [
+      "Aal Izz Well",
+      "ऑल इज़ वेल"
+    ],
+    "movie": "3 Idiots",
+    "year": 2009,
+    "singers": [
+      "Sonu Nigam",
+      "Swanand Kirkire",
+      "Shaan"
+    ],
+    "composers": [
+      "Shantanu Moitra"
+    ],
+    "tags": [
+      "friendship"
+    ],
+    "tier": 1
+  },
+  {
+    "title": "Give Me Some Sunshine",
+    "alt_titles": [
+      "गिव मी सम सनशाइन"
+    ],
+    "movie": "3 Idiots",
+    "year": 2009,
+    "singers": [
+      "Suraj Jagan",
+      "Sharman Joshi"
+    ],
+    "composers": [
+      "Shantanu Moitra"
+    ],
+    "tags": [
+      "sad"
+    ],
+    "tier": 2
+  },
+  {
+    "title": "Zoobi Doobi",
+    "alt_titles": [
+      "ज़ूबी डूबी"
+    ],
+    "movie": "3 Idiots",
+    "year": 2009,
+    "singers": [
+      "Sonu Nigam",
+      "Shreya Ghoshal"
+    ],
+    "composers": [
+      "Shantanu Moitra"
+    ],
+    "tags": [
+      "romantic",
+      "rain"
+    ],
+    "tier": 1
+  },
+  {
+    "title": "Behti Hawa Sa Tha Woh",
+    "alt_titles": [
+      "बहती हवा सा था वो"
+    ],
+    "movie": "3 Idiots",
+    "year": 2009,
+    "singers": [
+      "Shaan",
+      "Shantanu Moitra"
+    ],
+    "composers": [
+      "Shantanu Moitra"
+    ],
+    "tags": [
+      "friendship"
+    ],
+    "tier": 3
+  },
+  {
+    "title": "Dhan Te Nan",
+    "alt_titles": [
+      "धन ते नान"
+    ],
+    "movie": "Kaminey",
+    "year": 2009,
+    "singers": [
+      "Sukhwinder Singh",
+      "Vishal Dadlani"
+    ],
+    "composers": [
+      "Vishal Bhardwaj"
+    ],
+    "tags": [
+      "party"
+    ],
+    "tier": 3
+  },
+  {
+    "title": "Raat Ke Dhai Baje",
+    "alt_titles": [
+      "रात के ढाई बजे"
+    ],
+    "movie": "Kaminey",
+    "year": 2009,
+    "singers": [
+      "Suresh Wadkar",
+      "Rekha Bhardwaj",
+      "Sunidhi Chauhan",
+      "Kunal Ganjawala"
+    ],
+    "composers": [
+      "Vishal Bhardwaj"
+    ],
+    "tags": [
+      "party"
+    ],
+    "tier": 4
+  },
+  {
+    "title": "Iktara",
+    "alt_titles": [
+      "इकतारा"
+    ],
+    "movie": "Wake Up Sid",
+    "year": 2009,
+    "singers": [
+      "Kavita Seth"
+    ],
+    "composers": [
+      "Amit Trivedi"
+    ],
+    "tags": [
+      "sad"
+    ],
+    "tier": 3
+  },
+  {
+    "title": "Hai Junoon",
+    "alt_titles": [
+      "है जुनून"
+    ],
+    "movie": "New York",
+    "year": 2009,
+    "singers": [
+      "KK"
+    ],
+    "composers": [
+      "Pritam"
+    ],
+    "tags": [
+      "friendship"
+    ],
+    "tier": 2
+  },
+  {
+    "title": "Tum Mile",
+    "alt_titles": [
+      "तुम मिले"
+    ],
+    "movie": "Tum Mile",
+    "year": 2009,
+    "singers": [
+      "Neeraj Shridhar"
+    ],
+    "composers": [
+      "Pritam"
+    ],
+    "tags": [
+      "romantic"
+    ],
+    "tier": 2
+  },
+  {
+    "title": "Dil Ibaadat",
+    "alt_titles": [
+      "Dil Ibadat",
+      "दिल इबादत"
+    ],
+    "movie": "Tum Mile",
+    "year": 2009,
+    "singers": [
+      "KK"
+    ],
+    "composers": [
+      "Pritam"
+    ],
+    "tags": [
+      "romantic"
+    ],
+    "tier": 2
+  },
+  {
+    "title": "Chiggy Wiggy",
+    "alt_titles": [
+      "चिग्गी विग्गी"
+    ],
+    "movie": "Blue",
+    "year": 2009,
+    "singers": [
+      "Kylie Minogue",
+      "Sonu Nigam",
+      "Suzanne D'Mello"
+    ],
+    "composers": [
+      "A. R. Rahman"
+    ],
+    "tags": [
+      "party"
+    ],
+    "tier": 4
+  },
+  {
+    "title": "Soniyo",
+    "alt_titles": [
+      "सोणियो"
+    ],
+    "movie": "Raaz: The Mystery Continues",
+    "year": 2009,
+    "singers": [
+      "Sonu Nigam",
+      "Neeraj Shridhar",
+      "Shreya Ghoshal"
+    ],
+    "composers": [
+      "Raju Singh"
+    ],
+    "tags": [
+      "romantic"
+    ],
+    "tier": 3
+  },
+  {
+    "title": "Shukran Allah",
+    "alt_titles": [
+      "शुक्रान अल्लाह"
+    ],
+    "movie": "Kurbaan",
+    "year": 2009,
+    "singers": [
+      "Sonu Nigam",
+      "Salim Merchant",
+      "Shreya Ghoshal"
+    ],
+    "composers": [
+      "Salim-Sulaiman"
+    ],
+    "tags": [
+      "sufi",
+      "romantic"
+    ],
+    "tier": 4
+  },
+  {
+    "title": "Saiyyan",
+    "alt_titles": [
+      "Saiyaan",
+      "सैयाँ"
+    ],
+    "movie": "Kailasa Chaandan Mein",
+    "year": 2009,
+    "singers": [
+      "Kailash Kher"
+    ],
+    "composers": [
+      "Kailash Kher",
+      "Paresh Kamath",
+      "Naresh Kamath"
+    ],
+    "tags": [
+      "sufi",
+      "indipop",
+      "non-film"
+    ],
+    "tier": 1
+  }
+]
