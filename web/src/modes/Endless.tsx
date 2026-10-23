@@ -32,8 +32,15 @@ export function Endless({ songs, index, pool, onPool }: Props) {
 
   // A pool change only replaces the current song when it no longer fits.
   useEffect(() => {
-    if (!song || !candidates.some((s) => s.id === song.id)) { setSong(pick()); setAttempts([]); setNext(null); }
+    if (!song || !candidates.some((s) => s.id === song.id)) { setSong(pick()); setAttempts([]); }
   }, [candidates]);
+
+  // Previews take a few seconds to download, so the next song starts loading as soon as a round begins.
+  useEffect(() => {
+    const n = song ? pick(song.id) : null;
+    setNext(n);
+    if (n) loadClip(n).catch(() => {});
+  }, [song, pick]);
 
   const onAttempt = (a: Attempt) => {
     if (!song) return;
@@ -46,11 +53,8 @@ export function Endless({ songs, index, pool, onPool }: Props) {
     setRun(r);
     recordEndless(won, r.streak, r.score);
     recent.current = [song.id, ...recent.current].slice(0, Math.floor(candidates.length / 2));
-    const n = pick(song.id);
-    setNext(n);
-    if (n) loadClip(n).catch(() => {});
   };
-  const goNext = () => { setSong(next ?? pick(song?.id)); setNext(null); setAttempts([]); };
+  const goNext = () => { setSong(next ?? pick(song?.id)); setAttempts([]); };
 
   const o = outcome(attempts);
   const tries = attempts.length;

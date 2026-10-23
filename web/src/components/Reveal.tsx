@@ -1,4 +1,5 @@
 import { useEffect, useState, type ReactNode } from 'react';
+import { setAmbient } from '../lib/ambient';
 import { devanagariTitle, isFilm, type Song } from '../lib/catalog';
 import { filmInfo, type Film } from '../lib/wiki';
 
@@ -18,7 +19,8 @@ export function Reveal({ song, headline, detail, children }: Props) {
     let live = true;
     setFilm(null);
     filmInfo(song).then((f) => live && setFilm(f));
-    return () => { live = false; };
+    setAmbient(song.artwork);
+    return () => { live = false; setAmbient(null); };
   }, [song]);
   const deva = devanagariTitle(song);
 
