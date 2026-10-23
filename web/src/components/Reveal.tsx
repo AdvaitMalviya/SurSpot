@@ -38,7 +38,7 @@ export function Reveal({ song, headline, detail, children }: Props) {
       </div>
       <dl className="credits">
         <div><dt>Sung by</dt><dd>{song.singers.join(', ')}</dd></div>
-        <div><dt>Music by</dt><dd>{song.composers.join(', ')}</dd></div>
+        {song.composers.length > 0 && <div><dt>Music by</dt><dd>{song.composers.join(', ')}</dd></div>}
       </dl>
       <div className="listen">
         <span className="listen-label">Hear the full song on</span>

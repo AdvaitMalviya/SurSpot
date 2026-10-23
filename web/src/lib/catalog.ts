@@ -1,6 +1,8 @@
 import catalogUrl from '../../../data/catalog.json?url';
+import expandedUrl from '../../../data/expanded.json?url';
 
-// One playable song: the seed entry plus the iTunes master picked by scripts/resolve.mjs.
+// One playable song: a curated seed entry with the iTunes master picked by scripts/resolve.mjs, or ('auto')
+// a soundtrack track added by scripts/expand.mjs.
 export interface Song {
   id: string;
   title: string;
@@ -16,13 +18,18 @@ export interface Song {
   artwork: string | null;
   appleUrl: string | null;
   durationMs: number | null;
-  confidence: 'high' | 'low' | 'pinned';
+  confidence: 'high' | 'low' | 'pinned' | 'auto';
 }
 
+// Curated songs first; an expanded song that shares their iTunes track is dropped.
 export async function loadCatalog(): Promise<Song[]> {
-  const res = await fetch(catalogUrl);
-  if (!res.ok) throw new Error(`catalog ${res.status}`);
-  return res.json();
+  const [seed, extra] = await Promise.all([catalogUrl, expandedUrl].map(async (url) => {
+    const res = await fetch(url);
+    if (!res.ok) throw new Error(`catalog ${res.status}`);
+    return (await res.json()) as Song[];
+  }));
+  const tracks = new Set(seed.map((s) => s.trackId));
+  return [...seed, ...extra.filter((s) => !tracks.has(s.trackId))];
 }
 
 export const decadeOf = (year: number) => Math.floor(year / 10) * 10;
@@ -89,7 +96,7 @@ export function shuffle<T>(xs: T[], rand: () => number = Math.random) {
 
 // ------------------------------------------------------------------ daily
 // The daily song changes at midnight IST and is the same for everyone. Days walk a fixed shuffle of
-// the well-known, confidently matched songs, so nothing repeats until the whole list has been used.
+// the well-known, confidently matched curated songs, so nothing repeats until the whole list has been used.
 const DAY_ONE = Date.UTC(2026, 9, 24);
 export function istDate(now = Date.now()) {
   return new Date(now + 5.5 * 3600e3).toISOString().slice(0, 10);
@@ -99,7 +106,7 @@ export function dayNumber(date: string) {
   return Math.floor((Date.UTC(y, m - 1, d) - DAY_ONE) / 864e5) + 1;
 }
 export function dailySong(songs: Song[], date: string) {
-  const pool = songs.filter((s) => s.tier <= 2 && s.confidence !== 'low').sort((a, b) => a.id.localeCompare(b.id));
+  const pool = songs.filter((s) => s.tier <= 2 && (s.confidence === 'high' || s.confidence === 'pinned')).sort((a, b) => a.id.localeCompare(b.id));
   const order = shuffle(pool, mulberry32(0x5e12));
   const n = dayNumber(date);
   return { song: order[(((n - 1) % order.length) + order.length) % order.length], number: n };
