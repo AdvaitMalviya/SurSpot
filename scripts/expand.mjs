@@ -100,10 +100,36 @@ async function addPageviews(films) {
     for (const f of batch) {
       let t = f.target;
       for (let k = 0; k < 3 && alias.has(t); k++) t = alias.get(t);
+      f.page = t;
       f.views = /^list of /i.test(t) ? 0 : views.get(t) ?? 0;
     }
     if ((i / 50) % 20 === 19) console.log(`  pageviews ${Math.min(i + 50, films.length)}/${films.length}`);
   }
+}
+
+// Short descriptions ("2013 Indian film", "Capital of the Czech Republic") for the pages that have views.
+async function addDescriptions(films) {
+  const pages = [...new Set(films.filter((f) => f.views > 0).map((f) => f.page))];
+  const desc = new Map();
+  for (let i = 0; i < pages.length; i += 50) {
+    let cont = {};
+    for (let page = 0; page < 20; page++) {
+      const res = await wiki({ action: 'query', prop: 'description', titles: pages.slice(i, i + 50).join('|'), ...cont });
+      for (const p of res?.query?.pages ?? []) if (p.description) desc.set(p.title, p.description);
+      if (!res?.continue) break;
+      cont = res.continue;
+    }
+  }
+  for (const f of films) f.desc = desc.get(f.page) ?? '';
+}
+
+// Year lists sometimes link a title to the city, deity or franchise it is named after; those pages are
+// popular for reasons that have nothing to do with the film, so only film articles from the right year count.
+function isFilmPage(f) {
+  if (!f.desc) return /\bfilm\)$/i.test(f.page);
+  if (!/\bfilm\b/i.test(f.desc) || /\b(series|show|franchise|soundtrack|album)\b/i.test(f.desc)) return false;
+  const y = Number(f.desc.match(/\b(19[3-9]\d|20[0-3]\d)\b/)?.[1]);
+  return !y || Math.abs(y - f.year) <= 1;
 }
 
 // ---------------------------------------------------------------- iTunes soundtrack albums
@@ -182,10 +208,11 @@ console.log(`Reading Wikipedia film lists ${fromYear}-${toYear}...`);
 const all = await yearFilms();
 console.log(`  ${all.length} films listed; fetching pageviews...`);
 await addPageviews(all);
+await addDescriptions(all);
 
 const nameCount = new Map();
 for (const f of all) nameCount.set(key(f.name), (nameCount.get(key(f.name)) ?? 0) + 1);
-const byYear = Map.groupBy(all.filter((f) => f.views > 0), (f) => f.year);
+const byYear = Map.groupBy(all.filter((f) => f.views > 0 && isFilmPage(f)), (f) => f.year);
 let films = [...byYear].flatMap(([y, fs]) => fs.sort((a, b) => b.views - a.views).slice(0, quota(y)));
 
 // film tier by pageviews rank within its decade
