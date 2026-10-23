@@ -24,9 +24,10 @@ const quota = (y) => (y < 1980 ? 12 : y < 2000 ? 15 : 18); // films kept per yea
 const partial = opt('--years') || filmLimit < Infinity;
 
 // ---------------------------------------------------------------- Wikipedia (cached on disk like the iTunes calls)
-const UA = 'SurSpotCatalog/1.0 (Bollywood song game catalog builder)';
+// Wikimedia allows 200 requests a minute to clients whose User-Agent carries contact details (10 without).
+const UA = 'SurSpotCatalog/1.0 (https://github.com/Siddharth-Y26; Bollywood song game catalog builder) node-fetch';
 const WIKI_CACHE = join(DATA, '.cache', 'wiki');
-// One request at a time, at least 300 ms apart; a 429 waits out its Retry-After.
+// One request at a time, at least 350 ms apart (about 170 a minute); a 429 waits out its Retry-After.
 let lastWiki = 0;
 async function wiki(params) {
   const url = 'https://en.wikipedia.org/w/api.php?' + new URLSearchParams({ format: 'json', formatversion: '2', ...params });
@@ -35,7 +36,7 @@ async function wiki(params) {
   if (offline) return null;
   let status = '';
   for (let attempt = 1; attempt <= 6; attempt++) {
-    const wait = lastWiki + 300 - Date.now();
+    const wait = lastWiki + 350 - Date.now();
     if (wait > 0) await sleep(wait);
     lastWiki = Date.now();
     try {
