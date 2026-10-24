@@ -1,8 +1,8 @@
 import { decadeOf, isFilm, type Song } from './catalog';
+import { POINTS, STAGES } from './rules';
 
 // Six tries. Each miss or skip unlocks a longer clip; from the third try on, a clue about the song appears too.
-export const STAGES = [0.2, 0.5, 1, 3, 7, 15];
-export const POINTS = [100, 80, 60, 40, 25, 10];
+export { POINTS, STAGES };
 
 export type Verdict = 'right' | 'film' | 'wrong';
 export type Attempt = { kind: 'skip' } | { kind: 'guess'; id: string; title: string; movie: string; verdict: Verdict };

@@ -16,6 +16,8 @@ function audio() {
   return { ctx, master: master! };
 }
 export const audioRunning = () => ctx?.state === 'running';
+// Browsers only start sound after a tap or key press, so buttons that lead into a round call this.
+export function unlockAudio() { audio().ctx.resume().catch(() => {}); }
 export function setVolume(v: number) {
   volume = v;
   if (master && ctx) master.gain.setTargetAtTime(v, ctx.currentTime, 0.02);

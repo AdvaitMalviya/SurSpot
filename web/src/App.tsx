@@ -6,17 +6,23 @@ import { buildIndex } from './lib/search';
 import { load, save } from './lib/storage';
 import { Daily } from './modes/Daily';
 import { Endless } from './modes/Endless';
+import { Friends } from './modes/Friends';
 import { QuickPick } from './modes/QuickPick';
 
-type Route = 'play' | 'daily' | 'quick';
+type Route = 'play' | 'daily' | 'quick' | 'friends';
 const routeOf = (): Route => {
-  const h = location.hash.replace(/^#\/?/, '');
-  return h === 'daily' || h === 'quick' ? h : 'play';
+  const h = location.hash.replace(/^#\/?/, '').split('/')[0];
+  return h === 'daily' || h === 'quick' || h === 'friends' ? h : 'play';
 };
-const MODES: [Route, string, string][] = [['play', 'Play', '#/'], ['daily', 'Daily', '#/daily'], ['quick', 'Quick pick', '#/quick']];
+// #/friends/ABCD is room ABCD
+const roomOf = () => location.hash.match(/^#\/?friends\/([a-z]{4})$/i)?.[1].toUpperCase() ?? null;
+const MODES: [Route, string, string][] = [
+  ['play', 'Play', '#/'], ['daily', 'Daily', '#/daily'], ['quick', 'Quick pick', '#/quick'], ['friends', 'With friends', '#/friends'],
+];
 
 export default function App() {
   const [route, setRoute] = useState<Route>(routeOf);
+  const [room, setRoom] = useState(roomOf);
   const [songs, setSongs] = useState<Song[] | null>(null);
   const [failed, setFailed] = useState(false);
   const [pool, setPool] = useState<Pool>(() => load('pool', DEFAULT_POOL));
@@ -25,7 +31,7 @@ export default function App() {
   const [today, setToday] = useState<number>();
 
   useEffect(() => {
-    const onHash = () => setRoute(routeOf());
+    const onHash = () => { setRoute(routeOf()); setRoom(roomOf()); };
     addEventListener('hashchange', onHash);
     return () => removeEventListener('hashchange', onHash);
   }, []);
@@ -74,6 +80,7 @@ export default function App() {
           {songs && route === 'play' && <Endless songs={songs} index={index} pool={pool} onPool={changePool} />}
           {songs && route === 'daily' && <Daily songs={songs} index={index} onStats={(t) => { setToday(t || undefined); setDialog('stats'); }} />}
           {songs && route === 'quick' && <QuickPick songs={songs} pool={pool} onPool={changePool} />}
+          {songs && route === 'friends' && <Friends songs={songs} index={index} pool={pool} onPool={changePool} code={room} />}
         </main>
 
         <footer className="footer">

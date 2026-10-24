@@ -1,7 +1,7 @@
 import { useEffect, useRef, type ReactNode } from 'react';
 import type { Song } from '../lib/catalog';
 import { audioRunning } from '../lib/audio';
-import { STAGES, clues, fmtSeconds, judge, outcome, type Attempt } from '../lib/game';
+import { POINTS, STAGES, clues, fmtSeconds, judge, outcome, type Attempt } from '../lib/game';
 import type { buildIndex } from '../lib/search';
 import { GuessBox } from './GuessBox';
 import { Record } from './Record';
@@ -15,33 +15,42 @@ interface Props {
   onSkipSong?: () => void; // offered when the preview can't be loaded
   reveal?: ReactNode;      // replaces the tries and guess box once the round is over
   head?: ReactNode;        // optional heading above the record
+  ended?: boolean;         // the round was closed from outside (time ran out in a room)
+  hold?: ReactNode;        // shown instead of the answer while other players are still guessing
+  autoplay?: boolean;      // play the first clip as soon as it loads
 }
 
 // One song, six tries: the record, the clues earned so far, the tries list and the guess box.
-export function ClipRound({ song, index, attempts, onAttempt, onSkipSong, reveal, head }: Props) {
+export function ClipRound({ song, index, attempts, onAttempt, onSkipSong, reveal, head, ended, hold, autoplay }: Props) {
   const { status, error, elapsed, span, playing, play, playHook, stop, clip } = useClip(song);
-  const state = outcome(attempts);
-  const done = state !== 'playing';
+  const done = outcome(attempts) !== 'playing' || !!ended;
+  const shown = done && !hold; // the answer is on screen
   const stage = Math.min(attempts.length, STAGES.length - 1);
-  const full = done && clip ? Math.floor(clip.duration - clip.onset) : undefined;
+  const full = shown && clip ? Math.floor(clip.duration - clip.onset) : undefined;
 
   // A miss unlocks a longer clip and plays it straight away if sound is already on.
-  // When the round ends, right or out of tries, the song plays from its main line.
-  // If the round ends before the preview has downloaded, the song plays as soon as it arrives.
+  // When the answer appears, the song plays from its main line, as soon as the preview has downloaded.
+  // A round that was already over when it mounted (a finished daily, reloaded) stays quiet.
   const seen = useRef(attempts.length);
-  const endedHere = useRef(false);
+  const wasShown = useRef(shown);
+  const hookDue = useRef(false);
+  const started = useRef(false);
   useEffect(() => {
     const grew = attempts.length > seen.current;
     seen.current = attempts.length;
-    if (grew && done) endedHere.current = true;
+    if (shown && !wasShown.current) hookDue.current = true;
+    wasShown.current = shown;
     if (status !== 'ready') return;
-    if (endedHere.current) { endedHere.current = false; playHook(); }
+    if (hookDue.current) { hookDue.current = false; playHook(); }
     else if (grew && !done && audioRunning()) play(STAGES[stage]);
-  }, [attempts.length, done, stage, status, play, playHook]);
+    else if (autoplay && !started.current && !attempts.length && audioRunning()) play(STAGES[0]);
+    started.current = true;
+  }, [attempts.length, shown, done, stage, status, autoplay, play, playHook]);
 
   const toggle = () => (playing ? stop() : play(full ?? STAGES[stage], full ? clip!.onset : undefined));
   const skipLabel = stage === STAGES.length - 1 ? 'Give up' : `Skip, hear ${fmtSeconds(STAGES[stage + 1])}`;
 
+  const songClues = clues(song);
   const kindOf = (i: number) => {
     const a = attempts[i];
     return !a ? (i === attempts.length && !done ? 'now' : 'empty') : a.kind === 'skip' ? 'skip' : a.verdict;
@@ -59,12 +68,13 @@ export function ClipRound({ song, index, attempts, onAttempt, onSkipSong, reveal
             {status === 'loading' && 'Fetching the song…'}
             {status === 'error' && <>{error} {onSkipSong && <button type="button" className="link" onClick={onSkipSong}>Play another song</button>}</>}
             {status === 'ready' && !done && (playing ? 'Listening…' : `Tap the record to hear ${fmtSeconds(STAGES[stage])}`)}
-            {status === 'ready' && done && (playing ? 'Now playing' : 'Tap the record to hear it again')}
+            {status === 'ready' && done && !shown && 'Waiting for everyone to finish'}
+            {status === 'ready' && shown && (playing ? 'Now playing' : 'Tap the record to hear it again')}
           </p>
         </div>
         {!done && (
           <dl className="clues">
-            {clues(song).map((c) => {
+            {songClues.map((c) => {
               const open = attempts.length >= c.after && !!c.text;
               return (
                 <div key={c.label} className={`clue ${open ? 'is-open' : ''}`}>
@@ -90,19 +100,22 @@ export function ClipRound({ song, index, attempts, onAttempt, onSkipSong, reveal
       </div>
 
       <div className="round-main">
-        {done ? reveal : (
+        {done ? (shown ? reveal : hold) : (
           <>
             <ol className="tries" aria-label="Your tries">
               {STAGES.map((len, i) => {
                 const a = attempts[i], k = kindOf(i);
+                const adds = i > 0 && !a ? songClues.find((c) => c.after === i && c.text) : undefined;
                 return (
                   <li key={i} className={`try try-${k}`}>
                     <span className="try-len">{fmtSeconds(len)}</span>
                     <span className="try-text">
                       {a?.kind === 'skip' && 'Skipped'}
                       {a?.kind === 'guess' && <><b>{a.title}</b> <span className="try-movie">{a.movie}</span></>}
+                      {adds && <span className="try-adds">adds the {adds.label.toLowerCase()} clue</span>}
                     </span>
-                    <span className="try-mark">{k !== 'skip' && MARK[k]}</span>
+                    {a ? <span className="try-mark">{k !== 'skip' && MARK[k]}</span>
+                      : <span className="try-pts">{POINTS[i]}<small> pts</small></span>}
                   </li>
                 );
               })}

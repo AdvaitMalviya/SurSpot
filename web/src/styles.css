@@ -20,6 +20,10 @@
   --coral: #f39279;
   --coral-bg: #43192f;
   --amber-bg: #403114;
+  --row: #1f2a63;
+  --row-stub: #172051;
+  --row-now: #2a3a85;
+  --row-ink: #9fb0ea;
   --vinyl: #0c0720;
   --serif: 'Cormorant Garamond', 'Tiro Devanagari Hindi', Georgia, serif;
   --deva: 'Tiro Devanagari Hindi', 'Cormorant Garamond', serif;
@@ -318,34 +322,52 @@ h1, h2, h3 { margin: 0; }
 .clue.is-open dt { color: var(--gold-soft); }
 .clue.is-open dd { color: var(--gold); font: 600 1.3rem/1.2 var(--serif); }
 
-/* ---------------------------------------------------------------- tries */
-.tries { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.4rem; }
+/* ---------------------------------------------------------------- tries
+   Lapis rows on the plum card, each with a stub for its clip length. Rows still to come show what they're
+   worth and which clue they add, so the list reads as a ladder rather than six empty bars. */
+.tries { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.35rem; }
 .try {
   display: grid;
-  grid-template-columns: 3rem 1fr auto;
+  grid-template-columns: 3.4rem minmax(0, 1fr) auto;
   align-items: center;
-  gap: 0.6rem;
-  min-height: 2.55rem;
-  padding: 0.3rem 1rem 0.3rem 0.9rem;
-  border-radius: 14px;
-  background: var(--plum-2);
+  gap: 0.75rem;
+  min-height: 2.35rem;
+  padding: 0.2rem 0.9rem 0.2rem 0.2rem;
+  border-radius: 999px;
+  background: var(--row);
 }
-.try-len { color: var(--ink-3); font-size: 0.92rem; font-weight: 500; font-variant-numeric: tabular-nums; }
-.try-text { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 1.05rem; }
+.try-len {
+  display: grid;
+  place-items: center;
+  height: 1.95rem;
+  border-radius: 999px;
+  background: var(--row-stub);
+  color: var(--row-ink);
+  font-size: 0.88rem;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+.try-text { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 1.02rem; }
 .try-text b { font-weight: 600; }
-.try-movie { color: var(--ink-3); font-size: 0.92rem; }
+.try-movie { color: var(--ink-3); font-size: 0.9rem; }
+.try-adds { color: var(--row-ink); font-size: 0.92rem; }
 .try-mark { font-size: 0.92rem; font-weight: 600; }
-.try-empty { background: #211849; }
-.try-empty .try-len { color: #6f64a0; }
-.try-now { background: var(--plum-3); box-shadow: inset 0 0 0 1.5px var(--gold); }
-.try-now .try-len { color: var(--gold); }
-.try-skip { background: #251c50; }
+.try-pts { color: var(--row-ink); font: 600 1.05rem/1 var(--serif); font-variant-numeric: lining-nums tabular-nums; }
+.try-pts small { font: 500 0.78rem var(--sans); }
+.try-now { background: var(--row-now); box-shadow: inset 0 0 0 1.5px var(--gold); }
+.try-now .try-len { background: var(--gold); color: var(--on-gold); }
+.try-now .try-pts, .try-now .try-adds { color: var(--gold-soft); }
+.try-skip { background: var(--plum-2); }
+.try-skip .try-len { background: var(--plum-3); color: var(--ink-3); }
 .try-skip .try-text { color: var(--ink-3); font-style: italic; }
 .try-wrong { background: var(--coral-bg); }
+.try-wrong .try-len { background: #5c2140; color: var(--coral); }
 .try-wrong .try-mark { color: var(--coral); }
 .try-film { background: var(--amber-bg); }
+.try-film .try-len { background: #5a4519; color: var(--gold); }
 .try-film .try-mark { color: var(--gold); }
 .try-right { background: var(--jade-bg); }
+.try-right .try-len { background: #1d5a54; color: var(--jade); }
 .try-right .try-mark { color: var(--jade); }
 
 .strip { list-style: none; margin: 0; padding: 0; display: flex; justify-content: center; gap: 0.35rem; }
@@ -383,22 +405,26 @@ h1, h2, h3 { margin: 0; }
 .suggest {
   position: absolute;
   z-index: 10;
-  top: calc(100% + 8px);
+  bottom: calc(100% + 8px);
   left: 0; right: 0;
   margin: 0;
-  padding: 0.4rem;
+  padding: 0.35rem;
   list-style: none;
-  max-height: 19rem;
+  display: flex;
+  flex-direction: column-reverse;
+  max-height: min(17rem, 52vh);
   overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--plum-3) transparent;
   background: var(--plum-2);
   border: 1px solid var(--line);
   border-radius: 20px;
-  box-shadow: 0 24px 48px -16px #000;
+  box-shadow: 0 -18px 40px -16px #000;
 }
-.suggest li { display: grid; padding: 0.5rem 0.9rem; border-radius: 14px; cursor: pointer; }
-.suggest li[aria-selected='true'] { background: var(--plum-3); }
+.suggest li { flex: none; display: grid; padding: 0.4rem 0.85rem; border-radius: 14px; cursor: pointer; line-height: 1.3; }
+.suggest li[aria-selected='true'] { background: var(--plum-3); box-shadow: inset 3px 0 0 var(--gold); }
 .suggest-title { font-weight: 500; }
-.suggest-film { color: var(--ink-3); font-size: 0.92rem; }
+.suggest-film { color: var(--ink-3); font-size: 0.88rem; }
 .suggest .suggest-empty { cursor: default; color: var(--ink-2); }
 .guess-actions { display: flex; justify-content: space-between; gap: 0.75rem; }
 
@@ -501,6 +527,162 @@ h1, h2, h3 { margin: 0; }
 .quick-after { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 0.75rem; }
 .quick-after p { margin: 0; font: italic 600 1.35rem/1.2 var(--serif); }
 
+/* ---------------------------------------------------------------- with friends
+   The room code is the one loud thing: big gold letters, easy to read out across a room. Everything else
+   reuses the round's parts: the plum card, lapis rows, and the result colours for each player's tries. */
+.door { display: grid; gap: 1.25rem; align-items: center; }
+.door-intro p { margin: 0.6rem 0 0; color: var(--ink-2); max-width: 30em; }
+.door-title { font: 700 2.6rem/1.05 var(--serif); color: var(--gold); }
+.door-intro .door-steps { color: var(--ink); font: italic 600 1.3rem/1.3 var(--serif); }
+.door-panel {
+  display: grid;
+  gap: 0.9rem;
+  padding: 1.4rem;
+  background: var(--plum);
+  border: 1px solid #2c2163;
+  border-radius: 24px;
+  box-shadow: 0 30px 60px -34px #000;
+}
+.door-panel > .link { justify-self: start; }
+.door-problem { max-width: 34rem; margin: 0 auto; width: 100%; }
+.door-problem p { margin: 0; color: var(--ink-2); }
+.door-or { margin: 0.2rem 0 -0.3rem; color: var(--ink-3); font: italic 500 1.15rem var(--serif); }
+.door-join { display: grid; grid-template-columns: 1fr auto; gap: 0.6rem; align-items: end; }
+.field { display: grid; gap: 0.35rem; }
+.field > span { color: var(--ink-3); font-size: 0.9rem; font-weight: 500; letter-spacing: 0.03em; }
+.field input {
+  width: 100%;
+  height: 3rem;
+  padding: 0 1.2rem;
+  background: var(--night);
+  border: 1.5px solid var(--line);
+  border-radius: 999px;
+  font-size: 1.1rem;
+  font-weight: 500;
+}
+.field input::placeholder { color: var(--ink-3); font-weight: 400; }
+.field input:focus { outline: none; border-color: var(--gold); }
+.door-join input { letter-spacing: 0.3em; }
+.door-join input::placeholder { letter-spacing: 0.3em; }
+
+.room-banner { margin: 0; padding: 0.45rem 1rem; border-radius: 999px; background: var(--amber-bg); color: var(--gold); text-align: center; }
+.toolbar-note { margin: 0; padding: 0.35rem 0; color: var(--ink-2); }
+.room-note { margin: 0; color: var(--ink-2); font: italic 600 1.2rem/1.3 var(--serif); }
+
+.room-card { justify-items: center; text-align: center; gap: 0.4rem; }
+.room-label { margin: 0; color: var(--ink-3); font-size: 0.95rem; letter-spacing: 0.04em; }
+.room-code {
+  margin: 0 0 0.6rem;
+  padding-left: 0.18em; /* balances the letter spacing after the last letter */
+  font: 700 clamp(4.5rem, 20vw, 7.5rem)/0.95 var(--serif);
+  letter-spacing: 0.18em;
+  color: var(--gold);
+  text-shadow: 0 0 40px rgb(232 196 124 / 0.25);
+}
+.room-hint { margin: 0.3rem 0 0; color: var(--ink-3); font-size: 0.92rem; max-width: 22em; }
+
+.roster-head { display: flex; align-items: baseline; justify-content: space-between; }
+.roster-head h2 { font: 700 1.6rem/1.1 var(--serif); color: var(--gold-soft); }
+.roster-head span { color: var(--ink-3); font-size: 0.92rem; }
+.roster { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 0.35rem; }
+.roster li {
+  display: flex; align-items: center; gap: 0.45rem;
+  min-width: 0;
+  padding: 0.4rem 0.6rem 0.4rem 1rem;
+  border-radius: 999px;
+  background: var(--row);
+}
+.roster-name { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: 500; margin-right: auto; }
+.roster .is-away { background: var(--plum-2); color: var(--ink-3); }
+.roster-away { font-size: 0.85rem; font-style: italic; }
+.tag { padding: 0.05rem 0.55rem; border-radius: 999px; background: var(--gold); color: var(--on-gold); font-size: 0.75rem; font-weight: 600; }
+.tag-you { background: var(--row-now); color: var(--ink); }
+.lobby-start { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 0.75rem; }
+.lobby-wait { margin: 0; font: italic 600 1.25rem/1.3 var(--serif); }
+.lobby-leave { justify-self: start; color: var(--ink-3); font-size: 0.92rem; }
+
+.players { list-style: none; margin: 0; padding: 0.1rem 0 0.2rem; display: flex; gap: 0.4rem; overflow-x: auto; scrollbar-width: thin; scrollbar-color: var(--plum-3) transparent; }
+.player {
+  flex: none;
+  display: flex; align-items: center; gap: 0.55rem;
+  padding: 0.35rem 0.9rem 0.35rem 1rem;
+  border-radius: 999px;
+  background: var(--plum);
+  border: 1px solid #2c2163;
+}
+.player-name { max-width: 9rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: 500; }
+.player-score { font: 700 1.35rem/1 var(--serif); color: var(--gold); font-variant-numeric: lining-nums tabular-nums; }
+.player-gain { color: var(--jade); font-size: 0.88rem; font-weight: 600; }
+.player.is-me { border-color: var(--gold); }
+.player.is-away { opacity: 0.55; }
+.dots { display: inline-flex; gap: 3px; }
+.dot { width: 0.6rem; height: 0.6rem; border-radius: 50%; background: var(--ink-3); } /* skipped */
+.dot-w { background: var(--coral); }
+.dot-f { background: var(--gold); }
+.dot-r { background: var(--jade); }
+.dot-next { background: none; box-shadow: inset 0 0 0 1.5px var(--ink-3); }
+
+/* The round bar: which song, the clock, and everyone's scores in one row. */
+.room-bar { padding-block: 0.4rem; }
+.room-round { display: flex; align-items: center; gap: 0.8rem; color: var(--ink-2); }
+.room-round b { font: 700 1.45rem/1.1 var(--serif); color: var(--gold); white-space: nowrap; }
+.room-round .timer { width: 7rem; }
+.room-clock { min-width: 4.6rem; font-variant-numeric: tabular-nums; font-weight: 500; white-space: nowrap; }
+.room-bar .players { flex: 1 1 14rem; min-width: 0; }
+.room-bar .players > :first-child { margin-left: auto; } /* right-aligned, and still scrollable when it overflows */
+.room-bar .player { background: var(--plum-2); border-color: var(--plum-2); }
+.room-bar .player.is-me { border-color: var(--gold); }
+
+.countdown { display: grid; justify-items: center; gap: 0.2rem; padding: 2rem 1rem; text-align: center; }
+.countdown p { margin: 0; }
+.countdown-n { font: 700 clamp(6rem, 22vh, 10rem)/1 var(--serif); color: var(--gold); font-variant-numeric: lining-nums; }
+.countdown-hint { color: var(--ink-2); font: italic 500 1.25rem/1.3 var(--serif); }
+
+.waiting { display: grid; gap: 0.75rem; align-content: start; }
+.waiting-note { margin: 0; color: var(--ink-2); }
+.round-table { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.35rem; }
+.round-table li {
+  display: grid; grid-template-columns: minmax(0, 1fr) auto auto; align-items: center; gap: 0.8rem;
+  min-height: 2.35rem;
+  padding: 0.2rem 1rem;
+  border-radius: 999px;
+  background: var(--row);
+}
+.round-table li.is-me { box-shadow: inset 0 0 0 1.5px var(--gold); }
+.round-table-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: 500; }
+.round-table-status { color: var(--row-ink); font-size: 0.92rem; min-width: 7.5rem; text-align: right; }
+
+.final-side { gap: 0.4rem; }
+.final-title { font: 700 clamp(2.6rem, 7vw, 3.6rem)/1 var(--serif); color: var(--gold); overflow-wrap: anywhere; }
+.final-score { margin: 0; color: var(--ink-2); font-size: 1.1rem; }
+.final-score b { color: var(--ink); }
+.final-songs { margin: 0.6rem 0 0; padding-left: 1.4rem; display: grid; gap: 0.15rem; color: var(--ink-2); font-size: 0.95rem; }
+.final-songs b { font-weight: 500; color: var(--ink); }
+.final-songs span { color: var(--ink-3); }
+.standings { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.35rem; }
+.standings li {
+  display: grid; grid-template-columns: 1.6rem minmax(0, 1fr) auto 3rem; align-items: center; gap: 0.75rem;
+  padding: 0.35rem 1rem 0.35rem 0.5rem;
+  border-radius: 999px;
+  background: var(--row);
+}
+.standings li:first-child { background: var(--amber-bg); }
+.standings li.is-me { box-shadow: inset 0 0 0 1.5px var(--gold); }
+.standings-rank { display: grid; place-items: center; width: 1.6rem; height: 1.6rem; border-radius: 50%; background: var(--row-stub); font-size: 0.85rem; font-weight: 600; }
+.standings li:first-child .standings-rank { background: var(--gold); color: var(--on-gold); }
+.standings-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: 500; }
+.standings-rounds { display: flex; gap: 3px; }
+.standings-rounds i {
+  display: grid; place-items: center;
+  width: 1.15rem; height: 1.15rem;
+  border-radius: 5px;
+  background: var(--plum-3);
+  font: normal 600 0.72rem/1 var(--sans);
+}
+.standings-rounds i.is-won { background: var(--jade); color: #052a25; }
+.standings-total { text-align: right; font: 700 1.4rem/1 var(--serif); color: var(--gold); font-variant-numeric: lining-nums tabular-nums; }
+.standings-key { margin: 0; color: var(--ink-3); font-size: 0.88rem; }
+
 /* ---------------------------------------------------------------- dialogs */
 .dialog {
   width: min(30rem, calc(100% - 32px));
@@ -564,6 +746,8 @@ h1, h2, h3 { margin: 0; }
   .film-note img { width: 3.75rem; }
   .film-note p { -webkit-line-clamp: 3; }
   .options { grid-template-columns: 1fr; }
+  .door { grid-template-columns: minmax(0, 1fr) minmax(0, 1.12fr); gap: 2.25rem; }
+  .door-title { font-size: 3.2rem; }
   .pool-body { width: 100%; grid-template-columns: 1fr 1fr; gap: 1.1rem 2rem; max-height: calc(100dvh - 10rem); overflow-y: auto; }
   .pool-body > fieldset:nth-of-type(-n + 2), .pool-done, .pool-warn { grid-column: 1 / -1; }
   .footer { margin-top: 0; padding: 0.4rem 0 0.8rem; font-size: 0.8rem; }
@@ -581,4 +765,7 @@ h1, h2, h3 { margin: 0; }
   .reveal-song { grid-template-columns: 5.75rem 1fr; }
   .film-note p { -webkit-line-clamp: 2; }
   .clue { padding-block: 0.45rem 0.5rem; }
+  .credits dd { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; } /* the full names are in the tooltip */
+  .room-bar { padding-block: 0.3rem; }
+  .room-bar .player { padding-block: 0.25rem; }
 }

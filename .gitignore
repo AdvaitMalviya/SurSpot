@@ -2,3 +2,5 @@ node_modules/
 dist/
 data/.cache/
 .env
+.wrangler/
+server/worker-configuration.d.ts

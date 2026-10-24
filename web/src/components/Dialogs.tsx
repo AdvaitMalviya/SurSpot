@@ -38,6 +38,7 @@ export function HelpDialog({ open, onClose }: { open: boolean; onClose: () => vo
         <dt>Play</dt><dd>Endless songs from the pool you choose: any mix of decades, moods, difficulty and artists.</dd>
         <dt>Daily</dt><dd>One song a day, the same for everyone. A new one arrives at midnight India time.</dd>
         <dt>Quick pick</dt><dd>Ten songs, four choices each, fifteen seconds to answer. Faster answers score more.</dd>
+        <dt>With friends</dt><dd>Make a room, send the link, and race your friends through the same songs, a minute each.</dd>
       </dl>
       <p className="help-credit">Clips are 30-second previews from Apple Music. Film notes come from Wikipedia.</p>
     </Dialog>

@@ -1,4 +1,4 @@
-import { useId, useMemo, useRef, useState, type ReactNode } from 'react';
+import { useEffect, useId, useMemo, useRef, useState, type ReactNode } from 'react';
 import type { Song } from '../lib/catalog';
 import { search, type buildIndex } from '../lib/search';
 
@@ -11,6 +11,8 @@ interface Props {
 }
 
 // Combobox over the whole catalog, so the suggestions never narrow down to the current pool.
+// The guess box sits at the bottom of the round, so suggestions open upward over the tries, best match
+// nearest the input; the up arrow moves away from it, to the next match.
 export function GuessBox({ index, exclude, disabled, onGuess, children }: Props) {
   const [query, setQuery] = useState('');
   const [picked, setPicked] = useState<Song | null>(null);
@@ -37,10 +39,13 @@ export function GuessBox({ index, exclude, disabled, onGuess, children }: Props)
     input.current?.focus();
   };
   const onKey = (e: React.KeyboardEvent) => {
-    if (e.key === 'ArrowDown' && results.length) { e.preventDefault(); setOpen(true); setActive((a) => (a + 1) % results.length); }
-    else if (e.key === 'ArrowUp' && results.length) { e.preventDefault(); setActive((a) => (a - 1 + results.length) % results.length); }
+    if (e.key === 'ArrowUp' && results.length) { e.preventDefault(); setOpen(true); setActive((a) => (a + 1) % results.length); }
+    else if (e.key === 'ArrowDown' && results.length) { e.preventDefault(); setActive((a) => (a - 1 + results.length) % results.length); }
     else if (e.key === 'Escape') setOpen(false);
   };
+  useEffect(() => {
+    if (showList) document.getElementById(`${listId}-${active}`)?.scrollIntoView({ block: 'nearest' });
+  }, [active, showList, listId]);
 
   return (
     <form className="guess" onSubmit={(e) => { e.preventDefault(); submit(); }}>
