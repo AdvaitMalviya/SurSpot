@@ -9,6 +9,7 @@ import { createHash } from 'node:crypto';
 import { existsSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { DATA, sleep, readJson, writeJson, skeleton, stripDecorations, creditHits, decadeOf } from './lib.mjs';
+import { cutsByDecade, tierFor } from './tiers.mjs';
 
 const args = process.argv.slice(2);
 const opt = (f) => { const i = args.indexOf(f); return i >= 0 ? args[i + 1] : null; };
@@ -73,31 +74,6 @@ async function listenersFor(song) {
   return found.size ? [...found.values()].reduce((a, b) => a + b, 0) : null;
 }
 
-// ---------------------------------------------------------------- calibration
-const median = (xs) => { const s = [...xs].sort((a, b) => a - b); return s.length ? s[Math.floor(s.length / 2)] : 0; };
-// Cut points between tiers per decade, in log-listeners: halfway between neighbouring curated tier medians.
-// A tier with fewer than six curated songs in a decade borrows the overall median, shifted to that decade's level.
-function cutsByDecade(curated) {
-  const log = (s) => Math.log1p(s.listeners);
-  const overall = median(curated.map(log));
-  const globalTier = [1, 2, 3, 4].map((t) => median(curated.filter((s) => s.tier === t).map(log)));
-  const cuts = new Map();
-  for (const [d, ss] of Map.groupBy(curated, (s) => decadeOf(s.year))) {
-    const shift = median(ss.map(log)) - overall;
-    const m = [1, 2, 3, 4].map((t, i) => {
-      const xs = ss.filter((s) => s.tier === t).map(log);
-      return xs.length >= 6 ? median(xs) : globalTier[i] + shift;
-    });
-    for (let i = 1; i < 4; i++) m[i] = Math.min(m[i], m[i - 1]);
-    cuts.set(d, [0, 1, 2].map((i) => (m[i] + m[i + 1]) / 2));
-  }
-  return cuts;
-}
-const tierFor = (cuts, listeners) => {
-  const x = Math.log1p(listeners);
-  return x >= cuts[0] ? 1 : x >= cuts[1] ? 2 : x >= cuts[2] ? 3 : 4;
-};
-
 // ---------------------------------------------------------------- run
 const curatedSongs = readJson(join(DATA, 'catalog.json'));
 const addedSongs = existsSync(join(DATA, 'expanded.json')) ? readJson(join(DATA, 'expanded.json')) : [];
@@ -122,8 +98,7 @@ const cuts = cutsByDecade(songs.filter((s) => s.curated && s.listeners));
 const out = {};
 for (const s of songs) {
   if (!s.listeners) continue;
-  const c = cuts.get(decadeOf(s.year)) ?? [...cuts.values()][0];
-  out[s.id] = { listeners: s.listeners, tier: tierFor(c, s.listeners) };
+  out[s.id] = { listeners: s.listeners, tier: tierFor(cuts, s.year, s.listeners) };
 }
 
 const partial = limit < Infinity || offline && found < songs.length / 2;
