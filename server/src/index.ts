@@ -37,6 +37,7 @@ export default {
 
 export class Room extends DurableObject<Env> {
   room: Stored | undefined;
+  graceCheck = 0; // the timer for the next grace check
 
   constructor(ctx: DurableObjectState, env: Env) {
     super(ctx, env);
@@ -67,6 +68,9 @@ export class Room extends DurableObject<Env> {
         if (!isHost || (room.phase !== 'lobby' && room.phase !== 'over')) return;
         const songs = Array.isArray(msg.songs) ? msg.songs.filter((s) => typeof s === 'string' && s.length <= 120).slice(0, MAX_SONGS) : [];
         if (!songs.length) return;
+        // Whoever closed the page before the start isn't playing: no waiting for them, no 0 on the scoreboard.
+        const online = this.online();
+        room.players = room.players.filter((p) => online.has(p.pid));
         Object.assign(room, { songs, label: String(msg.label ?? '').slice(0, 200), results: [], game: (room.game ?? 0) + 1 });
         this.startRound(0, now);
         break;
@@ -136,8 +140,13 @@ export class Room extends DurableObject<Env> {
       };
     } else if (msg.create && !known) return this.refuse(ws, 'taken', 'That room code is already in use.');
     if (known) known.name = name;
-    else if (room.players.length >= MAX_PLAYERS) return this.refuse(ws, 'full', `Room ${seat.code} is full: it takes ${MAX_PLAYERS} players.`);
-    else room.players.push({ pid, name });
+    else {
+      // Between games, a seat held by someone who has gone can go to a newcomer.
+      const gone = room.phase === 'lobby' || room.phase === 'over' ? room.players.find((p) => p.left) : undefined;
+      if (room.players.length >= MAX_PLAYERS && gone) room.players = room.players.filter((p) => p !== gone);
+      if (room.players.length >= MAX_PLAYERS) return this.refuse(ws, 'full', `Room ${seat.code} is full: it takes ${MAX_PLAYERS} players.`);
+      room.players.push({ pid, name });
+    }
     // The same player opening the room in a second tab takes the seat over, tries and all.
     this.fold(room);
     for (const other of this.ctx.getWebSockets()) {
@@ -195,7 +204,8 @@ export class Room extends DurableObject<Env> {
   // (unless only a try changed), and send everyone the new state. When the last player leaves, an alarm is set to
   // clear the room out later (only then: an alarm write holds back every message sent after it until it is stored).
   // A player who drops out (a reload, a train tunnel) is still waited for during GRACE_MS; after that the round
-  // goes on without them, and the clock ends it at the latest.
+  // goes on without them, and the clock ends it at the latest. (The timer for that keeps the room awake for those
+  // few seconds; if the room is evicted anyway, the clock still ends the round.)
   private async commit(closing?: WebSocket, save = true) {
     const room = this.room!;
     const online = this.online(closing);
@@ -209,6 +219,12 @@ export class Room extends DurableObject<Env> {
     const current = this.roundResults(room, closing);
     const waitingFor = room.players.filter((p) => online.has(p.pid) || now - (p.left ?? 0) < GRACE_MS);
     if (room.phase === 'playing' && online.size && waitingFor.every((p) => isDone(current[p.pid]))) { room.phase = 'reveal'; save = true; }
+    // Look again when the grace of someone who dropped out runs out, in case they were the last one not done.
+    clearTimeout(this.graceCheck);
+    const graceEnds = waitingFor.filter((p) => p.left && !isDone(current[p.pid])).map((p) => p.left! + GRACE_MS);
+    if (room.phase === 'playing' && online.size && graceEnds.length) {
+      this.graceCheck = setTimeout(() => this.room && this.commit(undefined, false), Math.min(...graceEnds) - now + 50);
+    }
     if (save) {
       this.fold(room, closing);
       // Messages go out without waiting for the save to be confirmed: a lost save only costs a game in progress.
