@@ -8,6 +8,7 @@ let volume = 0.8;
 
 function audio() {
   if (!ctx) {
+    try { (navigator as Navigator & { audioSession?: { type: string } }).audioSession!.type = 'playback'; } catch { /* not Safari */ }
     ctx = new AudioContext();
     master = ctx.createGain();
     master.gain.value = volume;
@@ -15,6 +16,24 @@ function audio() {
   }
   return { ctx, master: master! };
 }
+// Phones only start sound inside a tap. The first tap anywhere resumes the context and plays one silent sample,
+// which older iPhones need before any later sound is heard. Safari also mutes web audio while the ring/silent
+// switch is on unless the page declares it plays media.
+function unlockOnFirstTap() {
+  const unlock = () => {
+    try { (navigator as Navigator & { audioSession?: { type: string } }).audioSession!.type = 'playback'; } catch { /* not Safari */ }
+    const { ctx } = audio();
+    ctx.resume().catch(() => {});
+    const src = ctx.createBufferSource();
+    src.buffer = ctx.createBuffer(1, 1, 22050);
+    src.connect(ctx.destination);
+    src.start(0);
+    if (ctx.state === 'running') for (const e of ['pointerdown', 'touchend', 'keydown']) removeEventListener(e, unlock, true);
+  };
+  for (const e of ['pointerdown', 'touchend', 'keydown']) addEventListener(e, unlock, true);
+}
+if (typeof window !== 'undefined') unlockOnFirstTap();
+
 export const audioRunning = () => ctx?.state === 'running';
 // Browsers only start sound after a tap or key press, so buttons that lead into a round call this.
 export function unlockAudio() { audio().ctx.resume().catch(() => {}); }
