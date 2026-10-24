@@ -2,9 +2,10 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import type { Problem, RoomState, ToClient, ToServer } from '../lib/room';
 import { load, save } from '../lib/storage';
 
-// Where the room server is. A build for a real host sets VITE_ROOMS_URL; `npm run dev` runs one on port 8787.
-export const ROOMS_URL: string | null =
-  import.meta.env.VITE_ROOMS_URL || (import.meta.env.DEV ? `ws://${location.hostname}:8787` : null);
+// Where the room server is: `npm run dev` runs one on port 8787; builds use the deployed one unless VITE_ROOMS_URL
+// points elsewhere.
+export const ROOMS_URL: string =
+  import.meta.env.VITE_ROOMS_URL || (import.meta.env.DEV ? `ws://${location.hostname}:8787` : 'wss://surspot-rooms.surspot.workers.dev');
 const PING_MS = 20000; // keeps the connection open through proxies that drop quiet ones
 
 export interface Me { pid: string; name: string }
