@@ -44,6 +44,15 @@ Rebuild them with:
 node data/seed/check.mjs      # validate the seed files
 node scripts/resolve.mjs      # seed -> data/catalog.json and data/resolve-report.md
 node scripts/expand.mjs       # Wikipedia + iTunes -> data/expanded.json and data/expand-report.md
+node --env-file=.env scripts/popularity.mjs   # Last.fm listeners -> data/popularity.json
+node scripts/expand.mjs --offline             # re-tier the added songs from data/popularity.json
+```
+
+The popularity step needs a free Last.fm API key (https://www.last.fm/api/account/create) in a `.env` file
+at the project root, which git ignores:
+
+```
+LASTFM_API_KEY=your-key-here
 ```
 
 Both scripts cache every API response under `data/.cache/`, so an interrupted run picks up where it stopped,

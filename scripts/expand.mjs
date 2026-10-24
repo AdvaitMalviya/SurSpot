@@ -5,7 +5,9 @@
 //      jhankar, remix or dubbed edition. Album tracks come back eight albums per lookup.
 //   4. Versions, interludes and dialogue tracks are dropped, as is anything already in data/catalog.json.
 // Writes data/expanded.json and data/expand-report.md. Run scripts/resolve.mjs first so its songs win.
-// Tiers follow the film's pageviews within its decade: top 15% of films -> 2, next 35% -> 3, the rest -> 4.
+// Tiers come from data/popularity.json (Last.fm listeners, see scripts/popularity.mjs) when it has the song.
+// Otherwise they follow the film's pageviews within its decade: top 15% of films -> 2, next 35% -> 3, the rest -> 4,
+// and once popularity data exists, a song Last.fm has never heard of is at least tier 3.
 // --plan stops after choosing the films (Wikipedia only, no iTunes calls) and prints them per decade.
 import { createHash } from 'node:crypto';
 import { existsSync, writeFileSync } from 'node:fs';
@@ -273,6 +275,12 @@ for (let i = 0; i < found.length; i += 8) {
       songs.push({ id, ...s });
     }
   }
+}
+
+const POPULARITY = join(DATA, 'popularity.json');
+if (existsSync(POPULARITY)) {
+  const pop = readJson(POPULARITY);
+  for (const s of songs) s.tier = pop[s.id]?.tier ?? Math.max(s.tier, 3);
 }
 
 songs.sort((a, b) => a.year - b.year || a.id.localeCompare(b.id));
