@@ -55,5 +55,3 @@ far fewer listeners than one from 2015.
 The audio is the 30-second preview that Apple's iTunes API provides for each track, played straight from Apple
 and cut to exact lengths in the browser. SurSpot doesn't store or host any audio. The songs belong to their
 rights holders.
-
-```
