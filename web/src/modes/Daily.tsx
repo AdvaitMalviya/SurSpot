@@ -52,8 +52,8 @@ export function Daily({ songs, index, onStats }: { songs: Song[]; index: ReturnT
 
   return (
     <div className="mode">
+      <div className="daily-head"><h1>Daily song #{number}</h1><p>{longDate(date)}</p></div>
       <ClipRound key={date} song={song} index={index} attempts={attempts} onAttempt={onAttempt}
-        head={<div className="daily-head"><h1>Daily song #{number}</h1><p>{longDate(date)}</p></div>}
         reveal={
           <Reveal song={song}
             headline={o === 'won' ? `Solved on try ${attempts.length} of ${STAGES.length}` : 'Not today. Here is the song.'}

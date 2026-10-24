@@ -105,7 +105,7 @@ h1, h2, h3 { margin: 0; }
   box-shadow: inset 1px 1px 0 var(--spec), inset -1px -1px 0 var(--spec-2), 0 18px 40px -20px var(--drop);
 }
 .pool-body, .suggest {
-  background: var(--glass-thick);
+  background: var(--pop, var(--glass-thick));
   border: 1px solid var(--rim);
   box-shadow: inset 1px 1px 0 var(--spec), 0 24px 50px -16px var(--drop);
 }
@@ -145,6 +145,9 @@ h1, h2, h3 { margin: 0; }
 }
 .has-ambient .backdrop-art { opacity: 0.45; }
 @media (prefers-color-scheme: dark) { .has-ambient .backdrop-art { opacity: 0.38; } }
+/* Popovers take the cover's average colour (lib/ambient.ts), mixed down so text keeps its contrast. */
+:root.has-tint { --pop: color-mix(in oklab, var(--tint) 12%, #fdfcff); }
+@media (prefers-color-scheme: dark) { :root.has-tint { --pop: color-mix(in oklab, var(--tint) 26%, #15111d); } }
 
 .app { position: relative; z-index: 1; max-width: 36rem; margin: 0 auto; padding: 0 16px 2rem; overflow-x: clip; }
 
@@ -334,14 +337,31 @@ h1, h2, h3 { margin: 0; }
 .segmented input:checked + span { background: var(--lozenge); box-shadow: 0 2px 6px -2px var(--drop); font-weight: 650; }
 .segmented input:focus-visible + span { outline: 2px solid var(--rani); outline-offset: 1px; }
 .pool-note { margin: 0.45rem 0 0; color: var(--ink-3); font-size: 0.875rem; }
-.pool-artist { display: grid; }
+.pool-artist { position: relative; display: grid; }
 .pool-artist select {
+  appearance: none;
   max-width: 20rem;
-  min-height: 2.6rem;
-  padding: 0 0.9rem;
-  background: var(--field);
-  border: 1px solid var(--well-3);
-  border-radius: 12px;
+  min-height: 2.5rem;
+  padding: 0 2.6rem 0 1rem;
+  background: var(--well-2);
+  border: 0;
+  border-radius: 999px;
+  font-weight: 500;
+  cursor: pointer;
+}
+.pool-artist select:hover { background: var(--well-3); }
+.pool-artist option { background: var(--glass-thick); color: var(--ink); }
+/* The same chevron as "Change songs", centred on the select (it is 2.5rem tall, the label sits above). */
+.pool-artist::after {
+  content: '';
+  position: absolute;
+  bottom: calc(1.25rem - 0.2rem);
+  left: min(20rem, 100%);
+  translate: -1.6rem 0;
+  width: 0.45rem; height: 0.45rem;
+  border: solid currentColor; border-width: 0 2px 2px 0;
+  rotate: 45deg;
+  pointer-events: none;
 }
 .pool-warn { margin: 0; color: var(--wrong); font-size: 0.95rem; font-weight: 500; }
 
@@ -585,9 +605,9 @@ h1, h2, h3 { margin: 0; }
 .credits dt { color: var(--ink-3); font-size: 0.8rem; font-weight: 600; }
 .credits dd { margin: 0; font-weight: 600; line-height: 1.3; }
 .listen { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
-.listen-label { color: var(--ink-3); font-size: 0.9rem; margin-right: 0.25rem; }
+.listen-label { flex-basis: 100%; color: var(--ink-3); font-size: 0.9rem; }
 .listen a {
-  display: inline-grid; place-items: center;
+  display: inline-flex; align-items: center; gap: 0.45rem;
   min-height: 2.25rem;
   padding: 0 0.95rem;
   border-radius: 999px;
@@ -598,6 +618,10 @@ h1, h2, h3 { margin: 0; }
   font-weight: 600;
 }
 .listen a:hover { background: var(--well-3); color: var(--rani); }
+.listen-icon { width: 1.05rem; height: 1.05rem; flex: none; }
+.listen-apple { fill: #fa2d48; }
+.listen-spotify { fill: #1db954; }
+.listen-youtube { fill: #ff0033; }
 .film-note {
   display: grid;
   grid-template-columns: 4.25rem 1fr;
@@ -618,6 +642,7 @@ h1, h2, h3 { margin: 0; }
 
 /* ---------------------------------------------------------------- daily */
 .daily-head { text-align: center; }
+.daily-head h1, .daily-head p { overflow-wrap: anywhere; }
 .daily-head h1 { font: 800 expanded 1.6rem/1.05 var(--sans); letter-spacing: -0.03em; }
 .daily-head p { margin: 0.2rem 0 0; color: var(--ink-2); font-weight: 550; }
 
@@ -878,7 +903,6 @@ h1, h2, h3 { margin: 0; }
   .try { min-height: 2.4rem; }
 }
 @media (max-width: 29.99rem) {
-  .listen-label { flex-basis: 100%; }
   .guess-actions .btn { padding-inline: 1rem; }
   .guess-actions .btn-primary { min-width: 5.5rem; }
 }
@@ -902,6 +926,13 @@ h1, h2, h3 { margin: 0; }
   main { flex: 1; display: grid; align-content: center; }
   .mode { padding-block: 1.25rem; gap: 1.25rem; }
   .mode > .toolbar:not(.room-bar) { align-self: flex-start; max-width: 100%; }
+  /* Daily's heading sits where Play's toolbar does, at the toolbar's height, so the round below lands in the same place. */
+  .mode > .daily-head {
+    display: flex; align-items: center; gap: 0.75rem; align-self: flex-start;
+    min-height: max(3rem, calc(2.5rem + 10px));
+    padding: 0 1rem; text-align: left;
+  }
+  .daily-head p { margin: 0; }
   .round { grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr); gap: 2.5rem; align-items: center; }
   .round-main { padding: 18px; }
   .record { width: clamp(12rem, 38vh, 19rem); }
@@ -915,8 +946,10 @@ h1, h2, h3 { margin: 0; }
   .door { grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr); gap: 2.5rem; }
   .door-title { font-size: 3rem; }
   .quick-intro h1 { font-size: 3rem; }
-  .pool-body { grid-template-columns: 1fr 1fr; gap: 1.1rem 2rem; max-height: calc(100dvh - 10rem); }
-  .pool-body > fieldset:nth-of-type(-n + 2), .pool-done, .pool-warn { grid-column: 1 / -1; }
+  /* Era and mood across; how well known beside language with the singer under it; then the button. */
+  .pool-body { width: min(46rem, calc(100vw - 32px)); grid-template-columns: 1.4fr 1fr; gap: 1rem 2rem; max-height: calc(100dvh - 10rem); }
+  .pool-wide, .pool-done, .pool-warn { grid-column: 1 / -1; }
+  .pool-known { grid-row: span 2; }
 }
 @media (min-width: 75rem) {
   .masthead { grid-template-columns: 1fr auto 1fr; grid-template-areas: 'mark modes tools'; }

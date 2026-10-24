@@ -14,14 +14,13 @@ interface Props {
   onAttempt: (a: Attempt) => void;
   onSkipSong?: () => void; // offered when the preview can't be loaded
   reveal?: ReactNode;      // replaces the tries and guess box once the round is over
-  head?: ReactNode;        // optional heading above the record
   ended?: boolean;         // the round was closed from outside (time ran out in a room)
   hold?: ReactNode;        // shown instead of the answer while other players are still guessing
   autoplay?: boolean;      // play the first clip as soon as it loads
 }
 
 // One song, six tries: the record, the clues earned so far, the tries list and the guess box.
-export function ClipRound({ song, index, attempts, onAttempt, onSkipSong, reveal, head, ended, hold, autoplay }: Props) {
+export function ClipRound({ song, index, attempts, onAttempt, onSkipSong, reveal, ended, hold, autoplay }: Props) {
   const { status, error, elapsed, span, playing, play, playHook, stop, clip } = useClip(song);
   const done = outcome(attempts) !== 'playing' || !!ended;
   const shown = done && !hold; // the answer is on screen
@@ -61,7 +60,6 @@ export function ClipRound({ song, index, attempts, onAttempt, onSkipSong, reveal
   return (
     <div className="round">
       <div className="round-side">
-        {head}
         <div className="stage">
           <Record stages={STAGES} unlocked={stage} elapsed={elapsed} full={full} span={span} status={status} onToggle={toggle} />
           <p className="stage-hint" aria-live="polite">

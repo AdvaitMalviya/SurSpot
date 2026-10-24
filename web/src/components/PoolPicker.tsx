@@ -35,7 +35,15 @@ export function PoolPicker({ songs, pool, onChange }: { songs: Song[]; pool: Poo
   }, [spoken, pool.artist]);
 
   // Opens as a dropdown over the game; a click outside or Escape closes it.
+  // It is only as tall as the window leaves below it (scrolling inside), so nothing ends up under the fold;
+  // when too little is left, the page first scrolls the toolbar up.
   const ref = useRef<HTMLDetailsElement>(null);
+  const fit = () => {
+    const d = ref.current, body = d?.querySelector<HTMLElement>('.pool-body');
+    if (!d?.open || !body) return;
+    if (innerHeight - d.getBoundingClientRect().bottom < 320) d.parentElement?.scrollIntoView({ block: 'start' });
+    body.style.maxHeight = `${Math.max(innerHeight - body.getBoundingClientRect().top - 12, 200)}px`;
+  };
   useEffect(() => {
     const close = (e: Event) => {
       const d = ref.current;
@@ -43,17 +51,18 @@ export function PoolPicker({ songs, pool, onChange }: { songs: Song[]; pool: Poo
     };
     document.addEventListener('pointerdown', close);
     document.addEventListener('keydown', close);
-    return () => { document.removeEventListener('pointerdown', close); document.removeEventListener('keydown', close); };
+    addEventListener('resize', fit);
+    return () => { document.removeEventListener('pointerdown', close); document.removeEventListener('keydown', close); removeEventListener('resize', fit); };
   }, []);
 
   return (
-    <details className="pool" ref={ref}>
+    <details className="pool" ref={ref} onToggle={fit}>
       <summary>
         <span className="pool-desc">{describePool(pool)}</span>
         <span className="pool-edit">Change songs</span>
       </summary>
       <div className="pool-body">
-        <fieldset>
+        <fieldset className="pool-wide">
           <legend>Era</legend>
           <div className="chips">
             <button type="button" className="chip" aria-pressed={!pool.decades.length} onClick={() => onChange({ ...pool, decades: [] })}>All</button>
@@ -63,7 +72,7 @@ export function PoolPicker({ songs, pool, onChange }: { songs: Song[]; pool: Poo
             ))}
           </div>
         </fieldset>
-        {tags.length > 0 && <fieldset>
+        {tags.length > 0 && <fieldset className="pool-wide">
           <legend>Mood</legend>
           <div className="chips">
             <button type="button" className="chip" aria-pressed={!pool.tags.length} onClick={() => onChange({ ...pool, tags: [] })}>Any</button>
@@ -73,7 +82,7 @@ export function PoolPicker({ songs, pool, onChange }: { songs: Song[]; pool: Poo
             ))}
           </div>
         </fieldset>}
-        <fieldset>
+        <fieldset className="pool-known">
           <legend>How well known</legend>
           <div className="chips">
             <button type="button" className="chip" aria-pressed={!pool.levels.length} onClick={() => onChange({ ...pool, levels: [] })}>Any</button>
