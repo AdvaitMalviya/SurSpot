@@ -17,7 +17,7 @@ export function describePool(p: Pool) {
     p.levels.length && p.levels.length < 4
       ? `${(Object.keys(LEVELS) as Level[]).filter((l) => p.levels.includes(l)).map((l) => LEVELS[l].label.toLowerCase()).join(' and ')} songs`
       : 'any difficulty',
-  ].join(' · ');
+  ].join(', ');
 }
 
 // Narrow the songs a game draws from: by decade, mood, how well known they are, language, and singer or composer.
