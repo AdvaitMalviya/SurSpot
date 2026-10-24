@@ -24,17 +24,18 @@ if (!KEY && !offline) {
 const CACHE = join(DATA, '.cache', 'lastfm');
 const UA = 'SurSpotCatalog/1.0 (https://github.com/Siddharth-Y26)';
 const stats = { calls: 0, cached: 0, retries: 0 };
-let last = 0;
-// Last.fm asks for at most a few calls a second; error 29 means slow down, 11 and 16 are temporary.
+let next = 0;
+// Last.fm allows about five calls a second; error 29 means slow down, 11 and 16 are temporary.
+// Calls overlap (a response takes about a second), so each one books its start slot 250 ms after the last.
 async function lastfm(params) {
   const query = new URLSearchParams({ ...params, format: 'json' }).toString();
   const file = join(CACHE, createHash('sha1').update(query).digest('hex').slice(0, 20) + '.json');
   if (existsSync(file)) { stats.cached++; return readJson(file); }
   if (offline) return null;
   for (let attempt = 1; attempt <= 6; attempt++) {
-    const wait = last + 250 - Date.now();
-    if (wait > 0) await sleep(wait);
-    last = Date.now();
+    const at = Math.max(Date.now(), next);
+    next = at + 250;
+    await sleep(at - Date.now());
     let body = null;
     try {
       const res = await fetch(`https://ws.audioscrobbler.com/2.0/?${query}&api_key=${KEY}`, { headers: { 'User-Agent': UA }, signal: AbortSignal.timeout(20000) });
@@ -103,15 +104,19 @@ const addedSongs = existsSync(join(DATA, 'expanded.json')) ? readJson(join(DATA,
 const songs = [...curatedSongs.map((s) => ({ ...s, curated: true })), ...addedSongs].slice(0, limit);
 console.log(`Looking up ${songs.length} songs on Last.fm${offline ? ' (offline)' : ''}...`);
 const t0 = Date.now();
-let found = 0;
-for (const [i, s] of songs.entries()) {
-  s.listeners = await listenersFor(s);
-  if (s.listeners !== null) found++;
-  if ((i + 1) % 250 === 0 || i === songs.length - 1) {
-    const rate = (Date.now() - t0) / (i + 1);
-    console.log(`  ${i + 1}/${songs.length}  found ${found} | calls ${stats.calls} cached ${stats.cached} retries ${stats.retries} | eta ${Math.round((rate * (songs.length - i - 1)) / 60000)} min`);
+let found = 0, done = 0;
+const queue = [...songs];
+async function worker() {
+  for (let s; (s = queue.shift()); ) {
+    s.listeners = await listenersFor(s);
+    if (s.listeners !== null) found++;
+    if (++done % 250 === 0 || done === songs.length) {
+      const rate = (Date.now() - t0) / done;
+      console.log(`  ${done}/${songs.length}  found ${found} | calls ${stats.calls} cached ${stats.cached} retries ${stats.retries} | eta ${Math.round((rate * (songs.length - done)) / 60000)} min`);
+    }
   }
 }
+await Promise.all(Array.from({ length: 4 }, worker));
 
 const cuts = cutsByDecade(songs.filter((s) => s.curated && s.listeners));
 const out = {};
