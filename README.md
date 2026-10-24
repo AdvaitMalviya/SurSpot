@@ -38,7 +38,7 @@ There are four ways to play:
 |---|---|
 | <img src="screenshots/play-light.jpg" alt="A new round in the light theme"> | <img src="screenshots/play-search-light.jpg" alt="Search suggestions with album covers in the light theme"> |
 | <img src="screenshots/daily-light.jpg" alt="The answer card for a solved daily song"> | <img src="screenshots/daily-dark.jpg" alt="The same answer card in the dark theme"> |
-| <img src="screenshots/friends-light.jpg" alt="Making or joining a room to play with friends"> | <img src="screenshots/phone-dark.jpg" alt="A round on a phone in the dark theme" width="49%"> <img src="screenshots/phone-light.jpg" alt="A song loading on a phone in the light theme" width="49%"> |
+| <img src="screenshots/friends-light.jpg" alt="Making or joining a room to play with friends"> | <img src="screenshots/phone-dark.jpg" alt="A round on a phone in the dark theme" width="49%"> <img src="screenshots/phone-light.jpg" alt="A round on a phone in the light theme" width="49%"> |
 
 The game follows your system's light or dark setting. After each round, the backdrop and menus take on the
 colours of the song's cover.
