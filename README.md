@@ -56,7 +56,4 @@ The audio is the 30-second preview that Apple's iTunes API provides for each tra
 and cut to exact lengths in the browser. SurSpot doesn't store or host any audio. The songs belong to their
 rights holders.
 
-  "tum-hi-ho-aashiqui-2": { "trackId": 1073359419 },
-  "some-song-some-film": { "skip": true }
-}
 ```
