@@ -7,5 +7,7 @@ export default defineConfig({
   root: 'web',
   base: './',
   plugins: [react()],
+  // 'localhost' is IPv6-only on macOS, so pin the address the README and the room server (127.0.0.1:8787) use.
+  server: { host: '127.0.0.1' },
   build: { outDir: '../dist', emptyOutDir: true },
 });
