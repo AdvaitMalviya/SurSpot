@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef } from 'react';
-import { LEVELS, artists, decadeLabel, inPool, tagCounts, type Level, type Pool, type Song } from '../lib/catalog';
+import { LANGUAGES, LEVELS, artists, decadeLabel, inLanguage, inPool, tagCounts, type Language, type Level, type Pool, type Song } from '../lib/catalog';
 
 const DECADES = [1950, 1960, 1970, 1980, 1990, 2000, 2010, 2020];
 const TAG_NAMES: Record<string, string> = {
@@ -11,17 +11,26 @@ const toggle = <T,>(xs: T[], x: T) => (xs.includes(x) ? xs.filter((y) => y !== x
 export function describePool(p: Pool) {
   return [
     p.decades.length ? p.decades.slice().sort().map(decadeLabel).join(', ') : 'All eras',
-    ...(p.tags.length ? [p.tags.map(tagName).join(', ').toLowerCase()] : []),
+    ...(p.tags.length ? [p.tags.map(tagName).join(' or ').toLowerCase()] : []),
     ...(p.artist ? [p.artist] : []),
+    ...(p.language !== 'all' ? [`${LANGUAGES[p.language]} only`] : []),
     `${LEVELS[p.level].label.toLowerCase()} difficulty`,
-  ].join('; ');
+  ].join(' · ');
 }
 
-// Narrow the songs a game draws from: by decade, mood, how well known they are, and singer or composer.
+// Narrow the songs a game draws from: by decade, mood, how well known they are, language, and singer or composer.
+// Moods and artists follow the language (Punjabi songs carry no moods), keeping whatever is already picked.
 export function PoolPicker({ songs, pool, onChange }: { songs: Song[]; pool: Pool; onChange: (p: Pool) => void }) {
   const count = useMemo(() => songs.filter((s) => inPool(s, pool)).length, [songs, pool]);
-  const tags = useMemo(() => tagCounts(songs).filter(([t]) => t !== 'non-film'), [songs]);
-  const people = useMemo(() => artists(songs), [songs]);
+  const spoken = useMemo(() => songs.filter((s) => inLanguage(s, pool.language)), [songs, pool.language]);
+  const tags = useMemo(() => {
+    const all = tagCounts(spoken).filter(([t]) => t !== 'non-film');
+    return [...all, ...pool.tags.filter((t) => !all.some(([u]) => u === t)).map((t) => [t, 0] as [string, number])];
+  }, [spoken, pool.tags]);
+  const people = useMemo(() => {
+    const all = artists(spoken);
+    return pool.artist && !all.some(([a]) => a === pool.artist) ? [...all, [pool.artist, 0] as [string, number]] : all;
+  }, [spoken, pool.artist]);
 
   // Opens as a dropdown over the game; a click outside or Escape closes it.
   const ref = useRef<HTMLDetailsElement>(null);
@@ -38,7 +47,6 @@ export function PoolPicker({ songs, pool, onChange }: { songs: Song[]; pool: Poo
   return (
     <details className="pool" ref={ref}>
       <summary>
-        <span className="pool-count">{count} songs</span>
         <span className="pool-desc">{describePool(pool)}</span>
         <span className="pool-edit">Change songs</span>
       </summary>
@@ -53,7 +61,7 @@ export function PoolPicker({ songs, pool, onChange }: { songs: Song[]; pool: Poo
             ))}
           </div>
         </fieldset>
-        <fieldset>
+        {tags.length > 0 && <fieldset>
           <legend>Mood</legend>
           <div className="chips">
             <button type="button" className="chip" aria-pressed={!pool.tags.length} onClick={() => onChange({ ...pool, tags: [] })}>Any</button>
@@ -62,7 +70,7 @@ export function PoolPicker({ songs, pool, onChange }: { songs: Song[]; pool: Poo
                 onClick={() => onChange({ ...pool, tags: toggle(pool.tags, t) })}>{tagName(t)}</button>
             ))}
           </div>
-        </fieldset>
+        </fieldset>}
         <fieldset>
           <legend>How well known</legend>
           <div className="segmented">
@@ -75,11 +83,22 @@ export function PoolPicker({ songs, pool, onChange }: { songs: Song[]; pool: Poo
           </div>
           <p className="pool-note">Easy sticks to the songs everyone knows. Expert digs into deep cuts.</p>
         </fieldset>
+        <fieldset>
+          <legend>Language</legend>
+          <div className="segmented">
+            {(Object.keys(LANGUAGES) as Language[]).map((l) => (
+              <label key={l}>
+                <input type="radio" name="language" checked={pool.language === l} onChange={() => onChange({ ...pool, language: l })} />
+                <span>{LANGUAGES[l]}</span>
+              </label>
+            ))}
+          </div>
+        </fieldset>
         <label className="pool-artist">
           <span>Singer or composer</span>
           <select value={pool.artist ?? ''} onChange={(e) => onChange({ ...pool, artist: e.target.value || null })}>
             <option value="">Anyone</option>
-            {people.map(([name, n]) => <option key={name} value={name}>{name} ({n})</option>)}
+            {people.map(([name]) => <option key={name} value={name}>{name}</option>)}
           </select>
         </label>
         <button type="button" className="btn btn-primary pool-done" onClick={() => { if (ref.current) ref.current.open = false; }}>

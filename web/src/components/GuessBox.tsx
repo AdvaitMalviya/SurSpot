@@ -1,5 +1,5 @@
 import { useEffect, useId, useMemo, useRef, useState, type ReactNode } from 'react';
-import type { Song } from '../lib/catalog';
+import { sourceLabel, type Song } from '../lib/catalog';
 import { search, type buildIndex } from '../lib/search';
 
 interface Props {
@@ -29,7 +29,7 @@ export function GuessBox({ index, exclude, disabled, onGuess, children }: Props)
 
   const choose = (s: Song) => {
     setPicked(s);
-    setQuery(`${s.title} (${s.movie})`);
+    setQuery(`${s.title} (${s.movie || s.singers[0] || 'Single'})`);
     setOpen(false);
   };
   const submit = () => {
@@ -75,7 +75,7 @@ export function GuessBox({ index, exclude, disabled, onGuess, children }: Props)
               <li key={s.id} id={`${listId}-${i}`} role="option" aria-selected={i === active}
                 onMouseDown={(e) => { e.preventDefault(); choose(s); }} onMouseEnter={() => setActive(i)}>
                 <span className="suggest-title">{s.title}</span>
-                <span className="suggest-film">{s.movie}, {s.year}</span>
+                <span className="suggest-film">{s.movie ? sourceLabel(s) : `${s.singers[0] ?? 'Single'}, ${s.year}`}</span>
               </li>
             ))}
             {!results.length && <li className="suggest-empty">Nothing matches “{query.trim()}”. Try the film’s name or another spelling.</li>}

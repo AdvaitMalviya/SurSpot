@@ -171,7 +171,7 @@ h1, h2, h3 { margin: 0; }
   align-items: center;
   justify-content: space-between;
   gap: 0.5rem 1.5rem;
-  padding: 0.55rem 0.6rem 0.55rem 1.1rem;
+  padding: 0.3rem 0.4rem 0.3rem 1rem;
   background: var(--plum);
   border: 1px solid #2c2163;
   border-radius: 22px;
@@ -184,8 +184,9 @@ h1, h2, h3 { margin: 0; }
 }
 .pool summary::-webkit-details-marker { display: none; }
 .pool-count { font-weight: 600; font-size: 1.1rem; }
-.pool-desc { color: var(--ink-2); flex: 1; min-width: 10rem; }
-.pool-edit { padding: 0.3rem 1rem; border-radius: 999px; background: var(--plum-2); color: var(--gold); font-weight: 500; }
+.pool-desc { color: var(--ink-3); font-size: 0.92rem; flex: 1; min-width: 10rem; }
+.pool-edit { padding: 0.15rem 0.75rem; border-radius: 999px; background: var(--plum-2); color: var(--ink-2); font-size: 0.85rem; }
+.pool summary:hover .pool-edit, .pool[open] .pool-edit { color: var(--gold); }
 .pool summary:hover .pool-edit { background: var(--plum-3); }
 .pool-body {
   position: absolute;

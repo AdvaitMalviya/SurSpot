@@ -1,8 +1,9 @@
 import catalogUrl from '../../../data/catalog.json?url';
 import expandedUrl from '../../../data/expanded.json?url';
+import punjabiUrl from '../../../data/punjabi.json?url';
 
 // One playable song: a curated seed entry with the iTunes master picked by scripts/resolve.mjs, or ('auto')
-// a soundtrack track added by scripts/expand.mjs.
+// a soundtrack track added by scripts/expand.mjs, or a Punjabi song added by scripts/punjabi.mjs (tagged 'punjabi').
 export interface Song {
   id: string;
   title: string;
@@ -21,20 +22,29 @@ export interface Song {
   confidence: 'high' | 'low' | 'pinned' | 'auto';
 }
 
-// Curated songs first; an expanded song that shares their iTunes track is dropped.
+// Curated songs first, then the expanded and the Punjabi ones; a song that shares an earlier list's iTunes track is dropped.
 export async function loadCatalog(): Promise<Song[]> {
-  const [seed, extra] = await Promise.all([catalogUrl, expandedUrl].map(async (url) => {
+  const lists = await Promise.all([catalogUrl, expandedUrl, punjabiUrl].map(async (url) => {
     const res = await fetch(url);
     if (!res.ok) throw new Error(`catalog ${res.status}`);
     return (await res.json()) as Song[];
   }));
-  const tracks = new Set(seed.map((s) => s.trackId));
-  return [...seed, ...extra.filter((s) => !tracks.has(s.trackId))];
+  const tracks = new Set<number>();
+  const out: Song[] = [];
+  for (const list of lists) {
+    const fresh = list.filter((s) => !tracks.has(s.trackId));
+    for (const s of fresh) tracks.add(s.trackId);
+    out.push(...fresh);
+  }
+  return out;
 }
 
 export const decadeOf = (year: number) => Math.floor(year / 10) * 10;
 export const decadeLabel = (d: number) => (d < 2000 ? `${d % 100}s` : `${d}s`);
 export const isFilm = (s: Song) => !s.tags.includes('non-film');
+export const isPunjabi = (s: Song) => s.tags.includes('punjabi');
+// "Brown Munde" is a single: no film or album to name.
+export const sourceLabel = (s: Song) => `${s.movie || 'Single'}, ${s.year}`;
 export const devanagariTitle = (s: Song) => s.alt_titles.find((t) => /[ऀ-ॿ]/.test(t)) ?? null;
 
 // Tier 1 is the songs everyone knows; tier 4 the deep cuts.
@@ -47,15 +57,21 @@ export const LEVELS = {
 } as const;
 export type Level = keyof typeof LEVELS;
 
+export const LANGUAGES = { all: 'Hindi and Punjabi', hindi: 'Hindi', punjabi: 'Punjabi' } as const;
+export type Language = keyof typeof LANGUAGES;
+
 export interface Pool {
   decades: number[];
   tags: string[];
   level: Level;
   artist: string | null;
+  language: Language;
 }
-export const DEFAULT_POOL: Pool = { decades: [], tags: [], level: 'medium', artist: null };
+export const DEFAULT_POOL: Pool = { decades: [], tags: [], level: 'medium', artist: null, language: 'all' };
 
+export const inLanguage = (s: Song, l: Language) => l === 'all' || (l === 'punjabi') === isPunjabi(s);
 export function inPool(s: Song, p: Pool) {
+  if (!inLanguage(s, p.language)) return false;
   if (p.decades.length && !p.decades.includes(decadeOf(s.year))) return false;
   if (p.tags.length && !s.tags.some((t) => p.tags.includes(t))) return false;
   if (!(LEVELS[p.level].tiers as readonly number[]).includes(s.tier)) return false;
@@ -72,7 +88,7 @@ export function artists(songs: Song[], min = 12) {
 
 export function tagCounts(songs: Song[]) {
   const n = new Map<string, number>();
-  for (const s of songs) for (const t of s.tags) n.set(t, (n.get(t) ?? 0) + 1);
+  for (const s of songs) for (const t of s.tags) if (t !== 'punjabi') n.set(t, (n.get(t) ?? 0) + 1); // a language, not a mood
   return [...n].sort((a, b) => b[1] - a[1]);
 }
 

@@ -1,6 +1,6 @@
 import { useEffect, useState, type ReactNode } from 'react';
 import { setAmbient } from '../lib/ambient';
-import { devanagariTitle, isFilm, type Song } from '../lib/catalog';
+import { devanagariTitle, isFilm, sourceLabel, type Song } from '../lib/catalog';
 import { filmInfo, type Film } from '../lib/wiki';
 
 interface Props {
@@ -29,11 +29,11 @@ export function Reveal({ song, headline, detail, children }: Props) {
       <p className="reveal-headline">{headline}</p>
       {detail && <p className="reveal-detail">{detail}</p>}
       <div className="reveal-song">
-        {song.artwork && <img className="reveal-art" src={song.artwork} alt={`Cover of ${song.movie}`} width={600} height={600} />}
+        {song.artwork && <img className="reveal-art" src={song.artwork} alt={`Cover of ${song.movie || song.title}`} width={600} height={600} />}
         <div className="reveal-names">
           <h2 className="reveal-title">{song.title}</h2>
           {deva && <p className="reveal-deva" lang="hi">{deva}</p>}
-          <p className="reveal-film">{isFilm(song) ? song.movie : `${song.movie} (non-film)`}, {song.year}</p>
+          <p className="reveal-film">{isFilm(song) || !song.movie ? sourceLabel(song) : `${song.movie} (non-film), ${song.year}`}</p>
         </div>
       </div>
       <dl className="credits">

@@ -5,73 +5,20 @@
 // Old songs have far fewer Last.fm listeners than new ones, so the curated tiers calibrate listeners decade by
 // decade, and each song found gets a suggested tier. Writes data/popularity.json: { id: { listeners, tier } }.
 // scripts/expand.mjs uses those tiers for the songs it adds; curated songs keep their hand-set tiers.
-import { createHash } from 'node:crypto';
+// The Last.fm client and the matching live in scripts/lastfm.mjs (shared with scripts/punjabi.mjs).
 import { existsSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
-import { DATA, sleep, readJson, writeJson, skeleton, stripDecorations, creditHits, decadeOf } from './lib.mjs';
+import { DATA, readJson } from './lib.mjs';
+import { lastfmStats as stats, listenersFor } from './lastfm.mjs';
 import { cutsByDecade, tierFor } from './tiers.mjs';
 
 const args = process.argv.slice(2);
 const opt = (f) => { const i = args.indexOf(f); return i >= 0 ? args[i + 1] : null; };
 const offline = args.includes('--offline');
 const limit = Number(opt('--limit')) || Infinity;
-const KEY = process.env.LASTFM_API_KEY;
-if (!KEY && !offline) {
+if (!process.env.LASTFM_API_KEY && !offline) {
   console.error('No Last.fm key. Put LASTFM_API_KEY=... in .env and run: node --env-file=.env scripts/popularity.mjs');
   process.exit(1);
-}
-
-// ---------------------------------------------------------------- Last.fm (cached on disk; the key is not part of the cache name)
-const CACHE = join(DATA, '.cache', 'lastfm');
-const UA = 'SurSpotCatalog/1.0 (https://github.com/Siddharth-Y26)';
-const stats = { calls: 0, cached: 0, retries: 0 };
-let next = 0;
-// Last.fm allows about five calls a second; error 29 means slow down, 11 and 16 are temporary.
-// Calls overlap (a response takes about a second), so each one books its start slot 250 ms after the last.
-async function lastfm(params) {
-  const query = new URLSearchParams({ ...params, format: 'json' }).toString();
-  const file = join(CACHE, createHash('sha1').update(query).digest('hex').slice(0, 20) + '.json');
-  if (existsSync(file)) { stats.cached++; return readJson(file); }
-  if (offline) return null;
-  for (let attempt = 1; attempt <= 6; attempt++) {
-    const at = Math.max(Date.now(), next);
-    next = at + 250;
-    await sleep(at - Date.now());
-    let body = null;
-    try {
-      const res = await fetch(`https://ws.audioscrobbler.com/2.0/?${query}&api_key=${KEY}`, { headers: { 'User-Agent': UA }, signal: AbortSignal.timeout(20000) });
-      body = await res.json().catch(() => null);
-      stats.calls++;
-      if (res.ok && body && !body.error) { writeJson(file, body); return body; }
-      if (body?.error === 10 || body?.error === 26) throw new Error(`Last.fm rejected the API key: ${body.message}`);
-    } catch (e) {
-      if (/API key/.test(e.message)) throw e;
-    }
-    stats.retries++;
-    await sleep(2000 * attempt * (body?.error === 29 ? 3 : 1));
-  }
-  throw new Error(`Last.fm request failed: ${query}`);
-}
-
-// ---------------------------------------------------------------- matching
-const titleKey = (t) => skeleton(stripDecorations(t) || t).join(' ');
-function addMatches(song, body, found) {
-  const want = new Set([song.title, ...song.alt_titles.filter((t) => /[a-z]/i.test(t))].map(titleKey));
-  const people = [...song.singers, ...song.composers];
-  for (const t of body?.results?.trackmatches?.track ?? []) {
-    if (found.has(t.url) || !want.has(titleKey(t.name))) continue;
-    if (people.length && !creditHits(people, t.artist).length) continue;
-    found.set(t.url, Number(t.listeners) || 0);
-  }
-}
-// Title alone first (Last.fm ranks by listeners, so every artist spelling of a hit shows up); if nothing
-// matches, the same title narrowed to the first singer, for titles shared by many unrelated songs.
-async function listenersFor(song) {
-  const found = new Map();
-  addMatches(song, await lastfm({ method: 'track.search', track: song.title, limit: '50' }), found);
-  const lead = song.singers[0] ?? song.composers[0];
-  if (!found.size && lead) addMatches(song, await lastfm({ method: 'track.search', track: song.title, artist: lead, limit: '30' }), found);
-  return found.size ? [...found.values()].reduce((a, b) => a + b, 0) : null;
 }
 
 // ---------------------------------------------------------------- run
@@ -84,7 +31,7 @@ let found = 0, done = 0;
 const queue = [...songs];
 async function worker() {
   for (let s; (s = queue.shift()); ) {
-    s.listeners = await listenersFor(s);
+    s.listeners = await listenersFor(s, { offline });
     if (s.listeners !== null) found++;
     if (++done % 250 === 0 || done === songs.length) {
       const rate = (Date.now() - t0) / done;
