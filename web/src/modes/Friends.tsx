@@ -254,12 +254,14 @@ function Game({ room, me, isHost, hostName, song, index, send, serverNow }: {
 }) {
   const { round, phase } = room;
   const key = `room-${room.code}`;
-  const songId = room.songs[round];
   const server = room.results[round]?.[me.pid];
-  const [local, setLocal] = useState(() => load(key, { song: '', round: -1, attempts: [] as Attempt[] }));
-  const attempts = local.song === songId && local.round === round ? local.attempts : fromMarks(server);
+  // Kept in this browser so a reload still shows the titles you tried. startsAt tells one song from another,
+  // even the same song coming up again in a later game.
+  const [local, setLocal] = useState(() => load(key, { startsAt: 0, attempts: [] as Attempt[] }));
+  const attempts = local.startsAt === room.startsAt && local.attempts.length >= (server?.marks.length ?? 0)
+    ? local.attempts : fromMarks(server);
   const onAttempt = (a: Attempt) => {
-    const next = { song: songId, round, attempts: [...attempts, a] };
+    const next = { startsAt: room.startsAt, attempts: [...attempts, a] };
     setLocal(next); save(key, next);
   };
   // Tries the server hasn't recorded yet (just made, or made while the connection was down) go out again;
@@ -283,7 +285,8 @@ function Game({ room, me, isHost, hostName, song, index, send, serverNow }: {
     return () => clearInterval(t);
   }, [timeUp, round, send]);
 
-  const others = room.players.filter((p) => p.online && p.pid !== me.pid && !isDone(room.results[round]?.[p.pid]));
+  const notDone = room.players.filter((p) => p.pid !== me.pid && !isDone(room.results[round]?.[p.pid]));
+  const others = notDone.filter((p) => p.online), dropped = notDone.filter((p) => !p.online);
   const o = outcome(attempts);
   const n = attempts.length;
   const headline = o === 'won' ? (n === 1 ? 'First try!' : `Got it on try ${n}`) : o === 'lost' ? 'Out of tries.' : 'Time’s up.';
@@ -317,7 +320,9 @@ function Game({ room, me, isHost, hostName, song, index, send, serverNow }: {
               <p className="reveal-headline">{headline}</p>
               {o === 'won' && <p className="reveal-detail">+{POINTS[n - 1]} points</p>}
               <p className="waiting-note">
-                {others.length ? `Waiting for ${listNames(others.map((p) => p.name))}. The answer shows when everyone’s done or the time runs out.` : 'Showing the answer…'}
+                {others.length ? `Waiting for ${listNames(others.map((p) => p.name))}. The answer shows when everyone’s done or the time runs out.`
+                  : dropped.length ? `${listNames(dropped.map((p) => p.name))} lost the connection. Giving them a few seconds to come back…`
+                  : 'Showing the answer…'}
               </p>
               <RoundTable room={room} me={me} />
             </section>

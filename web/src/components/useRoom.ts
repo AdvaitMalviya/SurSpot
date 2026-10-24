@@ -60,8 +60,18 @@ export function useRoom(code: string, me: Me, create: boolean) {
     };
     connect();
     const ping = window.setInterval(() => socket.current?.readyState === WebSocket.OPEN && socket.current.send('ping'), PING_MS);
+    // Back on the page or back online (a phone unlocked, a tunnel passed): reconnect now rather than after the backoff.
+    const wake = () => {
+      if (finished || document.hidden || socket.current?.readyState !== WebSocket.CLOSED) return;
+      clearTimeout(timer); retries = 0;
+      connect();
+    };
+    document.addEventListener('visibilitychange', wake);
+    window.addEventListener('online', wake);
     return () => {
       finished = true;
+      document.removeEventListener('visibilitychange', wake);
+      window.removeEventListener('online', wake);
       clearTimeout(timer); clearInterval(ping);
       socket.current?.close();
       socket.current = null;
