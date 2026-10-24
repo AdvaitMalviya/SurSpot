@@ -434,7 +434,9 @@ h1, h2, h3 { margin: 0; }
   clip-path: polygon(0 0, 100% 50%, 0 100%);
 }
 .record.is-playing .disc { animation: spin 1.333s linear infinite; } /* 45 rpm */
-.record.is-loading .disc-label { animation: breathe 1.4s ease-in-out infinite; }
+/* Colour, not opacity: an opacity animation gets its own GPU layer, and next to it Chrome and Safari can leave a
+   stale rectangle in the tries card's frosted glass for as long as the song is loading. */
+.record.is-loading .disc-len { animation: breathe 1.4s ease-in-out infinite; }
 .record:focus-visible { outline-offset: 4px; }
 
 .stage-hint {
@@ -886,7 +888,7 @@ h1, h2, h3 { margin: 0; }
 
 /* ---------------------------------------------------------------- motion that answers a tap */
 @keyframes spin { to { transform: rotate(360deg); } }
-@keyframes breathe { 50% { opacity: 0.6; } }
+@keyframes breathe { 50% { color: rgb(255 255 255 / 0.5); } }
 @keyframes pop { from { transform: scale(0.94); opacity: 0; } }
 @keyframes drop-in { from { transform: translateY(-6px) scale(0.98); opacity: 0; } }
 @keyframes shake { 20%, 60% { transform: translateX(-5px); } 40%, 80% { transform: translateX(5px); } }
