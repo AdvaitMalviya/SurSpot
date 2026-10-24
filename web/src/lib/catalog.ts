@@ -47,13 +47,13 @@ export const isPunjabi = (s: Song) => s.tags.includes('punjabi');
 export const sourceLabel = (s: Song) => `${s.movie || 'Single'}, ${s.year}`;
 export const devanagariTitle = (s: Song) => s.alt_titles.find((t) => /[ऀ-ॿ]/.test(t)) ?? null;
 
-// Tier 1 is the songs everyone knows; tier 4 the deep cuts.
+// One difficulty per popularity tier: tier 1 is the songs everyone knows, tier 4 the deep cuts.
+// A pool can mix several; none picked means any.
 export const LEVELS = {
-  easy: { label: 'Easy', tiers: [1] },
-  medium: { label: 'Medium', tiers: [1, 2] },
-  hard: { label: 'Hard', tiers: [2, 3] },
-  expert: { label: 'Expert', tiers: [3, 4] },
-  any: { label: 'Any', tiers: [1, 2, 3, 4] },
+  easy: { label: 'Easy', tier: 1 },
+  medium: { label: 'Medium', tier: 2 },
+  hard: { label: 'Hard', tier: 3 },
+  expert: { label: 'Expert', tier: 4 },
 } as const;
 export type Level = keyof typeof LEVELS;
 
@@ -63,18 +63,18 @@ export type Language = keyof typeof LANGUAGES;
 export interface Pool {
   decades: number[];
   tags: string[];
-  level: Level;
+  levels: Level[];
   artist: string | null;
   language: Language;
 }
-export const DEFAULT_POOL: Pool = { decades: [], tags: [], level: 'medium', artist: null, language: 'all' };
+export const DEFAULT_POOL: Pool = { decades: [], tags: [], levels: ['easy', 'medium'], artist: null, language: 'all' };
 
 export const inLanguage = (s: Song, l: Language) => l === 'all' || (l === 'punjabi') === isPunjabi(s);
 export function inPool(s: Song, p: Pool) {
   if (!inLanguage(s, p.language)) return false;
   if (p.decades.length && !p.decades.includes(decadeOf(s.year))) return false;
   if (p.tags.length && !s.tags.some((t) => p.tags.includes(t))) return false;
-  if (!(LEVELS[p.level].tiers as readonly number[]).includes(s.tier)) return false;
+  if (p.levels.length && !p.levels.some((l) => LEVELS[l]?.tier === s.tier)) return false;
   if (p.artist && !s.singers.includes(p.artist) && !s.composers.includes(p.artist)) return false;
   return true;
 }

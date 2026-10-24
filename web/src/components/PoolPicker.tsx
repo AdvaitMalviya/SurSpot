@@ -14,7 +14,9 @@ export function describePool(p: Pool) {
     ...(p.tags.length ? [p.tags.map(tagName).join(' or ').toLowerCase()] : []),
     ...(p.artist ? [p.artist] : []),
     ...(p.language !== 'all' ? [`${LANGUAGES[p.language]} only`] : []),
-    `${LEVELS[p.level].label.toLowerCase()} difficulty`,
+    p.levels.length && p.levels.length < 4
+      ? `${(Object.keys(LEVELS) as Level[]).filter((l) => p.levels.includes(l)).map((l) => LEVELS[l].label.toLowerCase()).join(' and ')} songs`
+      : 'any difficulty',
   ].join(' · ');
 }
 
@@ -73,15 +75,14 @@ export function PoolPicker({ songs, pool, onChange }: { songs: Song[]; pool: Poo
         </fieldset>}
         <fieldset>
           <legend>How well known</legend>
-          <div className="segmented">
+          <div className="chips">
+            <button type="button" className="chip" aria-pressed={!pool.levels.length} onClick={() => onChange({ ...pool, levels: [] })}>Any</button>
             {(Object.keys(LEVELS) as Level[]).map((l) => (
-              <label key={l}>
-                <input type="radio" name="level" checked={pool.level === l} onChange={() => onChange({ ...pool, level: l })} />
-                <span>{LEVELS[l].label}</span>
-              </label>
+              <button key={l} type="button" className="chip" aria-pressed={pool.levels.includes(l)}
+                onClick={() => onChange({ ...pool, levels: toggle(pool.levels, l) })}>{LEVELS[l].label}</button>
             ))}
           </div>
-          <p className="pool-note">Easy sticks to the songs everyone knows. Expert digs into deep cuts.</p>
+          <p className="pool-note">Pick one or more. Easy sticks to the songs everyone knows; Expert digs into deep cuts.</p>
         </fieldset>
         <fieldset>
           <legend>Language</legend>
