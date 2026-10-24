@@ -1,12 +1,17 @@
-/* SurSpot: liquid glass over a record-shop wall. The backdrop is a tilted wall of real album covers from the
-   catalog behind a frosted veil; controls and cards are panes of glass over it, and when a song is revealed its
-   cover floods the wall with colour. Everything is set in Anek (Ek Type), whose width axis does the shouting:
+/* SurSpot: liquid glass over tie-dyed cloth. The backdrop is bandhani dots over leheriya bands; controls and cards
+   are panes of glass over it, and when a song is revealed its cover floods the cloth with colour.
+   Everything is set in Anek (Ek Type), whose width axis does the shouting:
    expanded and heavy for names and scores, normal for reading, semi-condensed where space is tight.
    Corners are concentric: an inner radius is the outer radius minus the padding between them. */
 :root {
   color-scheme: light dark;
   --base: #e9e5f5;
   --veil: rgb(247 245 255 / 0.8);
+  --band-1: #ffdfeb;
+  --band-2: #ffeec4;
+  --band-3: #d6f1e8;
+  --band-4: #e3dcff;
+  --dots: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='56'%3E%3Cg fill='%23ffffff' fill-opacity='0.95'%3E%3Ccircle cx='20.2' cy='14.0' r='2.0'/%3E%3Ccircle cx='17.1' cy='19.4' r='1.8'/%3E%3Ccircle cx='10.9' cy='19.4' r='2.05'/%3E%3Ccircle cx='7.8' cy='14.0' r='1.9'/%3E%3Ccircle cx='10.9' cy='8.6' r='2.0'/%3E%3Ccircle cx='17.1' cy='8.6' r='1.75'/%3E%3Ccircle cx='48.2' cy='42.0' r='2.0'/%3E%3Ccircle cx='45.1' cy='47.4' r='1.8'/%3E%3Ccircle cx='38.9' cy='47.4' r='2.05'/%3E%3Ccircle cx='35.8' cy='42.0' r='1.9'/%3E%3Ccircle cx='38.9' cy='36.6' r='2.0'/%3E%3Ccircle cx='45.1' cy='36.6' r='1.75'/%3E%3Ccircle cx='40.3' cy='12.3' r='1.15'/%3E%3Ccircle cx='43.7' cy='12.3' r='1.15'/%3E%3Ccircle cx='40.3' cy='15.7' r='1.15'/%3E%3Ccircle cx='43.7' cy='15.7' r='1.15'/%3E%3Ccircle cx='12.3' cy='40.3' r='1.15'/%3E%3Ccircle cx='15.7' cy='40.3' r='1.15'/%3E%3Ccircle cx='12.3' cy='43.7' r='1.15'/%3E%3Ccircle cx='15.7' cy='43.7' r='1.15'/%3E%3C/g%3E%3Cg fill='%23f0a000' fill-opacity='0.75'%3E%3Ccircle cx='14' cy='14' r='2.3'/%3E%3Ccircle cx='42' cy='42' r='2.3'/%3E%3C/g%3E%3C/svg%3E");
   --ink: #1d1640;
   --ink-2: rgb(29 22 64 / 0.74);
   --ink-3: rgb(29 22 64 / 0.6);
@@ -40,6 +45,11 @@
   :root {
     --base: #120d2a;
     --veil: rgb(18 12 42 / 0.82);
+    --band-1: #340f30;
+    --band-2: #1d1652;
+    --band-3: #0b2b37;
+    --band-4: #2b1248;
+    --dots: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='56'%3E%3Cg fill='%23ffffff' fill-opacity='0.2'%3E%3Ccircle cx='20.2' cy='14.0' r='2.0'/%3E%3Ccircle cx='17.1' cy='19.4' r='1.8'/%3E%3Ccircle cx='10.9' cy='19.4' r='2.05'/%3E%3Ccircle cx='7.8' cy='14.0' r='1.9'/%3E%3Ccircle cx='10.9' cy='8.6' r='2.0'/%3E%3Ccircle cx='17.1' cy='8.6' r='1.75'/%3E%3Ccircle cx='48.2' cy='42.0' r='2.0'/%3E%3Ccircle cx='45.1' cy='47.4' r='1.8'/%3E%3Ccircle cx='38.9' cy='47.4' r='2.05'/%3E%3Ccircle cx='35.8' cy='42.0' r='1.9'/%3E%3Ccircle cx='38.9' cy='36.6' r='2.0'/%3E%3Ccircle cx='45.1' cy='36.6' r='1.75'/%3E%3Ccircle cx='40.3' cy='12.3' r='1.15'/%3E%3Ccircle cx='43.7' cy='12.3' r='1.15'/%3E%3Ccircle cx='40.3' cy='15.7' r='1.15'/%3E%3Ccircle cx='43.7' cy='15.7' r='1.15'/%3E%3Ccircle cx='12.3' cy='40.3' r='1.15'/%3E%3Ccircle cx='15.7' cy='40.3' r='1.15'/%3E%3Ccircle cx='12.3' cy='43.7' r='1.15'/%3E%3Ccircle cx='15.7' cy='43.7' r='1.15'/%3E%3C/g%3E%3Cg fill='%23ffc23d' fill-opacity='0.55'%3E%3Ccircle cx='14' cy='14' r='2.3'/%3E%3Ccircle cx='42' cy='42' r='2.3'/%3E%3C/g%3E%3C/svg%3E");
     --ink: #fbf7ff;
     --ink-2: rgb(251 247 255 / 0.76);
     --ink-3: rgb(251 247 255 / 0.6);
@@ -100,22 +110,20 @@ h1, h2, h3 { margin: 0; }
   box-shadow: inset 1px 1px 0 var(--spec), 0 24px 50px -16px var(--drop);
 }
 
-/* ---------------------------------------------------------------- backdrop */
-.backdrop { position: fixed; inset: 0; z-index: 0; overflow: hidden; pointer-events: none; background: var(--base); }
-.wall {
-  --tile: max(84px, 9vw);
-  position: absolute;
-  inset: -20%;
-  display: grid;
-  grid-template-columns: repeat(auto-fill, var(--tile));
-  grid-auto-rows: var(--tile);
-  gap: 10px;
-  justify-content: center;
-  transform: rotate(-8deg);
-  filter: blur(3.5px) saturate(1.3);
+/* ---------------------------------------------------------------- backdrop
+   Bandhani over leheriya, the Rajasthani tie-dyes: wide soft diagonal bands give the glass colour to refract,
+   and tied dot flowers repeat over them as the undyed spots. Pure CSS, so there is nothing to download. */
+.backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+  background:
+    var(--dots) 0 0 / 56px 56px,
+    repeating-linear-gradient(-35deg, var(--band-1) 0 110px, var(--band-2) 170px 280px, var(--band-3) 340px 450px,
+      var(--band-4) 510px 620px, var(--band-1) 680px);
 }
-.wall img { width: 100%; height: 100%; object-fit: cover; border-radius: 10px; display: block; }
-.backdrop::after { content: ''; position: absolute; inset: 0; background: var(--veil); }
 .backdrop-art {
   position: absolute;
   z-index: 1;
@@ -232,6 +240,7 @@ h1, h2, h3 { margin: 0; }
 .btn-quiet { background: var(--well-2); color: var(--ink); }
 .btn-quiet:not(:disabled):hover { background: var(--well-3); }
 .btn-quiet:disabled { color: var(--ink-3); cursor: not-allowed; }
+.btn, .chip, .pool-edit, .listen a, .tag, .strip li, .segmented span { white-space: nowrap; }
 .link { border: 0; background: none; padding: 0; color: var(--rani); font-weight: 600; text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
 
 /* ---------------------------------------------------------------- toolbar and pool */
@@ -308,10 +317,10 @@ h1, h2, h3 { margin: 0; }
 .chip:hover { background: var(--well-3); }
 .chip:active { transform: scale(0.94); }
 .chip[aria-pressed='true'] { background: var(--ink); color: var(--base); font-weight: 600; }
-.segmented { display: flex; flex-wrap: wrap; gap: 2px; padding: 3px; border-radius: 999px; background: var(--well-2); width: fit-content; max-width: 100%; }
+.segmented { display: flex; gap: 2px; padding: 3px; border-radius: 999px; background: var(--well-2); width: fit-content; max-width: 100%; }
 .segmented label { position: relative; }
 .segmented input { position: absolute; opacity: 0; inset: 0; cursor: pointer; }
-.segmented span { display: grid; place-items: center; min-height: 2.1rem; padding: 0 0.95rem; border-radius: 999px; font-size: 0.95rem; font-weight: 500; }
+.segmented span { display: grid; place-items: center; min-height: 2.1rem; padding: 0 clamp(0.6rem, 3vw, 0.95rem); border-radius: 999px; font-size: 0.95rem; font-weight: 500; }
 .segmented input:checked + span { background: var(--lozenge); box-shadow: 0 2px 6px -2px var(--drop); font-weight: 650; }
 .segmented input:focus-visible + span { outline: 2px solid var(--rani); outline-offset: 1px; }
 .pool-note { margin: 0.45rem 0 0; color: var(--ink-3); font-size: 0.875rem; }
@@ -390,10 +399,11 @@ h1, h2, h3 { margin: 0; }
 .stage-hint {
   margin: 0;
   padding: 0.45rem 1.1rem;
-  border-radius: 999px;
+  border-radius: 1.4rem;
   color: var(--ink);
   font-weight: 550;
   text-align: center;
+  text-wrap: balance;
 }
 .stage-hint:empty { visibility: hidden; }
 
@@ -641,16 +651,16 @@ h1, h2, h3 { margin: 0; }
 .field > span { color: var(--ink-3); font-size: 0.875rem; font-weight: 600; }
 .door-join input, .door-join input::placeholder { letter-spacing: 0.3em; text-transform: uppercase; }
 
-.room-banner { margin: 0; padding: 0.5rem 1rem; border-radius: 999px; background: var(--wrong-bg); color: var(--wrong); font-weight: 600; text-align: center; }
+.room-banner { margin: 0; padding: 0.5rem 1rem; border-radius: 1.25rem; text-wrap: balance; background: var(--wrong-bg); color: var(--wrong); font-weight: 600; text-align: center; }
 .toolbar-note { margin: 0; padding: 0.35rem 0; color: var(--ink-2); }
 .room-note { margin: 0; color: var(--ink-2); font-weight: 600; }
 
-.room-card { justify-items: center; text-align: center; gap: 0.5rem; padding: 1.5rem 1.25rem; border-radius: 28px; }
+.room-card { justify-items: center; text-align: center; gap: 0.5rem; padding: 1.5rem 1.25rem; border-radius: 28px; container-type: inline-size; }
 .room-label { margin: 0; color: var(--ink-3); font-size: 0.9rem; font-weight: 600; }
 .room-code {
   margin: 0 0 0.5rem;
   padding-left: 0.1em; /* balances the letter spacing after the last letter */
-  font: 800 expanded clamp(4rem, 19vw, 6.25rem)/0.95 var(--sans);
+  font: 800 expanded min(6.25rem, 19cqi)/0.95 var(--sans);
   letter-spacing: 0.1em;
   color: var(--rani);
 }
@@ -700,9 +710,9 @@ h1, h2, h3 { margin: 0; }
 
 /* The round bar: which song, the clock, and everyone's scores in one row. */
 .room-bar { padding-block: 4px; }
-.room-round { display: flex; align-items: center; gap: 0.75rem; color: var(--ink-2); }
+.room-round { display: flex; align-items: center; gap: 0.75rem; min-width: 0; color: var(--ink-2); }
 .room-round b { font: 800 semi-expanded 1.1rem/1.1 var(--sans); color: var(--ink); white-space: nowrap; }
-.room-round .timer { width: 6rem; }
+.room-round .timer { flex: 0 1 6rem; min-width: 2.5rem; }
 .room-clock { min-width: 4.4rem; font-variant-numeric: tabular-nums; font-weight: 600; white-space: nowrap; }
 .room-bar .players { flex: 1 1 14rem; min-width: 0; }
 .room-bar .players > :first-child { margin-left: auto; } /* right-aligned, and still scrollable when it overflows */
@@ -821,6 +831,12 @@ h1, h2, h3 { margin: 0; }
 }
 @media (max-width: 29.99rem) {
   .listen-label { flex-basis: 100%; }
+  .guess-actions .btn { padding-inline: 1rem; }
+  .guess-actions .btn-primary { min-width: 5.5rem; }
+}
+/* The smallest phones drop the volume slider for room; the phone's own buttons set the volume. */
+@media (max-width: 23.99rem) {
+  .volume { display: none; }
 }
 /* The tagline only where it fits on one line beside the tools. */
 @media (min-width: 30rem) and (max-width: 55.99rem) {
@@ -832,10 +848,9 @@ h1, h2, h3 { margin: 0; }
 @media (min-width: 56rem) {
   html { font-size: clamp(15px, 2.4vh, 19px); }
   .app { max-width: 68rem; min-height: 100dvh; display: flex; flex-direction: column; padding: 0 2rem 1rem; }
-  .masthead { grid-template-columns: 1fr auto 1fr; grid-template-areas: 'mark modes tools'; padding-top: 1.1rem; }
+  .masthead { padding-top: 1.1rem; }
   .wordmark { font-size: 2.1rem; }
-  .modes { width: 30rem; }
-  .tools { justify-self: end; }
+  .modes { width: 30rem; justify-self: center; }
   main { flex: 1; display: grid; align-content: center; }
   .mode { padding-block: 1.25rem; gap: 1.25rem; }
   .mode > .toolbar:not(.room-bar) { align-self: flex-start; max-width: 100%; }
@@ -854,6 +869,10 @@ h1, h2, h3 { margin: 0; }
   .quick-intro h1 { font-size: 3rem; }
   .pool-body { grid-template-columns: 1fr 1fr; gap: 1.1rem 2rem; max-height: calc(100dvh - 10rem); }
   .pool-body > fieldset:nth-of-type(-n + 2), .pool-done, .pool-warn { grid-column: 1 / -1; }
+}
+@media (min-width: 75rem) {
+  .masthead { grid-template-columns: 1fr auto 1fr; grid-template-areas: 'mark modes tools'; }
+  .tools { justify-self: end; }
 }
 /* Short laptop windows (1366×768 with browser chrome leaves about 650 px). */
 @media (min-width: 56rem) and (max-height: 760px) {

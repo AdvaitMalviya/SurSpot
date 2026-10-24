@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState, type CSSProperties } from 'react';
 import { HelpDialog, StatsDialog } from './components/Dialogs';
 import { setVolume } from './lib/audio';
-import { DEFAULT_POOL, loadCatalog, shuffle, type Pool, type Song } from './lib/catalog';
+import { DEFAULT_POOL, loadCatalog, type Pool, type Song } from './lib/catalog';
 import { buildIndex } from './lib/search';
 import { load, save } from './lib/storage';
 import { Daily } from './modes/Daily';
@@ -38,9 +38,6 @@ export default function App() {
   useEffect(() => { loadCatalog().then(setSongs, () => setFailed(true)); }, []);
   useEffect(() => { setVolume(prefs.volume); save('prefs', prefs); }, [prefs]);
   const index = useMemo(() => (songs ? buildIndex(songs) : []), [songs]);
-  // The backdrop is a wall of 40 random covers, repeated to fill the screen. Small thumbnails: it sits behind a veil.
-  const covers = useMemo(() => (songs ? shuffle(songs.filter((s) => s.artwork)).slice(0, 40)
-    .map((s) => s.artwork!.replace(/\/\d+x\d+bb\./, '/120x120bb.')) : []), [songs]);
 
   const changePool = (p: Pool) => { setPool(p); save('pool', p); };
   const closeDialog = () => {
@@ -51,9 +48,6 @@ export default function App() {
   return (
     <>
       <div className="backdrop" aria-hidden="true">
-        <div className="wall">
-          {covers.length > 0 && Array.from({ length: 240 }, (_, i) => <img key={i} src={covers[(i * 7) % covers.length]} alt="" />)}
-        </div>
         <div className="backdrop-art" />
       </div>
       <div className="app">

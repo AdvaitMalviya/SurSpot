@@ -57,7 +57,7 @@ export const LEVELS = {
 } as const;
 export type Level = keyof typeof LEVELS;
 
-export const LANGUAGES = { all: 'Hindi and Punjabi', hindi: 'Hindi', punjabi: 'Punjabi' } as const;
+export const LANGUAGES = { all: 'Both', hindi: 'Hindi', punjabi: 'Punjabi' } as const;
 export type Language = keyof typeof LANGUAGES;
 
 export interface Pool {
