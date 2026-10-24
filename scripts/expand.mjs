@@ -1,4 +1,7 @@
 // Grow the catalog past the curated seed: node scripts/expand.mjs [--plan] [--offline] [--fresh] [--years 1990-1999] [--films N]
+// Add to it instead: node --env-file=.env scripts/expand.mjs --add --years 2000-2026 --quota 40
+//   keeps data/expanded.json as it is, skips films already in it, looks up Last.fm listeners for the new songs
+//   (into data/popularity.json) and writes data/expand-add-report.md.
 //   1. Wikipedia "List of Hindi films of <year>" pages give each year's films and their article titles.
 //   2. Wikipedia pageviews (last 60 days) rank them; the most-read films of each year are kept.
 //   3. Each film's soundtrack album is found on iTunes: same name, closest release year, never a dialogue,
@@ -16,14 +19,18 @@ import {
   DATA, net, sleep, readJson, writeJson, writeJsonRows, itunesJson, slugify, skeleton, basicNorm, stripDecorations, decorations,
   splitArtists, artwork600, decadeOf, throttleInterval,
 } from './lib.mjs';
+import { lastfmStats, listenersFor } from './lastfm.mjs';
+import { cutsByDecade, tierFor } from './tiers.mjs';
 
 const args = process.argv.slice(2);
 const opt = (f) => { const i = args.indexOf(f); return i >= 0 ? args[i + 1] : null; };
-const offline = args.includes('--offline'), fresh = args.includes('--fresh'), plan = args.includes('--plan');
+const offline = args.includes('--offline'), fresh = args.includes('--fresh'), plan = args.includes('--plan'), add = args.includes('--add');
 const [fromYear, toYear] = (opt('--years') ?? `1950-${new Date().getFullYear()}`).split('-').map(Number);
 const filmLimit = Number(opt('--films')) || Infinity;
-const quota = (y) => (y < 1980 ? 12 : y < 2000 ? 15 : 18); // films kept per year, about 6,000 songs in all
-const partial = opt('--years') || filmLimit < Infinity;
+const quota = (y) => Number(opt('--quota')) || (y < 1980 ? 12 : y < 2000 ? 15 : 18); // films kept per year, about 6,000 songs in all
+const partial = !add && (opt('--years') || filmLimit < Infinity);
+const EXPANDED = join(DATA, 'expanded.json');
+const prev = add ? readJson(EXPANDED) : [];
 
 // ---------------------------------------------------------------- Wikipedia (cached on disk like the iTunes calls)
 // Wikimedia allows 200 requests a minute to clients whose User-Agent carries contact details (10 without).
@@ -235,6 +242,10 @@ for (const fs of Map.groupBy(films, (f) => decadeOf(f.year)).values()) {
   fs.sort((a, b) => b.views - a.views).forEach((f, i) => { const q = i / fs.length; f.tier = q < 0.15 ? 2 : q < 0.5 ? 3 : 4; });
 }
 films.sort((a, b) => a.tier - b.tier || b.views - a.views);
+if (add) {
+  const have = new Set(prev.map((s) => `${key(s.movie)}|${s.year}`));
+  films = films.filter((f) => !have.has(`${key(f.name)}|${f.year}`));
+}
 films = films.slice(0, filmLimit);
 console.log(`  keeping ${films.length} films`);
 if (plan) {
@@ -256,9 +267,9 @@ for (const [i, film] of films.entries()) {
 }
 
 const seed = existsSync(join(DATA, 'catalog.json')) ? readJson(join(DATA, 'catalog.json')) : [];
-const taken = new Set(seed.map((s) => s.trackId));
-const takenKey = new Set(seed.map((s) => `${key(s.title)}|${key(s.movie)}`));
-const ids = new Set(seed.map((s) => s.id));
+const taken = new Set([...seed, ...prev].map((s) => s.trackId));
+const takenKey = new Set([...seed, ...prev].map((s) => `${key(s.title)}|${key(s.movie)}`));
+const ids = new Set([...seed, ...prev].map((s) => s.id));
 const songs = [];
 let dupes = 0;
 for (let i = 0; i < found.length; i += 8) {
@@ -278,6 +289,20 @@ for (let i = 0; i < found.length; i += 8) {
 }
 
 const POPULARITY = join(DATA, 'popularity.json');
+if (add) {
+  // Listeners for the new songs, tiered on the same per-decade cut points as data/popularity.json (scripts/popularity.mjs)
+  const pop = existsSync(POPULARITY) ? readJson(POPULARITY) : {};
+  const cuts = cutsByDecade(seed.filter((s) => pop[s.id]).map((s) => ({ year: s.year, tier: s.tier, listeners: pop[s.id].listeners })));
+  console.log(`  looking up Last.fm listeners for ${songs.length} new songs...`);
+  const queue = songs.filter((s) => !pop[s.id]);
+  await Promise.all(Array.from({ length: 4 }, async () => {
+    for (let s; (s = queue.shift()); ) {
+      const listeners = await listenersFor(s, { offline });
+      if (listeners) pop[s.id] = { listeners, tier: tierFor(cuts, s.year, listeners) };
+    }
+  }));
+  writeFileSync(POPULARITY, '{\n' + Object.entries(pop).map(([k, v]) => `${JSON.stringify(k)}:${JSON.stringify(v)}`).join(',\n') + '\n}\n');
+}
 if (existsSync(POPULARITY)) {
   const pop = readJson(POPULARITY);
   for (const s of songs) s.tier = pop[s.id]?.tier ?? Math.max(s.tier, 3);
@@ -288,10 +313,10 @@ const perDecade = Object.fromEntries([...Map.groupBy(songs, (s) => decadeOf(s.ye
 const perTier = Object.fromEntries([...Map.groupBy(songs, (s) => s.tier)].map(([t, xs]) => [t, xs.length]));
 if (partial) console.log('\nPartial run: data/expanded.json not written.');
 else {
-  writeJsonRows(join(DATA, 'expanded.json'), songs);
-  writeFileSync(join(DATA, 'expand-report.md'), [
-    '# Catalog expansion report', '',
-    `Generated by \`node scripts/expand.mjs\`. ${films.length} films kept from ${all.length} listed, ${found.length} soundtracks found, `
+  writeJsonRows(EXPANDED, add ? [...prev, ...songs].sort((a, b) => a.year - b.year || a.id.localeCompare(b.id)) : songs);
+  writeFileSync(join(DATA, add ? 'expand-add-report.md' : 'expand-report.md'), [
+    add ? '# Catalog additions report' : '# Catalog expansion report', '',
+    `Generated by \`node ${add ? '--env-file=.env ' : ''}scripts/expand.mjs ${args.join(' ')}\`. ${films.length} films kept from ${all.length} listed, ${found.length} soundtracks found, `
       + `${songs.length} new songs (${dupes} already in the catalog).`, '',
     `Songs per decade: ${Object.entries(perDecade).map(([d, n]) => `${d} ${n}`).join(', ')}.`,
     `Songs per tier: ${Object.entries(perTier).map(([t, n]) => `tier ${t} ${n}`).join(', ')}.`, '',
@@ -301,4 +326,4 @@ else {
 }
 console.log(`\nDone in ${Math.round((Date.now() - t0) / 1000)}s: ${found.length}/${films.length} soundtracks, ${songs.length} new songs `
   + `(${dupes} duplicates skipped). Decades ${JSON.stringify(perDecade)}, tiers ${JSON.stringify(perTier)}. `
-  + `${net.calls} iTunes calls, ${net.cacheHits} cached, ${net.throttled} throttled.`);
+  + `${net.calls} iTunes calls, ${net.cacheHits} cached, ${net.throttled} throttled; Last.fm ${lastfmStats.calls} calls.`);

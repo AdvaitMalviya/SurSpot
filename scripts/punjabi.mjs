@@ -9,7 +9,8 @@
 //   4. Tiers: Last.fm listeners (track.search, the same count scripts/popularity.mjs uses) on the curated songs' scale.
 // Drops anything already in data/catalog.json or data/expanded.json. Writes data/punjabi.json and data/punjabi-report.md.
 // --plan stops after step 2 (Last.fm only) and prints the artists and candidates. --limit N looks up only the
-// N best-known candidates and writes nothing.
+// N best-known candidates and writes nothing. --add keeps data/punjabi.json as it is and adds only songs not already
+// in it (report in data/punjabi-add-report.md); --per-artist N raises how many top tracks each artist may give.
 import { existsSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import {
@@ -21,7 +22,7 @@ import { cutsByDecade, tierFor } from './tiers.mjs';
 
 const args = process.argv.slice(2);
 const opt = (f) => { const i = args.indexOf(f); return i >= 0 ? args[i + 1] : null; };
-const offline = args.includes('--offline'), plan = args.includes('--plan');
+const offline = args.includes('--offline'), plan = args.includes('--plan'), add = args.includes('--add');
 const limit = Number(opt('--limit')) || Infinity;
 if (!process.env.LASTFM_API_KEY && !offline) {
   console.error('No Last.fm key. Put LASTFM_API_KEY=... in .env and run: node --env-file=.env scripts/punjabi.mjs');
@@ -29,7 +30,7 @@ if (!process.env.LASTFM_API_KEY && !offline) {
 }
 
 const MIN_LISTENERS = 1000; // Last.fm listeners of the artist's own track page
-const PER_ARTIST = 20;
+const PER_ARTIST = Number(opt('--per-artist')) || 20;
 const SIGNATURE = { n: 2, min: 400 }; // an artist's two best-known songs count from 400 listeners (folk legends scrobble little)
 
 // ---------------------------------------------------------------- artists
@@ -42,7 +43,9 @@ const STARS = [
   'Kulwinder Billa', 'Khan Saab', 'Yo Yo Honey Singh', 'Jasmine Sandlas', 'Nooran Sisters', 'Gurlez Akhtar', 'Prem Dhillon', 'Navaan Sandhu',
   'Cheema Y', 'Gulab Sidhu', 'Navv Inder', 'Elly Mangat', 'Gurinder Gill', 'Shinda Kahlon', 'Jyotica Tangri', 'Baani Sandhu', 'Kanwar Grewal',
   'Sippy Gill', 'Kamal Heer', 'Inderjit Nikku', 'Dilpreet Dhillon', 'Jenny Johal', 'Kambi', 'Hunar Sidhu', 'Kaur B', 'Gurmeet Bawa',
-  'Narinder Biba', 'Wadali Brothers', 'Sukhbir', 'Juggy D',
+  'Narinder Biba', 'Wadali Brothers', 'Sukhbir', 'Juggy D', 'Amrit Maan', 'Jassa Dhillon', 'Nirvair Pannu', 'Harkirat Sangha',
+  'Simar Doraha', 'Gur Sidhu', 'Sultaan', 'Akhil', 'Jass Bajwa', 'Raj Ranjodh', 'Jasmeen Akhtar', 'Varinder Brar', 'Sabi Bhinder',
+  'Karan Randhawa', 'Veer Sandhu', 'Hustinder', 'Mankirat Pannu', 'Deep Jandu', 'Sukh-E Muzical Doctorz', 'Ranjit Bawa', 'Kulbir Jhinjer',
 ];
 // On the tag list, but mostly Hindi film or Urdu songs (or someone else entirely on the same Last.fm page)
 const NOT_PUNJABI = new Set([
@@ -110,6 +113,7 @@ function judge(c, r) {
   if (!creditHits([c.artist], r.artistName ?? '').length) why.push(`credited to ${r.artistName}`);
   if (!r.previewUrl) why.push('no preview');
   if (r.primaryGenreName === 'Bollywood') why.push('filed as Bollywood');
+  if (/^(telugu|tamil|kannada|malayalam|bengali|marathi|gujarati)$/i.test(r.primaryGenreName ?? '')) why.push(`filed as ${r.primaryGenreName}`);
   if ((r.trackTimeMillis ?? 0) < 60000) why.push('under a minute');
   for (const d of decorations(r.trackName)) {
     const clean = d.replace(/["“”‘’']/g, '').trim();
@@ -148,6 +152,10 @@ console.log(`${artists.length} artists; reading their Last.fm top tracks...`);
 let cands = [];
 for (const a of artists) cands.push(...await candidatesFor(a));
 cands.sort((a, b) => b.listeners - a.listeners || a.title.localeCompare(b.title));
+const PUNJABI = join(DATA, 'punjabi.json');
+const prev = add ? readJson(PUNJABI) : [];
+const prevByTitle = Map.groupBy(prev, (s) => titleKey(s.title));
+if (add) cands = cands.filter((c) => !(prevByTitle.get(titleKey(c.title)) ?? []).some((s) => creditHits(s.singers, c.artist).length));
 console.log(`  ${cands.length} candidate songs (>= ${MIN_LISTENERS} listeners, at most ${PER_ARTIST} per artist)`);
 if (plan) {
   const per = Map.groupBy(cands, (c) => c.artist);
@@ -200,7 +208,7 @@ for (const [i, c] of cands.entries()) {
 const curated = readJson(join(DATA, 'catalog.json'));
 const pop = readJson(join(DATA, 'popularity.json'));
 const cuts = cutsByDecade(curated.filter((s) => pop[s.id]).map((s) => ({ year: s.year, tier: s.tier, listeners: pop[s.id].listeners })));
-const ids = new Set(hindi.map((s) => s.id));
+const ids = new Set([...hindi, ...prev].map((s) => s.id));
 const songs = [], dupes = [];
 for (const { c, r, copies } of accepted) {
   const title = (stripDecorations(r.trackName) || r.trackName).replace(/\s+/g, ' ').trim();
@@ -212,7 +220,7 @@ for (const { c, r, copies } of accepted) {
   const h = inHindi(title, r.artistName);
   if (h) { drop(`in the Hindi catalog as ${h.id}`); continue; }
   if (film && hindiFilms.has(skeleton(movie).join(' '))) { drop(`from the Hindi film "${movie}"`); continue; }
-  const twin = songs.find((s) => s.trackId === r.trackId || (titleKey(s.title) === titleKey(title) && creditHits(s.singers, r.artistName).length));
+  const twin = [...prev, ...songs].find((s) => s.trackId === r.trackId || (titleKey(s.title) === titleKey(title) && creditHits(s.singers, r.artistName).length));
   if (twin) { drop(`same song as ${twin.id}`); continue; }
   let id = `pb-${slugify(title)}-${slugify(singers[0] ?? c.artist)}`;
   if (ids.has(id)) id += `-${year}`;
@@ -252,10 +260,10 @@ if (partial) {
   console.log('\nPartial run: data/punjabi.json not written.');
 }
 else {
-  writeJsonRows(join(DATA, 'punjabi.json'), songs.map(({ _, ...s }) => s));
+  writeJsonRows(PUNJABI, [...prev, ...songs.map(({ _, ...s }) => s)].sort((a, b) => a.year - b.year || a.id.localeCompare(b.id)));
   const md = [
     '# Punjabi songs report', '',
-    `Generated by \`node --env-file=.env scripts/punjabi.mjs\`. ${artists.length} artists, ${cands.length} Last.fm candidates, `
+    `Generated by \`node --env-file=.env scripts/punjabi.mjs ${args.join(' ')}\`.${add ? ` Added to the ${prev.length} songs already in data/punjabi.json.` : ''} ${artists.length} artists, ${cands.length} Last.fm candidates, `
       + `${accepted.length} matched on iTunes, ${songs.length} songs kept (${dupes.length} dropped as duplicates or Hindi catalog songs, `
       + `${rejected.length} not matched).`, '',
     `Songs per decade: ${Object.entries(perDecade).map(([d, n]) => `${d} ${n}`).join(', ')}.`,
@@ -275,7 +283,7 @@ else {
     `## Not matched (${rejected.length})`, '', '| Last.fm title | artist | listeners | why | nearest iTunes track |', '|---|---|---|---|---|',
     ...rejected.map(({ c, why, near }) => `| ${esc(c.title)} | ${esc(c.artist)} | ${c.listeners} | ${esc(why)} | ${near ? `${esc(near.trackName)} / ${esc(near.artistName)} / ${esc(near.collectionName)} / ${esc(near.primaryGenreName)}` : ''} |`), '',
   ].join('\n');
-  writeFileSync(join(DATA, 'punjabi-report.md'), md);
+  writeFileSync(join(DATA, add ? 'punjabi-add-report.md' : 'punjabi-report.md'), md);
 }
 console.log(`\nDone in ${Math.round((Date.now() - t0) / 1000)}s: ${cands.length} candidates, ${accepted.length} matched, ${songs.length} kept `
   + `(${dupes.length} duplicates, ${rejected.length} not matched). Decades ${JSON.stringify(perDecade)}, tiers ${JSON.stringify(perTier)}, `
