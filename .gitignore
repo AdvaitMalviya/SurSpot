@@ -4,3 +4,17 @@ data/.cache/
 .env
 .wrangler/
 server/worker-configuration.d.ts
+
+# AI coding agent files
+.agents/
+.agent/
+.claude/
+.cursor/
+.codex/
+AGENTS.md
+**/AGENTS.md
+*.agent.md
+
+# Environment variants
+.env.*
+!.env.example
