@@ -1,17 +1,17 @@
-/* SurSpot: liquid glass over tie-dyed cloth. The backdrop is bandhani dots over leheriya bands; controls and cards
-   are panes of glass over it, and when a song is revealed its cover floods the cloth with colour.
+/* SurSpot: liquid glass over soft colour. The backdrop is four glows and the faint grooves of a giant record;
+   controls and cards are panes of glass over it, and when a song is revealed its cover floods it with colour.
    Everything is set in Anek (Ek Type), whose width axis does the shouting:
    expanded and heavy for names and scores, normal for reading, semi-condensed where space is tight.
    Corners are concentric: an inner radius is the outer radius minus the padding between them. */
 :root {
   color-scheme: light dark;
-  --base: #e9e5f5;
+  --base: #f4f2fa;
+  --glow-1: rgb(255 61 139 / 0.3);
+  --glow-2: rgb(122 92 255 / 0.24);
+  --glow-3: rgb(255 170 0 / 0.26);
+  --glow-4: rgb(0 190 160 / 0.18);
+  --groove: rgb(29 22 64 / 0.07);
   --veil: rgb(247 245 255 / 0.8);
-  --band-1: #ffdfeb;
-  --band-2: #ffeec4;
-  --band-3: #d6f1e8;
-  --band-4: #e3dcff;
-  --dots: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='56'%3E%3Cg fill='%23ffffff' fill-opacity='0.95'%3E%3Ccircle cx='20.2' cy='14.0' r='2.0'/%3E%3Ccircle cx='17.1' cy='19.4' r='1.8'/%3E%3Ccircle cx='10.9' cy='19.4' r='2.05'/%3E%3Ccircle cx='7.8' cy='14.0' r='1.9'/%3E%3Ccircle cx='10.9' cy='8.6' r='2.0'/%3E%3Ccircle cx='17.1' cy='8.6' r='1.75'/%3E%3Ccircle cx='48.2' cy='42.0' r='2.0'/%3E%3Ccircle cx='45.1' cy='47.4' r='1.8'/%3E%3Ccircle cx='38.9' cy='47.4' r='2.05'/%3E%3Ccircle cx='35.8' cy='42.0' r='1.9'/%3E%3Ccircle cx='38.9' cy='36.6' r='2.0'/%3E%3Ccircle cx='45.1' cy='36.6' r='1.75'/%3E%3Ccircle cx='40.3' cy='12.3' r='1.15'/%3E%3Ccircle cx='43.7' cy='12.3' r='1.15'/%3E%3Ccircle cx='40.3' cy='15.7' r='1.15'/%3E%3Ccircle cx='43.7' cy='15.7' r='1.15'/%3E%3Ccircle cx='12.3' cy='40.3' r='1.15'/%3E%3Ccircle cx='15.7' cy='40.3' r='1.15'/%3E%3Ccircle cx='12.3' cy='43.7' r='1.15'/%3E%3Ccircle cx='15.7' cy='43.7' r='1.15'/%3E%3C/g%3E%3Cg fill='%23f0a000' fill-opacity='0.75'%3E%3Ccircle cx='14' cy='14' r='2.3'/%3E%3Ccircle cx='42' cy='42' r='2.3'/%3E%3C/g%3E%3C/svg%3E");
   --ink: #1d1640;
   --ink-2: rgb(29 22 64 / 0.74);
   --ink-3: rgb(29 22 64 / 0.6);
@@ -43,13 +43,13 @@
 }
 @media (prefers-color-scheme: dark) {
   :root {
-    --base: #120d2a;
+    --base: #110c27;
+    --glow-1: rgb(255 61 139 / 0.3);
+    --glow-2: rgb(110 80 255 / 0.3);
+    --glow-3: rgb(255 160 0 / 0.15);
+    --glow-4: rgb(0 190 160 / 0.16);
+    --groove: rgb(255 255 255 / 0.05);
     --veil: rgb(18 12 42 / 0.82);
-    --band-1: #340f30;
-    --band-2: #1d1652;
-    --band-3: #0b2b37;
-    --band-4: #2b1248;
-    --dots: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='56'%3E%3Cg fill='%23ffffff' fill-opacity='0.2'%3E%3Ccircle cx='20.2' cy='14.0' r='2.0'/%3E%3Ccircle cx='17.1' cy='19.4' r='1.8'/%3E%3Ccircle cx='10.9' cy='19.4' r='2.05'/%3E%3Ccircle cx='7.8' cy='14.0' r='1.9'/%3E%3Ccircle cx='10.9' cy='8.6' r='2.0'/%3E%3Ccircle cx='17.1' cy='8.6' r='1.75'/%3E%3Ccircle cx='48.2' cy='42.0' r='2.0'/%3E%3Ccircle cx='45.1' cy='47.4' r='1.8'/%3E%3Ccircle cx='38.9' cy='47.4' r='2.05'/%3E%3Ccircle cx='35.8' cy='42.0' r='1.9'/%3E%3Ccircle cx='38.9' cy='36.6' r='2.0'/%3E%3Ccircle cx='45.1' cy='36.6' r='1.75'/%3E%3Ccircle cx='40.3' cy='12.3' r='1.15'/%3E%3Ccircle cx='43.7' cy='12.3' r='1.15'/%3E%3Ccircle cx='40.3' cy='15.7' r='1.15'/%3E%3Ccircle cx='43.7' cy='15.7' r='1.15'/%3E%3Ccircle cx='12.3' cy='40.3' r='1.15'/%3E%3Ccircle cx='15.7' cy='40.3' r='1.15'/%3E%3Ccircle cx='12.3' cy='43.7' r='1.15'/%3E%3Ccircle cx='15.7' cy='43.7' r='1.15'/%3E%3C/g%3E%3Cg fill='%23ffc23d' fill-opacity='0.55'%3E%3Ccircle cx='14' cy='14' r='2.3'/%3E%3Ccircle cx='42' cy='42' r='2.3'/%3E%3C/g%3E%3C/svg%3E");
     --ink: #fbf7ff;
     --ink-2: rgb(251 247 255 / 0.76);
     --ink-3: rgb(251 247 255 / 0.6);
@@ -111,8 +111,8 @@ h1, h2, h3 { margin: 0; }
 }
 
 /* ---------------------------------------------------------------- backdrop
-   Bandhani over leheriya, the Rajasthani tie-dyes: wide soft diagonal bands give the glass colour to refract,
-   and tied dot flowers repeat over them as the undyed spots. Pure CSS, so there is nothing to download. */
+   Four soft glows in the palette's colours, for the glass to pick up, and the grooves of a giant record turning
+   in from the corner, faded to nothing before they reach the edges. Pure CSS, so there is nothing to download. */
 .backdrop {
   position: fixed;
   inset: 0;
@@ -120,9 +120,19 @@ h1, h2, h3 { margin: 0; }
   overflow: hidden;
   pointer-events: none;
   background:
-    var(--dots) 0 0 / 56px 56px,
-    repeating-linear-gradient(-35deg, var(--band-1) 0 110px, var(--band-2) 170px 280px, var(--band-3) 340px 450px,
-      var(--band-4) 510px 620px, var(--band-1) 680px);
+    radial-gradient(60vmax 45vmax at 0% 0%, var(--glow-1), transparent 70%),
+    radial-gradient(50vmax 40vmax at 100% 5%, var(--glow-2), transparent 70%),
+    radial-gradient(60vmax 50vmax at 90% 100%, var(--glow-3), transparent 70%),
+    radial-gradient(45vmax 40vmax at 0% 100%, var(--glow-4), transparent 70%),
+    var(--base);
+}
+.backdrop::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: repeating-radial-gradient(circle at 108% 112%, transparent 0 17px, var(--groove) 17.5px 18.5px, transparent 19px 20px);
+  -webkit-mask-image: radial-gradient(circle at 108% 112%, transparent 22%, #000 38%, #000 52%, transparent 80%);
+  mask-image: radial-gradient(circle at 108% 112%, transparent 22%, #000 38%, #000 52%, transparent 80%);
 }
 .backdrop-art {
   position: absolute;
@@ -351,12 +361,14 @@ h1, h2, h3 { margin: 0; }
   cursor: pointer;
   transition: transform 0.35s var(--spring);
 }
+@media (hover: hover) { .record:not(:disabled):hover:not(:active) { transform: scale(1.025); } }
 .record:not(:disabled):active { transform: scale(0.96); }
 .record:disabled { cursor: progress; }
 .record.is-error { cursor: not-allowed; opacity: 0.55; }
 .record-ring { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
 .arc { fill: none; stroke: var(--well-3); stroke-width: 7; stroke-linecap: round; }
 .arc-lit { stroke: var(--ink-3); }
+.arc-now { stroke: var(--rani); stroke-opacity: 0.55; }
 .arc-play { stroke: var(--rani); }
 .disc {
   position: absolute;
@@ -392,6 +404,15 @@ h1, h2, h3 { margin: 0; }
 .disc-sur { font: 700 clamp(1.5rem, 6.5vw, 2rem)/1 var(--deva); color: #ffd36e; margin-top: 0.15em; }
 .disc-len { font: 650 semi-condensed 0.85rem/1 var(--sans); font-variant-numeric: tabular-nums; }
 .record:not(:disabled):hover .disc-label { filter: brightness(1.08); }
+/* A play mark beside the clip length says the record is a button. */
+.record.is-ready:not(.is-playing) .disc-len::before {
+  content: '';
+  display: inline-block;
+  width: 0.55em; height: 0.65em;
+  margin-right: 0.3em;
+  background: currentColor;
+  clip-path: polygon(0 0, 100% 50%, 0 100%);
+}
 .record.is-playing .disc { animation: spin 1.333s linear infinite; } /* 45 rpm */
 .record.is-loading .disc-label { animation: breathe 1.4s ease-in-out infinite; }
 .record:focus-visible { outline-offset: 4px; }
@@ -498,6 +519,19 @@ h1, h2, h3 { margin: 0; }
   font-size: 1.05rem;
   font-weight: 550;
 }
+.guess-field input { padding-left: 2.9rem; }
+/* A magnifier until a song is picked, then that song's cover: the field shows what Guess will send. */
+.guess-lead {
+  position: absolute;
+  left: 8px; top: 8px;
+  width: 2rem; height: 2rem;
+  display: grid;
+  place-items: center;
+  pointer-events: none;
+  color: var(--ink-3);
+}
+.guess-lead svg { width: 1.15rem; height: 1.15rem; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; }
+.guess-lead img { width: 100%; height: 100%; border-radius: 5px; object-fit: cover; animation: pop 0.35s var(--spring); }
 .guess-field input::placeholder, .field input::placeholder { color: var(--ink-3); font-weight: 450; }
 .guess-field input:focus, .field input:focus { outline: none; border-color: var(--rani); box-shadow: 0 0 0 3px var(--rani-soft); }
 .suggest {
@@ -510,16 +544,30 @@ h1, h2, h3 { margin: 0; }
   list-style: none;
   display: flex;
   flex-direction: column-reverse;
-  max-height: min(17rem, 50vh);
+  max-height: min(21rem, 52vh);
   overflow-y: auto;
   scrollbar-width: thin;
   border-radius: 18px;
 }
-.suggest li { flex: none; display: grid; padding: 0.45rem 0.75rem; border-radius: 12px; cursor: pointer; line-height: 1.3; }
+.suggest li {
+  flex: none;
+  display: grid;
+  grid-template-columns: 2.75rem minmax(0, 1fr);
+  align-items: center;
+  gap: 0.75rem;
+  padding: 6px 0.6rem 6px 6px;
+  border-radius: 12px;
+  cursor: pointer;
+  line-height: 1.25;
+}
 .suggest li[aria-selected='true'] { background: var(--rani-soft); }
-.suggest-title { font-weight: 650; }
+.suggest-art { width: 2.75rem; height: 2.75rem; border-radius: 6px; overflow: hidden; background: var(--well-2); }
+.suggest-art img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.suggest-text { display: grid; gap: 0.1rem; min-width: 0; }
+.suggest-title, .suggest-film { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.suggest-title { font-weight: 700; }
 .suggest-film { color: var(--ink-3); font-size: 0.875rem; }
-.suggest .suggest-empty { cursor: default; color: var(--ink-2); }
+.suggest .suggest-empty { display: block; padding: 0.6rem 0.75rem; cursor: default; color: var(--ink-2); line-height: 1.4; }
 .guess-actions { display: flex; justify-content: space-between; gap: 0.75rem; }
 .guess-actions .btn-primary { min-width: 7rem; }
 

@@ -46,6 +46,8 @@ export const isPunjabi = (s: Song) => s.tags.includes('punjabi');
 // "Brown Munde" is a single: no film or album to name.
 export const sourceLabel = (s: Song) => `${s.movie || 'Single'}, ${s.year}`;
 export const devanagariTitle = (s: Song) => s.alt_titles.find((t) => /[ऀ-ॿ]/.test(t)) ?? null;
+// Apple's artwork URLs carry their size ('600x600bb'); any square size can be asked for.
+export const artworkAt = (s: Song, px: number) => s.artwork?.replace(/\/\d+x\d+bb\./, `/${px}x${px}bb.`) ?? null;
 
 // One difficulty per popularity tier: tier 1 is the songs everyone knows, tier 4 the deep cuts.
 // A pool can mix several; none picked means any.

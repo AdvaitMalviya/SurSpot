@@ -42,9 +42,11 @@ export function Record({ stages, unlocked, elapsed, full, span, status, onToggle
         {stages.map((_, i) => {
           const a0 = i * deg + GAP, a1 = (i + 1) * deg - GAP, f = fill(i);
           const lit = full || i <= unlocked;
+          // The arc for this try is rani like its row in the ladder, so the ring and the list read as one.
+          const now = !full && i === unlocked;
           return (
             <g key={i}>
-              <path d={arc(a0, a1)} className={lit ? 'arc arc-lit' : 'arc'} />
+              <path d={arc(a0, a1)} className={now ? 'arc arc-now' : lit ? 'arc arc-lit' : 'arc'} />
               {f > 0 && <path d={arc(a0, a0 + (a1 - a0) * f)} className="arc arc-play" />}
             </g>
           );
