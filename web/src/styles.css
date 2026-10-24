@@ -168,6 +168,8 @@ h1, h2, h3 { margin: 0; }
   color: var(--ink);
   text-decoration: none;
 }
+/* सुर (sur, a note) in Devanagari, then Spot: same weight and width, from Anek's Devanagari cut. */
+.wordmark [lang='hi'] { margin-right: 0.09em; }
 .tagline { display: none; margin: 0.15rem 0 0; color: var(--ink-2); font-size: 0.9rem; }
 
 /* Four equal segments; the lozenge slides to the current one. */
@@ -605,7 +607,7 @@ h1, h2, h3 { margin: 0; }
 .credits { margin: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
 .credits > div { padding: 0.5rem 0.85rem; background: var(--well); border-radius: 12px; min-width: 0; }
 .credits dt { color: var(--ink-3); font-size: 0.8rem; font-weight: 600; }
-.credits dd { margin: 0; font-weight: 600; line-height: 1.3; }
+.credits dd { margin: 0; font-weight: 600; line-height: 1.3; overflow-wrap: anywhere; }
 .listen { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
 .listen-label { flex-basis: 100%; color: var(--ink-3); font-size: 0.9rem; }
 .listen a {

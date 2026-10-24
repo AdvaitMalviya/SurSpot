@@ -53,7 +53,7 @@ export default function App() {
       <div className="app">
         <header className="masthead">
           <div className="brand">
-            <a className="wordmark" href="#/">SurSpot</a>
+            <a className="wordmark" href="#/" aria-label="SurSpot"><span lang="hi">सुर</span>Spot</a>
             <p className="tagline">Name the Bollywood song from a split second of it</p>
           </div>
           <nav className="modes" aria-label="Game modes" style={{ '--i': MODES.findIndex(([r]) => r === route) } as CSSProperties}>
