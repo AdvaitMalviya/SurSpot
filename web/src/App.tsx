@@ -83,9 +83,6 @@ export default function App() {
           {songs && route === 'friends' && <Friends songs={songs} index={index} pool={pool} onPool={changePool} code={room} />}
         </main>
 
-        <footer className="footer">
-          Song previews from Apple Music, film notes from Wikipedia. A fan-made game, not affiliated with Apple or any record label.
-        </footer>
 
         <HelpDialog open={dialog === 'help'} onClose={closeDialog} />
         <StatsDialog open={dialog === 'stats'} onClose={closeDialog} today={today} />
