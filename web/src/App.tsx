@@ -4,6 +4,7 @@ import { setVolume } from './lib/audio';
 import { DEFAULT_POOL, loadCatalog, type Pool, type Song } from './lib/catalog';
 import { buildIndex } from './lib/search';
 import { load, save } from './lib/storage';
+import { trackVisit } from './lib/track';
 import { Daily } from './modes/Daily';
 import { Endless } from './modes/Endless';
 import { Friends } from './modes/Friends';
@@ -36,6 +37,7 @@ export default function App() {
     return () => removeEventListener('hashchange', onHash);
   }, []);
   useEffect(() => { loadCatalog().then(setSongs, () => setFailed(true)); }, []);
+  useEffect(trackVisit, []);
   useEffect(() => { setVolume(prefs.volume); save('prefs', prefs); }, [prefs]);
   const index = useMemo(() => (songs ? buildIndex(songs) : []), [songs]);
 

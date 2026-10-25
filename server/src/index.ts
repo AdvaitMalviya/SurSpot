@@ -11,8 +11,14 @@ import {
   COUNTDOWN_MS, FIRST_COUNTDOWN_MS, MAX_PLAYERS, MAX_SONGS, NAME_LENGTH, ROOM_CODE, ROUND_SECONDS, isDone,
   type Problem, type RoomState, type ToClient, type ToServer,
 } from '../../web/src/lib/room';
+import { MODES, type Beacon, type Report } from '../../web/src/lib/beacon';
+import { STAGES } from '../../web/src/lib/rules';
 
-interface Env { ROOMS: DurableObjectNamespace<Room> }
+interface Env {
+  ROOMS: DurableObjectNamespace<Room>;
+  STATS: DurableObjectNamespace<Stats>;
+  STATS_KEY?: string; // the password for /stats: `node scripts/wrangler.mjs secret put STATS_KEY`
+}
 // Who a socket belongs to (pid stays null until the player says hello), and their tries on the current song.
 interface Seat { code: string; pid: string | null; game: number; round: number; marks: string; ms: number }
 type Stored = Omit<RoomState, 'players' | 'now'> & {
@@ -27,8 +33,10 @@ const GRACE_MS = 20_000;            // how long a song waits for a player who dr
 const MARKS = ['s', 'w', 'f', 'r'];
 
 export default {
-  async fetch(req, env) {
-    const code = new URL(req.url).pathname.match(/^\/rooms\/([A-Z]{4})$/)?.[1];
+  async fetch(req, env, ctx) {
+    const { pathname } = new URL(req.url);
+    if (pathname === '/played' || pathname === '/events' || pathname === '/stats') return stats(req, env, ctx, pathname);
+    const code = pathname.match(/^\/rooms\/([A-Z]{4})$/)?.[1];
     if (!code || !ROOM_CODE.test(code)) return new Response('Not found', { status: 404 });
     if (req.headers.get('Upgrade') !== 'websocket') return new Response('Connect with a WebSocket', { status: 426 });
     return env.ROOMS.get(env.ROOMS.idFromName(code)).fetch(req);
@@ -243,5 +251,123 @@ export class Room extends DurableObject<Env> {
 
   private send(ws: WebSocket, msg: ToClient) {
     try { ws.send(JSON.stringify(msg)); } catch { /* the socket closed meanwhile */ }
+  }
+}
+
+// ---------------------------------------------------------------- play counts
+// Browsers post a note to /played when the page opens and when a song ends (web/src/lib/track.ts); the stats page
+// (web/stats.html) reads the totals back with the STATS_KEY password. Anyone could post a made-up note, so the
+// numbers are as honest as the people sending them: each one is checked for shape and size, nothing more.
+// /events is the first version's address, still taken from pages opened before it changed.
+const CORS = { 'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Headers': 'Authorization' };
+const DAY_MS = 864e5, IST_MS = 5.5 * 3600e3;
+const dayOf = (ms: number) => new Date(ms + IST_MS).toISOString().slice(0, 10);
+
+async function stats(req: Request, env: Env, ctx: ExecutionContext, path: string) {
+  if (req.method === 'OPTIONS') return new Response(null, { status: 204, headers: { ...CORS, 'Access-Control-Max-Age': '86400' } });
+  const tally = env.STATS.get(env.STATS.idFromName('all'));
+  if (path !== '/stats') {
+    if (req.method !== 'POST') return new Response('Post a note', { status: 405, headers: CORS });
+    const text = await req.text();
+    const beacon = text.length <= 8000 ? parseBeacon(text) : null;
+    if (beacon) ctx.waitUntil(tally.record(beacon, String(req.cf?.country ?? 'XX')));
+    return new Response(null, { status: 204, headers: CORS });
+  }
+  if (!env.STATS_KEY) return new Response('Set STATS_KEY on the room server first.', { status: 503, headers: CORS });
+  if (req.headers.get('Authorization') !== `Bearer ${env.STATS_KEY}`) return new Response('Wrong key', { status: 401, headers: CORS });
+  const days = Math.min(Math.max(Math.floor(Number(new URL(req.url).searchParams.get('days'))) || 30, 1), 365);
+  return Response.json(await tally.report(days), { headers: { ...CORS, 'Cache-Control': 'no-store' } });
+}
+
+function parseBeacon(text: string): Beacon | null {
+  let b: { uid?: unknown; rounds?: unknown };
+  try { b = JSON.parse(text); } catch { return null; }
+  const uid = typeof b?.uid === 'string' ? b.uid.slice(0, 64) : '';
+  if (!uid) return null;
+  const rounds = (Array.isArray(b.rounds) ? b.rounds : []).slice(0, 20).filter((r) =>
+    MODES.includes(r?.mode) && typeof r.song === 'string' && r.song.length <= 120 &&
+    Number.isInteger(r.tries) && r.tries >= 0 && r.tries <= STAGES.length);
+  return { uid, rounds: rounds.map((r) => ({ mode: r.mode, song: r.song, won: !!r.won, tries: r.tries })) };
+}
+
+// Every count in one Durable Object's SQLite. A beacon writes one row per song, and on a player's first beacon of
+// the day one row for the visit (and one more the first time ever); repeats change nothing. The free plan's
+// 100,000 row writes a day are shared with the rooms, so that is a few tens of thousands of songs a day.
+export class Stats extends DurableObject<Env> {
+  sql = this.ctx.storage.sql;
+
+  constructor(ctx: DurableObjectState, env: Env) {
+    super(ctx, env);
+    this.sql.exec(`
+      CREATE TABLE IF NOT EXISTS players (uid TEXT PRIMARY KEY, first TEXT NOT NULL) WITHOUT ROWID;
+      CREATE TABLE IF NOT EXISTS visits (day TEXT, uid TEXT, country TEXT, PRIMARY KEY (day, uid)) WITHOUT ROWID;
+      CREATE TABLE IF NOT EXISTS rounds (ts INTEGER, day TEXT, uid TEXT, mode TEXT, song TEXT, won INTEGER, tries INTEGER);
+      CREATE INDEX IF NOT EXISTS rounds_day ON rounds (day);
+    `);
+  }
+
+  record(b: Beacon, country: string) {
+    const now = Date.now(), day = dayOf(now);
+    this.sql.exec('INSERT OR IGNORE INTO players VALUES (?, ?)', b.uid, day);
+    this.sql.exec('INSERT OR IGNORE INTO visits VALUES (?, ?, ?)', day, b.uid, country);
+    for (const r of b.rounds) {
+      this.sql.exec('INSERT INTO rounds VALUES (?, ?, ?, ?, ?, ?, ?)', now, day, b.uid, r.mode, r.song, r.won ? 1 : 0, r.tries);
+    }
+  }
+
+  report(days: number): Report {
+    const now = Date.now(), today = dayOf(now), from = dayOf(now - (days - 1) * DAY_MS);
+    const all = <T extends Record<string, SqlStorageValue>>(q: string, ...args: SqlStorageValue[]) => this.sql.exec<T>(q, ...args).toArray();
+    const one = <T extends Record<string, SqlStorageValue>>(q: string, ...args: SqlStorageValue[]) => all<T>(q, ...args)[0];
+    type Totals = { players: number; rounds: number; solved: number };
+
+    const byDay = new Map<string, Report['days'][number]>();
+    const dayRow = (day: string) => byDay.get(day) ?? byDay.set(day, { day, players: 0, newPlayers: 0, rounds: 0, solved: 0 }).get(day)!;
+    for (const r of all<{ day: string; n: number }>('SELECT day, count(*) AS n FROM visits WHERE day >= ? GROUP BY day', from)) dayRow(r.day).players = r.n;
+    for (const r of all<{ day: string; n: number }>('SELECT first AS day, count(*) AS n FROM players WHERE first >= ? GROUP BY first', from)) dayRow(r.day).newPlayers = r.n;
+    for (const r of all<{ day: string; n: number; solved: number }>('SELECT day, count(*) AS n, sum(won) AS solved FROM rounds WHERE day >= ? GROUP BY day', from)) {
+      Object.assign(dayRow(r.day), { rounds: r.n, solved: r.solved });
+    }
+
+    // The daily song counts each player once, by their first finish.
+    const daily = new Map<string, Report['daily'][number]>();
+    for (const r of all<{ song: string; day: string; won: number; tries: number; n: number }>(
+      `SELECT song, min(day) AS day, won, tries, count(*) AS n FROM
+         (SELECT song, uid, min(day) AS day, won, tries FROM rounds WHERE mode = 'daily' AND day >= ? GROUP BY song, uid)
+       GROUP BY song, won, tries`, from)) {
+      const d = daily.get(r.song) ?? daily.set(r.song, { song: r.song, day: r.day, players: 0, dist: STAGES.map(() => 0), missed: 0 }).get(r.song)!;
+      d.players += r.n;
+      d.day = r.day < d.day ? r.day : d.day;
+      if (r.won) d.dist[r.tries - 1] += r.n; else d.missed += r.n;
+    }
+
+    const hours = Array<number>(24).fill(0);
+    for (const r of all<{ hour: number; n: number }>('SELECT (ts / 1000 + 19800) % 86400 / 3600 AS hour, count(*) AS n FROM rounds WHERE day >= ? GROUP BY hour', from)) hours[r.hour] = r.n;
+
+    return {
+      today,
+      from,
+      playingNow: one<{ n: number }>('SELECT count(DISTINCT uid) AS n FROM rounds WHERE ts >= ?', now - 30 * 60e3).n,
+      allTime: one<Totals>('SELECT (SELECT count(*) FROM players) AS players, count(*) AS rounds, coalesce(sum(won), 0) AS solved FROM rounds'),
+      range: one<Totals & { newPlayers: number }>(
+        `SELECT (SELECT count(DISTINCT uid) FROM visits WHERE day >= ?) AS players, (SELECT count(*) FROM players WHERE first >= ?) AS newPlayers,
+           count(*) AS rounds, coalesce(sum(won), 0) AS solved FROM rounds WHERE day >= ?`, from, from, from),
+      days: [...byDay.values()].sort((a, b) => a.day.localeCompare(b.day)),
+      modes: all<Report['modes'][number]>(
+        `SELECT mode, count(*) AS rounds, sum(won) AS solved, count(DISTINCT uid) AS players, avg(CASE WHEN won = 1 THEN tries END) AS tries
+         FROM rounds WHERE day >= ? GROUP BY mode`, from),
+      daily: [...daily.values()].sort((a, b) => b.day.localeCompare(a.day)),
+      // Everyone gets the same daily song, so it would top every list: these are the songs people picked pools for.
+      topSongs: all<Report['topSongs'][number]>(
+        `SELECT song, count(*) AS plays, sum(won) AS solved FROM rounds WHERE day >= ? AND mode != 'daily'
+         GROUP BY song ORDER BY plays DESC, solved DESC LIMIT 10`, from),
+      // Quick pick's four choices make any song easier, so only the clip modes count here.
+      hardSongs: all<Report['hardSongs'][number]>(
+        `SELECT song, count(*) AS plays, sum(won) AS solved FROM rounds WHERE day >= ? AND mode IN ('play', 'friends')
+         GROUP BY song HAVING plays >= 3 ORDER BY 1.0 * solved / plays, plays DESC LIMIT 10`, from),
+      hours,
+      countries: all<Report['countries'][number]>(
+        'SELECT country, count(DISTINCT uid) AS players FROM visits WHERE day >= ? GROUP BY country ORDER BY players DESC LIMIT 10', from),
+    };
   }
 }

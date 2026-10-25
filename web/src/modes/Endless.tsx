@@ -7,6 +7,7 @@ import { inPool, type Pool, type Song } from '../lib/catalog';
 import { POINTS, outcome, type Attempt } from '../lib/game';
 import type { buildIndex } from '../lib/search';
 import { recordEndless } from '../lib/stats';
+import { trackSong } from '../lib/track';
 
 interface Props {
   songs: Song[];
@@ -52,6 +53,7 @@ export function Endless({ songs, index, pool, onPool }: Props) {
     const r = { score: run.score + (won ? POINTS[all.length - 1] : 0), streak: won ? run.streak + 1 : 0, played: run.played + 1, solved: run.solved + (won ? 1 : 0) };
     setRun(r);
     recordEndless(won, r.streak, r.score);
+    trackSong({ mode: 'play', song: song.id, won, tries: all.length });
     recent.current = [song.id, ...recent.current].slice(0, Math.floor(candidates.length / 2));
   };
   const goNext = () => { setSong(next ?? pick(song?.id)); setAttempts([]); };

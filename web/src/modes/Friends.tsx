@@ -11,6 +11,7 @@ import {
 } from '../lib/room';
 import type { buildIndex } from '../lib/search';
 import { load, save } from '../lib/storage';
+import { trackSongOnce } from '../lib/track';
 
 interface Props {
   songs: Song[];
@@ -284,6 +285,11 @@ function Game({ room, me, isHost, hostName, song, index, send, serverNow }: {
     const t = setInterval(() => send({ type: 'time', round }), 2000);
     return () => clearInterval(t);
   }, [timeUp, round, send]);
+  // The song counts for the stats page once its answer shows, and only once if the page reloads on the answer.
+  useEffect(() => {
+    if (phase !== 'reveal' || !song) return;
+    trackSongOnce(`room-${room.code}-${room.startsAt}`, { mode: 'friends', song: song.id, won: outcome(attempts) === 'won', tries: attempts.length });
+  }, [phase, song]);
 
   const notDone = room.players.filter((p) => p.pid !== me.pid && !isDone(room.results[round]?.[p.pid]));
   const others = notDone.filter((p) => p.online), dropped = notDone.filter((p) => !p.online);

@@ -5,6 +5,7 @@ import { useClip } from '../components/useClip';
 import { loadClip } from '../lib/audio';
 import { decadeOf, inPool, shuffle, type Pool, type Song } from '../lib/catalog';
 import { quickStats, recordQuick } from '../lib/stats';
+import { trackSong } from '../lib/track';
 
 const ROUNDS = 10, LIMIT = 15, CLIP = 5;
 
@@ -57,6 +58,7 @@ export function QuickPick({ songs, pool, onPool }: { songs: Song[]; pool: Pool; 
     const next = [...answers, { id, points }];
     setAnswers(next);
     setShown(i);
+    trackSong({ mode: 'quick', song: round.song.id, won: id === round.song.id, tries: 1 });
     if (next.length === rounds!.length) recordQuick(next.reduce((n, a) => n + a.points, 0));
     const after = rounds![i + 1];
     if (after) loadClip(after.song).catch(() => {});

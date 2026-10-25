@@ -5,6 +5,7 @@ import { dailySong, istDate, msToNextDay, type Song } from '../lib/catalog';
 import { STAGES, outcome, shareGrid, type Attempt } from '../lib/game';
 import type { buildIndex } from '../lib/search';
 import { dailyGame, recordDaily, saveDailyGame } from '../lib/stats';
+import { trackSongOnce } from '../lib/track';
 
 const clock = (ms: number) => {
   const s = Math.floor(ms / 1000);
@@ -35,6 +36,7 @@ export function Daily({ songs, index, onStats }: { songs: Song[]; index: ReturnT
     const r = outcome(all);
     if (r !== 'playing') {
       recordDaily(number, r === 'won', all.length);
+      trackSongOnce(`daily-${date}`, { mode: 'daily', song: song.id, won: r === 'won', tries: all.length });
       setTimeout(() => onStats(r === 'won' ? all.length : 0), 1800);
     }
   };

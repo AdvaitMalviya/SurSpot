@@ -55,3 +55,10 @@ far fewer listeners than one from 2015.
 The audio is the 30-second preview that Apple's iTunes API provides for each track, played straight from Apple
 and cut to exact lengths in the browser. SurSpot doesn't store or host any audio. The songs belong to their
 rights holders.
+
+## What gets counted
+
+To know how many people play, the game sends a small anonymous note when you open it and when each song ends:
+the mode, the song, whether you got it and on which try. It carries a random id made by your browser, never your
+name, your guesses or anything else about you, and your country comes from the connection. Blocking it changes
+nothing in the game.
