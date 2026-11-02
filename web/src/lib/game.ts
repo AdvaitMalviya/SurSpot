@@ -5,7 +5,7 @@ import { POINTS, STAGES } from './rules';
 export { POINTS, STAGES };
 
 export type Verdict = 'right' | 'film' | 'wrong';
-export type Attempt = { kind: 'skip' } | { kind: 'guess'; id: string; title: string; movie: string; verdict: Verdict };
+export type Attempt = { kind: 'skip'; gaveUp?: true } | { kind: 'guess'; id: string; title: string; movie: string; verdict: Verdict };
 export type Outcome = 'playing' | 'won' | 'lost';
 
 export function judge(guess: Song, answer: Song): Verdict {
@@ -18,6 +18,12 @@ export function outcome(attempts: Attempt[]): Outcome {
   if (attempts.some((a) => a.kind === 'guess' && a.verdict === 'right')) return 'won';
   return attempts.length >= STAGES.length ? 'lost' : 'playing';
 }
+
+// Giving up skips every try that's left at once, so the round ends (and scores, and reaches a room's server)
+// exactly as running out of tries does. The flag only changes what the answer card says.
+export const giveUp = (attempts: Attempt[]): Attempt[] =>
+  Array.from({ length: STAGES.length - attempts.length }, () => ({ kind: 'skip', gaveUp: true }));
+export const gaveUp = (attempts: Attempt[]) => attempts.some((a) => a.kind === 'skip' && a.gaveUp);
 
 export const fmtSeconds = (s: number) => (s < 1 ? `${s.toFixed(1).replace(/^0/, '')} s` : `${s} s`);
 

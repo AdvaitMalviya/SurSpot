@@ -29,8 +29,8 @@ export function Daily({ songs, index, onStats }: { songs: Song[]; index: ReturnT
   }, [date]);
 
   const o = outcome(attempts);
-  const onAttempt = (a: Attempt) => {
-    const all = [...attempts, a];
+  const onAttempt = (...a: Attempt[]) => {
+    const all = [...attempts, ...a];
     setAttempts(all);
     saveDailyGame(date, { attempts: all });
     const r = outcome(all);

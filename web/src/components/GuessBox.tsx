@@ -7,7 +7,7 @@ interface Props {
   exclude: string[];
   disabled?: boolean;
   onGuess: (song: Song) => void;
-  children?: ReactNode; // extra actions beside the Guess button (Skip)
+  children?: ReactNode; // extra actions beside the Guess button (Skip, Give up)
 }
 
 // Combobox over the whole catalog, so the suggestions never narrow down to the current pool.

@@ -1,7 +1,7 @@
 import { useEffect, useRef, type ReactNode } from 'react';
 import type { Song } from '../lib/catalog';
 import { audioRunning } from '../lib/audio';
-import { POINTS, STAGES, clues, fmtSeconds, judge, outcome, type Attempt } from '../lib/game';
+import { POINTS, STAGES, clues, fmtSeconds, giveUp, judge, outcome, type Attempt } from '../lib/game';
 import type { buildIndex } from '../lib/search';
 import { GuessBox } from './GuessBox';
 import { Record } from './Record';
@@ -11,7 +11,7 @@ interface Props {
   song: Song;
   index: ReturnType<typeof buildIndex>;
   attempts: Attempt[];
-  onAttempt: (a: Attempt) => void;
+  onAttempt: (...a: Attempt[]) => void; // several at once when the player gives up
   onSkipSong?: () => void; // offered when the preview can't be loaded
   reveal?: ReactNode;      // replaces the tries and guess box once the round is over
   ended?: boolean;         // the round was closed from outside (time ran out in a room)
@@ -47,7 +47,7 @@ export function ClipRound({ song, index, attempts, onAttempt, onSkipSong, reveal
   }, [attempts.length, shown, done, stage, status, autoplay, play, playHook]);
 
   const toggle = () => (playing ? stop() : play(full ?? STAGES[stage], full ? clip!.onset : undefined));
-  const skipLabel = stage === STAGES.length - 1 ? 'Give up' : `Skip, hear ${fmtSeconds(STAGES[stage + 1])}`;
+  const lastTry = stage === STAGES.length - 1; // skipping it would only give up, so Give up stands alone
 
   const songClues = clues(song);
   const kindOf = (i: number) => {
@@ -121,7 +121,8 @@ export function ClipRound({ song, index, attempts, onAttempt, onSkipSong, reveal
             <GuessBox index={index} disabled={status === 'error'}
               exclude={attempts.flatMap((a) => (a.kind === 'guess' ? [a.id] : []))}
               onGuess={(g) => onAttempt({ kind: 'guess', id: g.id, title: g.title, movie: g.movie, verdict: judge(g, song) })}>
-              <button type="button" className="btn btn-quiet" onClick={() => onAttempt({ kind: 'skip' })}>{skipLabel}</button>
+              {!lastTry && <button type="button" className="btn btn-quiet" onClick={() => onAttempt({ kind: 'skip' })}>Skip, hear {fmtSeconds(STAGES[stage + 1])}</button>}
+              <button type="button" className="btn btn-ghost" onClick={() => onAttempt(...giveUp(attempts))}>Give up</button>
             </GuessBox>
           </>
         )}

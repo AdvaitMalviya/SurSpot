@@ -255,6 +255,8 @@ h1, h2, h3 { margin: 0; }
 .btn-quiet { background: var(--well-2); color: var(--ink); }
 .btn-quiet:not(:disabled):hover { background: var(--well-3); }
 .btn-quiet:disabled { color: var(--ink-3); cursor: not-allowed; }
+.btn-ghost { background: none; color: var(--ink-2); }
+.btn-ghost:not(:disabled):hover { background: var(--well-2); color: var(--ink); }
 .btn, .chip, .pool-edit, .listen a, .tag, .strip li, .segmented span { white-space: nowrap; }
 .link { border: 0; background: none; padding: 0; color: var(--rani); font-weight: 600; text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
 
@@ -592,8 +594,8 @@ h1, h2, h3 { margin: 0; }
 .suggest-title { font-weight: 700; }
 .suggest-film { color: var(--ink-3); font-size: 0.875rem; }
 .suggest .suggest-empty { display: block; padding: 0.6rem 0.75rem; cursor: default; color: var(--ink-2); line-height: 1.4; }
-.guess-actions { display: flex; justify-content: space-between; gap: 0.75rem; }
-.guess-actions .btn-primary { min-width: 7rem; }
+.guess-actions { display: flex; flex-wrap: wrap; gap: 0.75rem; }
+.guess-actions .btn-primary { min-width: 7rem; margin-left: auto; }
 
 /* ---------------------------------------------------------------- reveal */
 .reveal { display: grid; gap: 0.9rem; align-content: start; animation: pop 0.5s var(--spring); }
@@ -900,15 +902,42 @@ h1, h2, h3 { margin: 0; }
 
 /* ---------------------------------------------------------------- phones and tablets
    One column, so the guess box has to stay near the record. Locked clues are left out: the ladder already says
-   which try adds which clue, and each one appears here as it opens. */
+   which try adds which clue, and each one appears here as it opens.
+   Even so a round is taller than most phones, and grows with every clue, so the guess box docks at the bottom of
+   the screen and Skip and Give up are always a tap away. A sticky box can't leave its parent, so the tries card
+   steps aside (display: contents) to make the whole round the dock's parent, and the ladder wears the card's
+   glass instead. Docked, the guess box floats over the ladder, so it is solid like the popovers, and it stays
+   under the toolbar's popover. */
 @media (max-width: 55.99rem) {
   .clues { grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr)); }
   .clue:not(.is-open), .clues:not(:has(.is-open)) { display: none; }
   .try { min-height: 2.4rem; }
+  .round-main:has(> .guess) { display: contents; }
+  .round-main > .tries {
+    padding: 16px;
+    border-radius: 28px;
+    background: var(--glass);
+    -webkit-backdrop-filter: blur(22px) saturate(1.8);
+    backdrop-filter: blur(22px) saturate(1.8);
+    border: 1px solid var(--rim);
+    box-shadow: inset 1px 1px 0 var(--spec), inset -1px -1px 0 var(--spec-2), 0 18px 40px -20px var(--drop);
+  }
+  .round-main > .guess {
+    position: sticky;
+    bottom: 8px;
+    z-index: 2;
+    padding: 10px;
+    border-radius: 22px;
+    background: var(--pop, var(--glass-thick));
+    border: 1px solid var(--rim);
+    box-shadow: inset 1px 1px 0 var(--spec), 0 24px 50px -16px var(--drop);
+  }
 }
 @media (max-width: 29.99rem) {
+  .guess-actions { gap: 0.5rem; }
   .guess-actions .btn { padding-inline: 1rem; }
-  .guess-actions .btn-primary { min-width: 5.5rem; }
+  .guess-actions .btn-ghost { padding-inline: 0.6rem; }
+  .guess-actions .btn-primary { min-width: 5rem; }
 }
 /* The smallest phones drop the volume slider for room; the phone's own buttons set the volume. */
 @media (max-width: 23.99rem) {

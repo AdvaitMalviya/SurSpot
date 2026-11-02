@@ -5,7 +5,7 @@ import { Reveal } from '../components/Reveal';
 import { ROOMS_URL, loadMe, useRoom, type Me } from '../components/useRoom';
 import { loadClip, unlockAudio } from '../lib/audio';
 import { inPool, shuffle, type Pool, type Song } from '../lib/catalog';
-import { POINTS, outcome, type Attempt } from '../lib/game';
+import { POINTS, gaveUp, outcome, type Attempt } from '../lib/game';
 import {
   NAME_LENGTH, ROOM_CODE, isDone, newRoomCode, pointsFor, standings, type Mark, type Result, type RoomState,
 } from '../lib/room';
@@ -261,8 +261,8 @@ function Game({ room, me, isHost, hostName, song, index, send, serverNow }: {
   const [local, setLocal] = useState(() => load(key, { startsAt: 0, attempts: [] as Attempt[] }));
   const attempts = local.startsAt === room.startsAt && local.attempts.length >= (server?.marks.length ?? 0)
     ? local.attempts : fromMarks(server);
-  const onAttempt = (a: Attempt) => {
-    const next = { startsAt: room.startsAt, attempts: [...attempts, a] };
+  const onAttempt = (...a: Attempt[]) => {
+    const next = { startsAt: room.startsAt, attempts: [...attempts, ...a] };
     setLocal(next); save(key, next);
   };
   // Tries the server hasn't recorded yet (just made, or made while the connection was down) go out again;
@@ -295,7 +295,8 @@ function Game({ room, me, isHost, hostName, song, index, send, serverNow }: {
   const others = notDone.filter((p) => p.online), dropped = notDone.filter((p) => !p.online);
   const o = outcome(attempts);
   const n = attempts.length;
-  const headline = o === 'won' ? (n === 1 ? 'First try!' : `Got it on try ${n}`) : o === 'lost' ? 'Out of tries.' : 'Time’s up.';
+  const headline = o === 'won' ? (n === 1 ? 'First try!' : `Got it on try ${n}`)
+    : o === 'lost' ? (gaveUp(attempts) ? 'You gave up.' : 'Out of tries.') : 'Time’s up.';
   const total = room.songs.length;
 
   return (
@@ -334,7 +335,7 @@ function Game({ room, me, isHost, hostName, song, index, send, serverNow }: {
             </section>
           ) : undefined}
           reveal={
-            <Reveal song={song} headline={o === 'playing' ? 'Time’s up. It was this one.' : o === 'won' ? headline : 'Out of tries. It was this one.'}
+            <Reveal song={song} headline={o === 'won' ? headline : `${headline} It was this one.`}
               detail={o === 'won' ? `+${POINTS[n - 1]} points` : undefined}>
               {isHost
                 ? <button type="button" className="btn btn-primary" autoFocus onClick={() => { unlockAudio(); send({ type: 'next' }); }}>

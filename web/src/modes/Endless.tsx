@@ -4,7 +4,7 @@ import { PoolPicker } from '../components/PoolPicker';
 import { Reveal } from '../components/Reveal';
 import { loadClip } from '../lib/audio';
 import { inPool, type Pool, type Song } from '../lib/catalog';
-import { POINTS, outcome, type Attempt } from '../lib/game';
+import { POINTS, gaveUp, outcome, type Attempt } from '../lib/game';
 import type { buildIndex } from '../lib/search';
 import { recordEndless } from '../lib/stats';
 import { trackSong } from '../lib/track';
@@ -43,9 +43,9 @@ export function Endless({ songs, index, pool, onPool }: Props) {
     if (n) loadClip(n).catch(() => {});
   }, [song, pick]);
 
-  const onAttempt = (a: Attempt) => {
+  const onAttempt = (...a: Attempt[]) => {
     if (!song) return;
-    const all = [...attempts, a];
+    const all = [...attempts, ...a];
     setAttempts(all);
     const o = outcome(all);
     if (o === 'playing') return;
@@ -76,7 +76,8 @@ export function Endless({ songs, index, pool, onPool }: Props) {
         <ClipRound key={song.id} song={song} index={index} attempts={attempts} onAttempt={onAttempt} onSkipSong={goNext}
           reveal={
             <Reveal song={song}
-              headline={o === 'won' ? (tries === 1 ? 'First try!' : `Got it on try ${tries}`) : 'Out of tries. It was this one.'}
+              headline={o === 'won' ? (tries === 1 ? 'First try!' : `Got it on try ${tries}`)
+                : `${gaveUp(attempts) ? 'You gave up.' : 'Out of tries.'} It was this one.`}
               detail={o === 'won' ? `+${POINTS[tries - 1]} points` : undefined}>
               <button type="button" className="btn btn-primary" onClick={goNext} autoFocus>Next song</button>
             </Reveal>
