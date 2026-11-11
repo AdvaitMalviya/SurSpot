@@ -12,15 +12,15 @@
 // Otherwise they follow the film's pageviews within its decade: top 15% of films -> 2, next 35% -> 3, the rest -> 4,
 // and once popularity data exists, a song Last.fm has never heard of is at least tier 3.
 // --plan stops after choosing the films (Wikipedia only, no iTunes calls) and prints them per decade.
-import { createHash } from 'node:crypto';
 import { existsSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import {
-  DATA, net, sleep, readJson, writeJson, writeJsonRows, itunesJson, slugify, skeleton, basicNorm, stripDecorations, decorations,
+  DATA, net, readJson, writeJsonRows, itunesJson, slugify, skeleton, basicNorm, stripDecorations, decorations,
   splitArtists, artwork600, decadeOf, throttleInterval,
 } from './lib.mjs';
 import { lastfmStats, listenersFor } from './lastfm.mjs';
 import { cutsByDecade, tierFor } from './tiers.mjs';
+import { wiki as wikiApi } from './wiki.mjs';
 
 const args = process.argv.slice(2);
 const opt = (f) => { const i = args.indexOf(f); return i >= 0 ? args[i + 1] : null; };
@@ -32,34 +32,8 @@ const partial = !add && (opt('--years') || filmLimit < Infinity);
 const EXPANDED = join(DATA, 'expanded.json');
 const prev = add ? readJson(EXPANDED) : [];
 
-// ---------------------------------------------------------------- Wikipedia (cached on disk like the iTunes calls)
-// Wikimedia allows 200 requests a minute to clients whose User-Agent carries contact details (10 without).
-const UA = 'SurSpotCatalog/1.0 (https://github.com/Siddharth-Y26; Bollywood song game catalog builder) node-fetch';
-const WIKI_CACHE = join(DATA, '.cache', 'wiki');
-// One request at a time, at least 350 ms apart (about 170 a minute); a 429 waits out its Retry-After.
-let lastWiki = 0;
-async function wiki(params) {
-  const url = 'https://en.wikipedia.org/w/api.php?' + new URLSearchParams({ format: 'json', formatversion: '2', ...params });
-  const file = join(WIKI_CACHE, createHash('sha1').update(url).digest('hex').slice(0, 20) + '.json');
-  if (!fresh && existsSync(file)) return readJson(file);
-  if (offline) return null;
-  let status = '';
-  for (let attempt = 1; attempt <= 6; attempt++) {
-    const wait = lastWiki + 350 - Date.now();
-    if (wait > 0) await sleep(wait);
-    lastWiki = Date.now();
-    try {
-      const res = await fetch(url, { headers: { 'User-Agent': UA, 'Api-User-Agent': UA }, signal: AbortSignal.timeout(30000) });
-      if (res.ok) { const body = await res.json(); writeJson(file, body); return body; }
-      status = `HTTP ${res.status}`;
-      await sleep(Math.max((Number(res.headers.get('retry-after')) || 0) * 1000, 2000 * attempt));
-    } catch (e) {
-      status = String(e.message ?? e);
-      await sleep(2000 * attempt);
-    }
-  }
-  throw new Error(`Wikipedia request failed (${status}): ${url}`);
-}
+// ---------------------------------------------------------------- Wikipedia (scripts/wiki.mjs, cached on disk)
+const wiki = (params) => wikiApi(params, { offline, fresh });
 
 // Film titles in the year lists are italic links: ''[[Target|Shown]]'' or [[Target|''Shown'']]
 const NOT_FILM = /^(list of|file:|image:|category:|wikipedia:|template:)/i;
