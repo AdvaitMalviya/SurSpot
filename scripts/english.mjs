@@ -107,6 +107,7 @@ const SKIP = new Map([
   ['Bailando|Enrique Iglesias', 'iTunes India has only Descemer Bueno\'s Spanish recording, not the English version that charted'],
   ['Bailando|Descemer Bueno', 'his Spanish recording, not the English version by Enrique Iglesias that charted'],
   ['Sun Is Shining|Bob Marley & The Wailers', 'only the 2020 Robin Schulz remix is on iTunes India'],
+  ['Oh Very Young|Cat Stevens Experience', 'a tribute act, not Cat Stevens'],
 ]);
 const skipOf = (title, artist) => [...SKIP].find(([k]) => { const [t, a] = k.split('|'); return titleKey(t) === titleKey(title) && credited([a], artist); })?.[1] ?? null;
 
@@ -227,6 +228,9 @@ async function languagesOf(pages) {
 // ---------------------------------------------------------------- Last.fm candidates
 // A leading "The" doesn't make another song: "The House of the Rising Sun" is "House of the Rising Sun"
 const titleKey = (t) => skeleton(stripDecorations(t) || t).join(' ').replace(/^the (?=.)/, '');
+// Every key a song's titles give, with and without their brackets: "That's the Way (I Like It)" is also "That's the
+// Way I Like It", "Mama Told Me (Not to Come)" also "Mama Told Me Not to Come"
+const keysOf = (titles) => new Set(titles.flatMap((t) => [titleKey(t), skeleton(t).join(' ').replace(/^the (?=.)/, '')]).filter(Boolean));
 // Carols and Christmas standards everyone has recorded: only the exact recording counts as right, so naming the song
 // isn't enough to get it. Christmas hits that are a singer's own song ("All I Want for Christmas Is You") stay, and
 // a charted recording of a standard comes in through the charts regardless.
@@ -280,7 +284,7 @@ const FINE = /^(feat|featuring|ft|with|prod|produced)\b|^from\b|\bsoundtrack\b|\
 const VERSION = /\b(live|remix(es|ed)?|re ?mix|rem ?x|sing ?along|mix|acoustic|unplugged|karaoke|instrumental|cover|tribute|sped up|speed up|slowed|reverb|lo ?fi|a ?cappella|acapella|demo|extended|club|dub|reprise|re ?recorded|taylors version|orchestral|symphonic|stripped|sessions?|commentary|8d|nightcore|chopped|screwed|medley|mash ?up|rehearsal|alternate|alt|rework(ed)?|re ?edit|piano|video|interlude|skit|spanish|espanol|portuguese|french|italian|german|japanese|korean|mandarin|version|edit)\b/gi;
 const versionWords = (d, own) => (FINE.test(basicNorm(d)) ? [] : (basicNorm(d).match(VERSION) || []).filter((w) => !own.has(w.toLowerCase())));
 const ALBUM_VERSION = /\b(live (at|in|from|on)|in concert|unplugged|karaoke|tribute|instrumentals?|lullab\w*|in the style of|made famous|sing ?along|acoustic|remixes|remixed|covers|piano|orchestra|symphon\w*|workout|fitness|kidz bop|sped up|slowed|lo ?fi|8d|a cappella)\b|^live\b|\blive$/;
-const COVER_ARTIST = /\b(tribute|tributo|for babies|for kids|karaoke|made famous|in the style|originally performed|cover|covers|sing ?along|string quartet|lullaby|piano|orchestra|ensemble|all ?stars|hit crew|chartbusters?|backing tracks?|soundalike|workout|kidz bop|twinkle|vitamin|8 ?bit|nightcore)\b/;
+const COVER_ARTIST = /\b(tribute|tributo|for babies|for kids|experience|karaoke|made famous|in the style|originally performed|cover|covers|sing ?along|string quartet|lullaby|piano|orchestra|ensemble|all ?stars|hit crew|chartbusters?|backing tracks?|soundalike|workout|kidz bop|twinkle|vitamin|8 ?bit|nightcore)\b/;
 const COMPILATION = /\b(greatest hits|best of|the best|hits|highlights|essential|essentials|collection|anthology|gold|platinum|number ones|1s|the singles|singles|now thats what i call|now \d+|classics|love songs|ballads|legend|ultimate|definitive|very best|decade|years|chart|party|workout|top \d+|\d+ (hits|songs)|playlist|throwback|forever|icons?|20th century masters|super hits|smash hits|grammy nominees|pure|vol|volume)\b/;
 // A later edition of the same record: the original release comes first when both are there
 const REISSUE = /\b(anniversary|remix(es)?|extended|deluxe|expanded|edition|remaster(ed)?|reissue|live|version|revisited|re ?recorded)\b/;
@@ -430,8 +434,10 @@ const ENGLISH = join(DATA, 'english.json');
 const removed = []; // songs already in the file that SKIP now leaves out
 const prev = (add ? readJson(ENGLISH) : []).filter((s) => { const why = skipOf(s.title, s.singers[0]); if (why) removed.push({ s, why }); return !why; });
 let todo = cands.filter((c) => !c.language && !c.skip);
-const prevByTitle = Map.groupBy(prev, (s) => titleKey(s.title));
-if (add) todo = cands.filter((c) => !c.language && !c.skip && !(prevByTitle.get(titleKey(c.title)) ?? []).some((s) => credited(s.singers, c.artists[0])));
+const prevByKey = new Map();
+for (const s of prev) for (const k of keysOf([s.title, ...s.alt_titles])) prevByKey.set(k, [...(prevByKey.get(k) ?? []), s]);
+const inPrev = (c) => [...keysOf([c.title])].some((k) => (prevByKey.get(k) ?? []).some((s) => credited(s.singers, c.artists[0])));
+if (add) todo = cands.filter((c) => !c.language && !c.skip && !inPrev(c));
 console.log(`  ${cands.length} candidate songs: ${fromCharts} from the charts, then ${added.listed} from ${ARTISTS.length} listed artists' `
   + `Last.fm pages, ${added.charted} from ${charted.length} more charted artists' pages, ${added.india} from the India chart`
   + `${add ? `; ${todo.length} not already in data/english.json` : ''}`);
@@ -563,6 +569,10 @@ const indian = ['catalog.json', 'expanded.json', 'punjabi.json'].flatMap((f) => 
 const indianTracks = new Set(indian.map((s) => s.trackId));
 const ids = new Set([...indian, ...prev].map((s) => s.id));
 const songs = [], dupes = [], later = [];
+// Songs so far by track and by every title key, to spot the same song twice
+const byTrack = new Map(prev.map((s) => [s.trackId, s]));
+const kept = new Map(prevByKey);
+const keep = (s) => { byTrack.set(s.trackId, s); for (const k of keysOf([s.title, ...s.alt_titles])) kept.set(k, [...(kept.get(k) ?? []), s]); };
 for (const a of accepted) {
   const { c, r, copies } = a;
   const drop = (why) => dupes.push({ c, r, why });
@@ -572,7 +582,8 @@ for (const a of accepted) {
   const { year, from: yearFrom } = releaseYear(a);
   if (!year) { drop('no release date anywhere'); continue; }
   if (year < FROM || year > TO) { later.push({ c, r, year }); continue; }
-  const twin = [...prev, ...songs].find((s) => s.trackId === r.trackId || (titleKey(s.title) === titleKey(title) && credited(s.singers, r.artistName)));
+  const twin = byTrack.get(r.trackId)
+    ?? [...keysOf([title, c.title, cleanTitle(r.trackName)])].flatMap((k) => kept.get(k) ?? []).find((s) => credited(s.singers, r.artistName));
   if (twin) { drop(`same song as ${twin.id}`); continue; }
   let id = `en-${slugify(title)}-${slugify(singers[0] ?? c.artists[0])}`;
   if (ids.has(id)) id += `-${year}`;
@@ -590,6 +601,7 @@ for (const a of accepted) {
     _: { c, r, album: r.collectionName, itunesYear: yearOf(r), wikiYear: a.wikiYear, yearFrom, comp: isCompilation(r), copies,
       fuzzy: titleKey(r.trackName) !== titleKey(c.title) },
   });
+  keep(songs.at(-1));
 }
 
 // Listeners: track.search summed over the credited artists (scripts/lastfm.mjs), or the artist's own track page when higher.
