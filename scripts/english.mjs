@@ -87,9 +87,11 @@ const ARTISTS = [
 ];
 // Last.fm tracks of an artist that are someone else's (a namesake on the same page) or not in English
 const NOT_THEIRS = {};
-// Artists whose Last.fm pages and India-chart songs are mostly in another language: their English hits come in
-// through the charts only
-const OTHER_TONGUE = ['BTS'];
+// Artists whose Last.fm pages and India-chart songs are mostly in another language, or whose page mixes in a namesake
+// (the Rascals with a 2008 UK band, the Highwaymen folk group with the country supergroup, the R&B group Divine with
+// the Indian rapper DIVINE): their hits come in through the charts only
+const OTHER_TONGUE = ['BTS', 'Jimin', 'Marc Anthony'];
+const SHARED_PAGE = ['The Rascals', 'The Highwaymen', 'Divine'];
 // Songs left out by hand (title|first artist), where nothing else catches them. With --add, a song already in
 // data/english.json that matches (by its first singer) comes out of it.
 const SKIP = new Map([
@@ -104,6 +106,7 @@ const SKIP = new Map([
   ['Cuando Me Enamoro|Enrique Iglesias', 'sung in Spanish'],
   ['Bailando|Enrique Iglesias', 'iTunes India has only Descemer Bueno\'s Spanish recording, not the English version that charted'],
   ['Bailando|Descemer Bueno', 'his Spanish recording, not the English version by Enrique Iglesias that charted'],
+  ['Sun Is Shining|Bob Marley & The Wailers', 'only the 2020 Robin Schulz remix is on iTunes India'],
 ]);
 const skipOf = (title, artist) => [...SKIP].find(([k]) => { const [t, a] = k.split('|'); return titleKey(t) === titleKey(title) && credited([a], artist); })?.[1] ?? null;
 
@@ -257,6 +260,11 @@ const ALIAS = {
 };
 const names = (artists) => artists.flatMap((a) => [a, ...(ALIAS[basicNorm(a)] ?? [])]);
 const credited = (artists, credit) => creditHits(names(artists), credit).length > 0;
+// The credit, whole or split into its names ("Prince & The Revolution" -> Prince), is one of the artists exactly
+const exactCredit = (artists, credit) => {
+  const want = new Set([...names(artists), ...artists.flatMap(splitArtists)].map(nameKey));
+  return [credit, ...splitArtists(credit)].some((n) => want.has(nameKey(n)));
+};
 
 function sameTitle(a, b) {
   const A = skeleton(stripDecorations(a) || a), B = skeleton(stripDecorations(b) || b);
@@ -272,7 +280,7 @@ const FINE = /^(feat|featuring|ft|with|prod|produced)\b|^from\b|\bsoundtrack\b|\
 const VERSION = /\b(live|remix(es|ed)?|re ?mix|rem ?x|sing ?along|mix|acoustic|unplugged|karaoke|instrumental|cover|tribute|sped up|speed up|slowed|reverb|lo ?fi|a ?cappella|acapella|demo|extended|club|dub|reprise|re ?recorded|taylors version|orchestral|symphonic|stripped|sessions?|commentary|8d|nightcore|chopped|screwed|medley|mash ?up|rehearsal|alternate|alt|rework(ed)?|re ?edit|piano|video|interlude|skit|spanish|espanol|portuguese|french|italian|german|japanese|korean|mandarin|version|edit)\b/gi;
 const versionWords = (d, own) => (FINE.test(basicNorm(d)) ? [] : (basicNorm(d).match(VERSION) || []).filter((w) => !own.has(w.toLowerCase())));
 const ALBUM_VERSION = /\b(live (at|in|from|on)|in concert|unplugged|karaoke|tribute|instrumentals?|lullab\w*|in the style of|made famous|sing ?along|acoustic|remixes|remixed|covers|piano|orchestra|symphon\w*|workout|fitness|kidz bop|sped up|slowed|lo ?fi|8d|a cappella)\b|^live\b|\blive$/;
-const COVER_ARTIST = /\b(tribute|karaoke|made famous|in the style|originally performed|cover|covers|sing ?along|string quartet|lullaby|piano|orchestra|ensemble|all ?stars|hit crew|chartbusters?|backing tracks?|soundalike|workout|kidz bop|twinkle|vitamin|8 ?bit|nightcore)\b/;
+const COVER_ARTIST = /\b(tribute|tributo|for babies|for kids|karaoke|made famous|in the style|originally performed|cover|covers|sing ?along|string quartet|lullaby|piano|orchestra|ensemble|all ?stars|hit crew|chartbusters?|backing tracks?|soundalike|workout|kidz bop|twinkle|vitamin|8 ?bit|nightcore)\b/;
 const COMPILATION = /\b(greatest hits|best of|the best|hits|highlights|essential|essentials|collection|anthology|gold|platinum|number ones|1s|the singles|singles|now thats what i call|now \d+|classics|love songs|ballads|legend|ultimate|definitive|very best|decade|years|chart|party|workout|top \d+|\d+ (hits|songs)|playlist|throwback|forever|icons?|20th century masters|super hits|smash hits|grammy nominees|pure|vol|volume)\b/;
 // A later edition of the same record: the original release comes first when both are there
 const REISSUE = /\b(anniversary|remix(es)?|extended|deluxe|expanded|edition|remaster(ed)?|reissue|live|version|revisited|re ?recorded)\b/;
@@ -292,6 +300,9 @@ function judge(c, r) {
   const own = new Set(basicNorm([c.title, ...c.artists].join(' ')).split(' '));
   if (!credited(c.artists, r.artistName ?? '')) why.push(`credited to ${r.artistName}`);
   else if ((basicNorm(r.artistName).match(COVER_ARTIST) || []).some((w) => !own.has(w))) why.push(`credited to ${r.artistName}`);
+  // A song from a Last.fm page or the India chart has only that artist's name to go on, so the credit has to name
+  // them exactly: not "Nirvana Tributo Brasil", "Drake DeVille" or "Paul McCartney Experience"
+  else if (!c.charts.length && !exactCredit(c.artists, r.artistName ?? '')) why.push(`credited to ${r.artistName}`);
   if (!r.previewUrl) why.push('no preview');
   const genre = r.primaryGenreName ?? '';
   if (INDIAN.test(genre) || (OTHER_LANGUAGE.test(genre) && !c.english)) why.push(`filed as ${genre}`);
@@ -377,7 +388,7 @@ function addCand(t, via, artist) {
   byKey.set(titleKey(t.title), [...(byKey.get(titleKey(t.title)) ?? []), n]);
   added[via]++;
 }
-const elsewhere = new Set(OTHER_TONGUE.map(nameKey));
+const elsewhere = new Set([...OTHER_TONGUE, ...SHARED_PAGE].map(nameKey));
 for (const a of ARTISTS) for (const t of await topTracks(a)) addCand(t, 'listed', a);
 // Everyone else who leads two or more English chart songs, as Billboard names them
 const listedKeys = new Set(ARTISTS.map(nameKey));

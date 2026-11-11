@@ -19,8 +19,11 @@ export const writeJsonRows = (p, rows) => { mkdirSync(dirname(p), { recursive: t
 // ---------------------------------------------------------------- iTunes API: cache + throttle
 // Research §7: ~20/min documented; a burst of 44 back-to-back calls passed, the 45th got 429 + Retry-After 5.
 // Start at ~30/min and adapt (AIMD): speed up 10% after a clean streak, slow down 1.6x on every 429.
+// Long runs at that pace end in a 403 block after a couple of thousand calls; ITUNES_MS=3000 holds them at the
+// documented ~20/min (never faster).
 export const net = { calls: 0, cacheHits: 0, throttled: 0, errors: 0, t0: Date.now() };
-const throttle = { interval: 2000, min: 1200, max: 30000, last: 0, streak: 0 };
+const floorMs = Number(process.env.ITUNES_MS) || 0;
+const throttle = { interval: Math.max(2000, floorMs), min: Math.max(1200, floorMs), max: 30000, last: 0, streak: 0 };
 export const throttleInterval = () => throttle.interval;
 
 const cacheFile = (url) => join(CACHE_DIR, createHash('sha1').update(url).digest('hex').slice(0, 20) + '.json');

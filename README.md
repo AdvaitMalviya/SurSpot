@@ -49,14 +49,14 @@ colours of the song's cover.
 
 ## The songs
 
-About 20,500 songs: 9,400 Hindi, mostly from films, 1,150 Punjabi and 9,950 English. Every song has a difficulty from Easy
+About 21,400 songs: 9,400 Hindi, mostly from films, 1,150 Punjabi and 10,900 English. Every song has a difficulty from Easy
 (everyone knows it) to Expert (a deep cut), and a pool can mix any of them. About 1,200 songs were picked and
 tagged by hand with moods and difficulty. The rest come from the soundtracks of the most-read Hindi films on
 Wikipedia and the best-known tracks of Punjabi artists on Last.fm. Their difficulty is set by how many
 Last.fm listeners they have, compared decade by decade with the hand-tagged songs, since a hit from 1965 has
 far fewer listeners than one from 2015.
 
-The 9,950 English songs run from 1950 to now: Billboard's year-end chart for each year, plus the best-known
+The 10,900 English songs run from 1950 to now: Billboard's year-end chart for each year, plus the best-known
 tracks of English-language artists Indian listeners know well, from Jim Reeves, ABBA and Boney M. to Westlife,
 Linkin Park and Sabrina Carpenter, the best-known tracks of everyone else with two or more chart hits, and the
 songs by those artists on Last.fm's chart for India. Their difficulty comes from Last.fm listeners too, measured
