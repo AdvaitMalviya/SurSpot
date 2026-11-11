@@ -28,7 +28,8 @@ song on Apple Music, Spotify and YouTube.
 There are four ways to play:
 
 - **Play**: endless songs from a pool you choose by era, mood, how well known the songs are, language
-  (any mix of Hindi, Punjabi and English; Hindi and Punjabi to start with), and singer or composer.
+  (any mix of Hindi, Punjabi and English; Hindi and Punjabi to start with), and singer or composer. A song you've
+  heard doesn't come back until you've heard the rest of the pool, and the browser remembers what you've heard.
 - **Daily**: one Hindi song a day, the same for everyone, changing at midnight India time. Share your result as a
   row of coloured squares.
 - **Quick pick**: ten songs, four choices each, fifteen seconds per answer.
@@ -48,18 +49,20 @@ colours of the song's cover.
 
 ## The songs
 
-About 18,200 songs: 9,400 Hindi, mostly from films, 1,150 Punjabi and 7,700 English. Every song has a difficulty from Easy
+About 20,500 songs: 9,400 Hindi, mostly from films, 1,150 Punjabi and 9,950 English. Every song has a difficulty from Easy
 (everyone knows it) to Expert (a deep cut), and a pool can mix any of them. About 1,200 songs were picked and
 tagged by hand with moods and difficulty. The rest come from the soundtracks of the most-read Hindi films on
 Wikipedia and the best-known tracks of Punjabi artists on Last.fm. Their difficulty is set by how many
 Last.fm listeners they have, compared decade by decade with the hand-tagged songs, since a hit from 1965 has
 far fewer listeners than one from 2015.
 
-The 7,700 English songs run from 1950 to now: Billboard's year-end chart for each year, plus the best-known
+The 9,950 English songs run from 1950 to now: Billboard's year-end chart for each year, plus the best-known
 tracks of English-language artists Indian listeners know well, from Jim Reeves, ABBA and Boney M. to Westlife,
-Linkin Park and Sabrina Carpenter. Their difficulty comes from Last.fm listeners too, measured decade by decade
-against 285 hand-tagged English songs. Songs that rank high on Last.fm's chart for India count as easier, and so do
-the best-known songs of those artists. English is off until you pick it in the pool, and the daily song stays Hindi.
+Linkin Park and Sabrina Carpenter, the best-known tracks of everyone else with two or more chart hits, and the
+songs by those artists on Last.fm's chart for India. Their difficulty comes from Last.fm listeners too, measured
+decade by decade against 286 hand-tagged English songs. Songs that rank high on Last.fm's chart for India count as
+easier, and so do the best-known songs of those artists; album tracks that never charted anywhere count as harder.
+English is off until you pick it in the pool, and the daily song stays Hindi.
 
 The audio is the 30-second preview that Apple's iTunes API provides for each track, played straight from Apple
 and cut to exact lengths in the browser. SurSpot doesn't store or host any audio. The songs belong to their

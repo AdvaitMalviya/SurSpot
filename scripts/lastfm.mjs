@@ -31,6 +31,8 @@ export async function lastfm(params, { offline = false } = {}) {
       body = await res.json().catch(() => null);
       lastfmStats.calls++;
       if (res.ok && body && !body.error) { writeJson(file, body); return body; }
+      // 6: no such artist or track. That is the answer, so it is kept like any other and not retried.
+      if (body?.error === 6) { writeJson(file, body); return body; }
       if (body?.error === 10 || body?.error === 26) throw new Error(`Last.fm rejected the API key: ${body.message}`);
     } catch (e) {
       if (/API key/.test(e.message)) throw e;

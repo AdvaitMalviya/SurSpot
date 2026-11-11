@@ -1,6 +1,7 @@
-// English songs: node --env-file=.env scripts/english.mjs [--plan] [--offline] [--limit N] [--years 1990-2026] [--add]
+// English songs: node --env-file=.env scripts/english.mjs [--plan] [--offline] [--limit N] [--years 1990-2026] [--add] [--cached]
 //   1. Candidates: Billboard's Year-End Hot 100 for each year (Wikipedia), plus the Last.fm top tracks of ARTISTS,
-//      the singers and bands Indian listeners know well, many of whom US charts undercount.
+//      the singers and bands Indian listeners know well, many of whom US charts undercount; the top tracks of everyone
+//      else who leads two or more English chart songs; and Last.fm's India chart, for songs by any of those artists.
 //   2. iTunes: "<title> <artist>", then the artist's 200 top songs, then the title alone. A track counts when the title
 //      matches, the credit names the artist, it has a preview, it is not filed under an Indian or non-English genre,
 //      and it is the studio recording: radio edits, single versions and remasters are fine; live, remixed, acoustic,
@@ -19,7 +20,7 @@ import { existsSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import {
   DATA, net, readJson, writeJsonRows, itunesJson, searchUrl, slugify, skeleton, basicNorm, stripDecorations, decorations,
-  creditHits, lev, artwork600, decadeOf, throttleInterval, splitArtists,
+  creditHits, lev, artwork600, decadeOf, throttleInterval, splitArtists, isCached,
 } from './lib.mjs';
 import { lastfm, lastfmStats, listenersFor } from './lastfm.mjs';
 import { cutsByDecade, tierFor } from './tiers.mjs';
@@ -36,9 +37,12 @@ if (!process.env.LASTFM_API_KEY && !offline) {
 }
 
 const LAST_CHART = 2025;       // Billboard's Year-End list for a year comes out in December
-const PER_ARTIST = Number(opt('--per-artist')) || 12;
+const PER_ARTIST = Number(opt('--per-artist')) || 30;
 const MIN_LISTENERS = 20000;   // an artist's own Last.fm track page...
 const SHARE_OF_TOP = 0.2;      // ...and at least a fifth of the listeners of their best-known song
+const PER_CHARTED = 10;        // songs from the page of an artist not on ARTISTS who leads two or more chart songs...
+const MIN_CHARTED = 50000;     // ...each with at least this many listeners
+const PER_INDIA = 30;          // songs per artist from Last.fm's India chart
 
 // ---------------------------------------------------------------- artists
 // English-language singers and bands Indian listeners know. Many were bigger in India than on the US charts
@@ -83,13 +87,25 @@ const ARTISTS = [
 ];
 // Last.fm tracks of an artist that are someone else's (a namesake on the same page) or not in English
 const NOT_THEIRS = {};
-// Candidates left out by hand (title|first artist), where nothing else catches them
+// Artists whose Last.fm pages and India-chart songs are mostly in another language: their English hits come in
+// through the charts only
+const OTHER_TONGUE = ['BTS'];
+// Songs left out by hand (title|first artist), where nothing else catches them. With --add, a song already in
+// data/english.json that matches (by its first singer) comes out of it.
 const SKIP = new Map([
   ['Al di là|Emilio Pericoli', 'sung in Italian'],
   ['Banana Boat (Day-O)|Harry Belafonte', 'the same song as his "Day-O (The Banana Boat Song)"'],
   ["It's in the Book|Johnny Standley", 'a spoken comedy routine, not a song'],
   ['St. George and the Dragonet|Stan Freberg', 'a spoken comedy routine, not a song'],
+  ['Mi Tierra|Gloria Estefan', 'sung in Spanish'],
+  ['Corazón Espinado|Santana', 'sung in Spanish'],
+  ['Oye Como Va|Santana', 'sung in Spanish'],
+  ['Loba|Shakira', 'the Spanish version of "She Wolf"'],
+  ['Cuando Me Enamoro|Enrique Iglesias', 'sung in Spanish'],
+  ['Bailando|Enrique Iglesias', 'iTunes India has only Descemer Bueno\'s Spanish recording, not the English version that charted'],
+  ['Bailando|Descemer Bueno', 'his Spanish recording, not the English version by Enrique Iglesias that charted'],
 ]);
+const skipOf = (title, artist) => [...SKIP].find(([k]) => { const [t, a] = k.split('|'); return titleKey(t) === titleKey(title) && credited([a], artist); })?.[1] ?? null;
 
 // ---------------------------------------------------------------- Billboard Year-End Hot 100 (Wikipedia)
 // Links become placeholders first, so a linked name like [[Hootie & the Blowfish]] stays one artist.
@@ -206,18 +222,19 @@ async function languagesOf(pages) {
 }
 
 // ---------------------------------------------------------------- Last.fm candidates
-const titleKey = (t) => skeleton(stripDecorations(t) || t).join(' ');
+// A leading "The" doesn't make another song: "The House of the Rising Sun" is "House of the Rising Sun"
+const titleKey = (t) => skeleton(stripDecorations(t) || t).join(' ').replace(/^the (?=.)/, '');
 // Carols and Christmas standards everyone has recorded: only the exact recording counts as right, so naming the song
 // isn't enough to get it. Christmas hits that are a singer's own song ("All I Want for Christmas Is You") stay, and
 // a charted recording of a standard comes in through the charts regardless.
 const STANDARD = /^(jingle bells|silent night|sleigh ride|silver bells|white christmas|winter wonderland|o holy night|have yourself a merry little christmas|the christmas song|let it snow|deck the halls?|the first noel|o come all ye faithful|hark the herald|(the )?little drummer boy|frosty the snowman|rudolph the red nosed reindeer|santa claus is coming? to town|its beginning to look a lot like christmas|ill be home for christmas|marys boy child|away in a manger|ave maria|amazing grace|o little town of bethlehem|we wish you a merry christmas|god rest ye merry gentlemen|joy to the world|the twelve days of christmas|o christmas tree)\b/;
-async function topTracks(artist) {
+async function topTracks(artist, per = PER_ARTIST, min = MIN_LISTENERS) {
   // Last.fm reads a '+' in a name as a space, so it is sent encoded twice (Florence + the Machine)
   const b = await lastfm({ method: 'artist.gettoptracks', artist: artist.replace(/\+/g, '%2B'), limit: '50', autocorrect: '1' }, { offline });
   const merged = new Map();
   for (const t of b?.toptracks?.track ?? []) {
     const title = (stripDecorations(t.name) || t.name).replace(/\s+/g, ' ').trim();
-    if (!/[a-z]/i.test(title) || /^(intro|outro|interlude|skit|untitled)$/i.test(title) || STANDARD.test(basicNorm(title))) continue;
+    if (!/[a-z0-9]/i.test(title) || /^(intro|outro|interlude|skit|untitled)$/i.test(title) || STANDARD.test(basicNorm(title))) continue;
     if (NOT_THEIRS[artist]?.some((n) => titleKey(n) === titleKey(title))) continue;
     const k = titleKey(title);
     if (!k) continue;
@@ -227,8 +244,8 @@ async function topTracks(artist) {
     else if (listeners > m.listeners) m.listeners = listeners;
   }
   const all = [...merged.values()].sort((a, b) => b.listeners - a.listeners);
-  const floor = Math.max(MIN_LISTENERS, (all[0]?.listeners ?? 0) * SHARE_OF_TOP);
-  return all.filter((c) => c.listeners >= floor).slice(0, PER_ARTIST).map((c, i) => ({ ...c, artistRank: i + 1 }));
+  const floor = Math.max(min, (all[0]?.listeners ?? 0) * SHARE_OF_TOP);
+  return all.filter((c) => c.listeners >= floor).slice(0, per).map((c, i) => ({ ...c, artistRank: i + 1 }));
 }
 
 // ---------------------------------------------------------------- matching
@@ -261,7 +278,7 @@ const COMPILATION = /\b(greatest hits|best of|the best|hits|highlights|essential
 const REISSUE = /\b(anniversary|remix(es)?|extended|deluxe|expanded|edition|remaster(ed)?|reissue|live|version|revisited|re ?recorded)\b/;
 // Indian genres (those songs are in the Hindi and Punjabi catalogs) and genres sung in another language
 const INDIAN = /^(bollywood|indian|indian pop|indian classical|indian folk|punjabi|punjabi pop|regional indian|tamil|telugu|kannada|malayalam|bengali|marathi|gujarati|sufi & ghazals|devotional & spiritual)$/i;
-const OTHER_LANGUAGE = /^(.* in spanish|latin|latino|pop latino|latin pop|latin urban|urbano latino|latin rap|reggaeton|música mexicana|musica mexicana|regional mexican|mexicano|música tropical|tropical|salsa|bachata|cumbia|k-pop|j-pop|cantopop|mandopop|c-pop|brazilian|mpb|sertanejo|axé|pagode|funk brasileiro|french pop|variété française|chanson|german pop|schlager|deutschpop|italian pop|arabic|turkish)$/i;
+const OTHER_LANGUAGE = /^(.* in spanish|latin|latino|pop latino|latin pop|latin urban|urbano latino|latin rap|reggaeton|música mexicana|musica mexicana|regional mexican|mexicano|música tropical|tropical|salsa|salsa and tropical|bachata|cumbia|k-pop|j-pop|cantopop|mandopop|c-pop|brazilian|mpb|sertanejo|axé|pagode|funk brasileiro|french pop|variété française|chanson|german pop|schlager|deutschpop|italian pop|arabic|turkish)$/i;
 
 const albumCore = (r) => (r.collectionName ?? '').replace(/\s*-\s*(single|ep)\s*$/i, '').trim();
 const isCompilation = (r) => /various artists/i.test(r.collectionArtistName ?? '') || COMPILATION.test(basicNorm(albumCore(r)));
@@ -335,30 +352,63 @@ for (const e of charts) {
   byKey.set(titleKey(e.title), [...(byKey.get(titleKey(e.title)) ?? []), n]);
 }
 const fromCharts = cands.length;
-let fromArtists = 0;
-for (const a of ARTISTS) {
-  for (const t of await topTracks(a)) {
-    const c = findCand(t.title, t.artists);
-    if (c) {
-      Object.assign(c, { listeners: Math.max(c.listeners, t.listeners), artistRank: Math.min(c.artistRank ?? Infinity, t.artistRank), artistOf: c.artistOf ?? a });
-      c.source = c.source === 'billboard' ? 'both' : c.source;
-      continue;
-    }
-    const n = { title: t.title, artists: t.artists, year: null, rank: null, wiki: null, charts: [], listeners: t.listeners, source: 'lastfm',
-      artistRank: t.artistRank, artistOf: a };
-    cands.push(n);
-    byKey.set(titleKey(t.title), [...(byKey.get(titleKey(t.title)) ?? []), n]);
-    fromArtists++;
+const langs = await languagesOf(cands.filter((c) => c.wiki).map((c) => c.wiki));
+const sungIn = (c) => SUNG_IN_ENGLISH.has(`${c.title}|${c.artists[0]}`);
+const languageOf = (c) => {
+  const l = c.wiki ? langs.get(c.wiki) : null;
+  return l?.size && !l.has('English') && !l.has('Spanglish') && !sungIn(c) ? [...l].join(', ') : null;
+};
+
+// Songs from Last.fm: artist pages, then the India chart. A song already a candidate gains the page's listeners, its
+// rank on the page (pageRank, for offChartTier below) and, from a listed artist's page, artistRank (knownTier below).
+const added = { listed: 0, charted: 0, india: 0 };
+function addCand(t, via, artist) {
+  const c = findCand(t.title, t.artists);
+  if (c) {
+    Object.assign(c, { listeners: Math.max(c.listeners, t.listeners ?? 0), artistOf: c.artistOf ?? artist });
+    if (t.artistRank) c.pageRank = Math.min(c.pageRank ?? Infinity, t.artistRank);
+    if (via === 'listed') c.artistRank = Math.min(c.artistRank ?? Infinity, t.artistRank);
+    if (via !== 'india' && c.source === 'billboard') c.source = 'both';
+    return;
   }
+  const n = { title: t.title, artists: t.artists, year: null, rank: null, wiki: null, charts: [], listeners: t.listeners ?? 0,
+    source: via === 'india' ? 'india' : 'lastfm', artistRank: via === 'listed' ? t.artistRank : undefined, pageRank: t.artistRank, artistOf: artist };
+  cands.push(n);
+  byKey.set(titleKey(t.title), [...(byKey.get(titleKey(t.title)) ?? []), n]);
+  added[via]++;
+}
+const elsewhere = new Set(OTHER_TONGUE.map(nameKey));
+for (const a of ARTISTS) for (const t of await topTracks(a)) addCand(t, 'listed', a);
+// Everyone else who leads two or more English chart songs, as Billboard names them
+const listedKeys = new Set(ARTISTS.map(nameKey));
+const leads = Map.groupBy(cands.filter((c) => c.charts.length && !languageOf(c)), (c) => c.artists[0]);
+const charted = [...leads].filter(([a, cs]) => a && cs.length >= 2 && !listedKeys.has(nameKey(a)) && !elsewhere.has(nameKey(a))).map(([a]) => a);
+for (const a of charted) for (const t of await topTracks(a, PER_CHARTED, MIN_CHARTED)) addCand(t, 'charted', a);
+// Last.fm's India chart: the 10,000 tracks people in India played most last week. It mixes Hindi, Punjabi, Korean and
+// English, so only songs by an artist above (listed, or leading an English chart song) count, PER_INDIA each at most.
+const indiaChart = [];
+for (let page = 1, rank = 0; page <= 200; page++) {
+  const b = await lastfm({ method: 'geo.gettoptracks', country: 'India', limit: '50', page: String(page) }, { offline });
+  const tracks = b?.tracks?.track ?? [];
+  if (!tracks.length) break;
+  for (const t of tracks) indiaChart.push({ name: t.name, artist: t.artist?.name ?? '', rank: ++rank });
+}
+const englishArtists = new Map([...ARTISTS, ...leads.keys()].filter(Boolean).map((a) => [nameKey(a), a]));
+const perIndia = new Map();
+for (const t of indiaChart) {
+  const artist = englishArtists.get(nameKey(t.artist));
+  if (!artist || elsewhere.has(nameKey(artist)) || (perIndia.get(artist) ?? 0) >= PER_INDIA) continue;
+  const title = cleanTitle(stripDecorations(t.name) || t.name);
+  if (!/[a-z0-9]/i.test(title) || /^(intro|outro|interlude|skit|untitled)$/i.test(title) || STANDARD.test(basicNorm(title))) continue;
+  perIndia.set(artist, (perIndia.get(artist) ?? 0) + 1);
+  addCand({ title, artists: [artist] }, 'india', artist);
 }
 knownNames = new Set([...ARTISTS, ...cands.flatMap((c) => c.artists)].map(nameKey));
-const langs = await languagesOf(cands.filter((c) => c.wiki).map((c) => c.wiki));
 for (const c of cands) {
   const l = c.wiki ? langs.get(c.wiki) : null;
-  const sung = SUNG_IN_ENGLISH.has(`${c.title}|${c.artists[0]}`);
-  if (l?.size && !l.has('English') && !l.has('Spanglish') && !sung) c.language = [...l].join(', ');
-  c.english = sung || !!l?.has('English'); // then a K-Pop or Latin genre on iTunes doesn't count against it
-  c.skip = [...SKIP].find(([k]) => { const [t, a] = k.split('|'); return titleKey(t) === titleKey(c.title) && credited([a], c.artists[0]); })?.[1] ?? null;
+  c.language = languageOf(c);
+  c.english = sungIn(c) || !!l?.has('English'); // then a K-Pop or Latin genre on iTunes doesn't count against it
+  c.skip = skipOf(c.title, c.artists[0]);
 }
 const foreign = cands.filter((c) => c.language);
 const skipped = cands.filter((c) => c.skip && !c.language);
@@ -366,11 +416,13 @@ console.log(`  ${foreign.length} charted songs are sung in another language (Wik
 if (plan) for (const c of foreign) console.log(`    ${c.title} | ${c.artists.join(', ')} | ${c.year} | ${c.language}`);
 
 const ENGLISH = join(DATA, 'english.json');
-const prev = add ? readJson(ENGLISH) : [];
+const removed = []; // songs already in the file that SKIP now leaves out
+const prev = (add ? readJson(ENGLISH) : []).filter((s) => { const why = skipOf(s.title, s.singers[0]); if (why) removed.push({ s, why }); return !why; });
 let todo = cands.filter((c) => !c.language && !c.skip);
 const prevByTitle = Map.groupBy(prev, (s) => titleKey(s.title));
 if (add) todo = cands.filter((c) => !c.language && !c.skip && !(prevByTitle.get(titleKey(c.title)) ?? []).some((s) => credited(s.singers, c.artists[0])));
-console.log(`  ${cands.length} candidate songs: ${fromCharts} from the charts, ${fromArtists} more from ${ARTISTS.length} artists' Last.fm pages`
+console.log(`  ${cands.length} candidate songs: ${fromCharts} from the charts, then ${added.listed} from ${ARTISTS.length} listed artists' `
+  + `Last.fm pages, ${added.charted} from ${charted.length} more charted artists' pages, ${added.india} from the India chart`
   + `${add ? `; ${todo.length} not already in data/english.json` : ''}`);
 if (plan) {
   const perYear = Map.groupBy(charts, (e) => e.year);
@@ -390,10 +442,16 @@ const partial = limit < Infinity || !!debug;
 const artistUrl = (artist) => `https://itunes.apple.com/search?${new URLSearchParams({ term: artist, country: 'in', media: 'music', entity: 'song', limit: '200' })}`;
 // A lookup that still fails after itunesJson's retries (the connection dropped) would make its song look missing
 // from iTunes, so the run then writes nothing: replies so far are cached, and running again picks up where it failed.
-const accepted = [], rejected = [], unreachable = [];
+// --cached: iTunes replies from the cache only, for when Apple is refusing requests. A song whose answer needs a lookup
+// not cached yet waits for a later run (with --add it is still missing from data/english.json, so it comes up again);
+// every other song gets the answer it would get online, since lookups stop at the first good copy.
+const cachedOnly = args.includes('--cached');
+const accepted = [], rejected = [], unreachable = [], waiting = [];
 for (const [i, c] of todo.entries()) {
   const seen = new Map(); // trackId -> judged
+  let wait = false;
   const look = async (url) => {
+    if (wait || (cachedOnly && !isCached(url) && (wait = true))) return;
     let body = null;
     try { body = await itunesJson(url, { offline }); } catch (e) { console.log(`  [skip] ${e.message}`); if (!offline) unreachable.push(url); }
     for (const [rank, r] of (body?.results ?? []).entries()) {
@@ -409,7 +467,8 @@ for (const [i, c] of todo.entries()) {
   const judged = [...seen.values()];
   const good = ok();
   if (debug) for (const j of judged) console.log(`    ${j.why.length ? 'x' : 'ok'} ${j.r.releaseDate?.slice(0, 10)} ${j.r.trackName} | ${j.r.artistName} | ${j.r.collectionName} | ${j.r.trackExplicitness} | ${j.r.primaryGenreName}${j.why.length ? ` :: ${j.why.join('; ')}` : ''}`);
-  if (!good.length) {
+  if (wait) waiting.push(c);
+  else if (!good.length) {
     const near = judged.filter((j) => !j.why.some((w) => w.startsWith('credited')));
     const pick = (near.length ? near : judged)[0];
     rejected.push({ c, why: pick ? pick.why.join('; ') : 'no iTunes track with this title', near: pick?.r ?? null });
@@ -497,7 +556,7 @@ for (const a of accepted) {
   const { c, r, copies } = a;
   const drop = (why) => dupes.push({ c, r, why });
   if (indianTracks.has(r.trackId)) { drop('same iTunes track in the Hindi or Punjabi catalog'); continue; }
-  const title = c.source === 'lastfm' ? cleanTitle(r.trackName) : c.title;
+  const title = c.charts.length ? c.title : cleanTitle(r.trackName);
   const singers = singersOf(r.artistName);
   const { year, from: yearFrom } = releaseYear(a);
   if (!year) { drop('no release date anywhere'); continue; }
@@ -517,7 +576,7 @@ for (const a of accepted) {
     trackId: r.trackId, preview: r.previewUrl, artwork: artwork600(r.artworkUrl100),
     appleUrl: r.trackViewUrl?.replace(/[?&]uo=\d+/, '') ?? null, durationMs: r.trackTimeMillis ?? null, confidence: 'auto',
     genre: r.primaryGenreName ?? null, wiki: c.wiki,
-    _: { c, album: r.collectionName, itunesYear: yearOf(r), wikiYear: a.wikiYear, yearFrom, comp: isCompilation(r), copies,
+    _: { c, r, album: r.collectionName, itunesYear: yearOf(r), wikiYear: a.wikiYear, yearFrom, comp: isCompilation(r), copies,
       fuzzy: titleKey(r.trackName) !== titleKey(c.title) },
   });
 }
@@ -535,17 +594,11 @@ await Promise.all(Array.from({ length: 4 }, async () => {
   }
 }));
 
-// Last.fm's India chart: the 10,000 tracks people in India played most last week, with their listeners there.
+// Each song's best rank on Last.fm's India chart (read with the candidates)
 const india = new Map(); // titleKey -> [{ artist, rank }]
-for (let page = 1, rank = 0; page <= 200; page++) {
-  const b = await lastfm({ method: 'geo.gettoptracks', country: 'India', limit: '50', page: String(page) }, { offline });
-  const tracks = b?.tracks?.track ?? [];
-  if (!tracks.length) break;
-  for (const t of tracks) {
-    rank++;
-    const k = titleKey(t.name);
-    india.set(k, [...(india.get(k) ?? []), { artist: t.artist?.name ?? '', rank }]);
-  }
+for (const t of indiaChart) {
+  const k = titleKey(t.name);
+  india.set(k, [...(india.get(k) ?? []), { artist: t.artist, rank: t.rank }]);
 }
 for (const s of songs) {
   const hits = [s.title, ...s.alt_titles].flatMap((t) => india.get(titleKey(t)) ?? []).filter((h) => credited([...s.singers, ...s._.c.artists], h.artist));
@@ -577,10 +630,25 @@ const indiaTier = (tier, rank) => (rank == null || rank > 3000 ? tier : rank <= 
 // Last.fm listeners (mostly Western, and mostly young in India) play them, as with Westlife or Ronan Keating: an artist's
 // top three on Last.fm are at most Medium, the next five at most Hard.
 const knownTier = (tier, rank) => (rank <= 3 ? Math.min(tier, 2) : rank <= 8 ? Math.min(tier, 3) : tier);
+// Last.fm counts album tracks of bands its own listeners love (Radiohead, Nirvana, the Beatles) far above what players
+// in India know. A song on neither Billboard's year-end chart nor India's top 1,000 keeps its tier by listeners only as
+// one of the top three on its artist's page ("Purple Rain", "Don't Speak"); down to tenth it is at best Medium, and
+// further down at best Hard.
+const offChartTier = (tier, c, india) => (c.charts.length || (india != null && india <= 1000) ? tier
+  : (c.pageRank ?? Infinity) <= 3 ? tier : (c.pageRank ?? Infinity) <= 10 ? Math.max(tier, 2) : Math.max(tier, 3));
 for (const s of songs) {
   s._.byListeners = cuts.size ? tierFor(cuts, s.year, s._.listeners) : 4; // a partial run may hold no hand-tagged song
-  s.tier = s._.anchor ?? knownTier(indiaTier(s._.byListeners, s._.india), s._.c.artistRank ?? Infinity);
+  s.tier = s._.anchor ?? knownTier(offChartTier(indiaTier(s._.byListeners, s._.india), s._.c, s._.india), s._.c.artistRank ?? Infinity);
   if (!s._.anchor && s.tier === 1 && !easyDecades.has(decadeOf(s.year))) s.tier = 2;
+}
+// Christmas album tracks that never charted ("Mele Kalikimaka", "Here We Come a-Caroling") stay out unless they are
+// among the best known; Christmas hits come in through the charts.
+for (let i = songs.length - 1; i >= 0; i--) {
+  const s = songs[i];
+  if (s._.anchor || s._.c.charts.length || !/^christmas/i.test(s.genre ?? '') || s.tier <= 2) continue;
+  dupes.push({ c: s._.c, r: s._.r, why: 'a Christmas album track that never charted' });
+  ids.delete(s.id);
+  songs.splice(i, 1);
 }
 
 // ---------------------------------------------------------------- report
@@ -614,12 +682,13 @@ else {
   const md = [
     '# English songs report', '',
     `Generated by \`node --env-file=.env scripts/english.mjs ${args.join(' ')}\`.${add ? ` Added to the ${prev.length} songs already in data/english.json.` : ''} `
-      + `${cands.length} candidates (${fromCharts} from Billboard's Year-End Hot 100, ${fromArtists} from ${ARTISTS.length} artists' Last.fm pages), `
+      + `${cands.length} candidates (${fromCharts} from Billboard's Year-End Hot 100, ${added.listed} from ${ARTISTS.length} listed artists' Last.fm pages, `
+      + `${added.charted} from ${charted.length} more charted artists' pages, ${added.india} from Last.fm's India chart), `
       + `${accepted.length} matched on iTunes, ${songs.length} songs kept. ${later.length} matched songs fall outside ${FROM}–${TO} and are left for a later run, `
-      + `${dupes.length} were duplicates, ${rejected.length} not matched.`, '',
+      + `${dupes.length} were duplicates, ${rejected.length} not matched${waiting.length ? `, ${waiting.length} waiting for iTunes lookups not cached yet (--cached)` : ''}.`, '',
     `Songs per decade: ${Object.entries(perDecade).map(([d, n]) => `${d} ${n}`).join(', ')}.`,
     `Songs per tier: ${Object.entries(perTier).map(([t, n]) => `tier ${t} ${n}`).join(', ')}.`,
-    `Where they came from: ${Object.entries(perSource).map(([k, n]) => `${{ billboard: 'Billboard only', lastfm: 'artist pages only', both: 'both' }[k]} ${n}`).join(', ')}.`,
+    `Where they came from: ${Object.entries(perSource).map(([k, n]) => `${{ billboard: 'Billboard only', lastfm: 'artist pages only', both: 'both', india: 'India chart only' }[k]} ${n}`).join(', ')}.`,
     `Release years from: ${Object.entries(yearsFrom).map(([k, n]) => `${{ wikipedia: 'Wikipedia', chart: 'the chart year', itunes: 'iTunes' }[k]} ${n}`).join(', ')}.`,
     `On Last.fm's India chart: ${songs.filter((s) => s._.india).length} (top 1,000: ${songs.filter((s) => s._.india && s._.india <= 1000).length}).`,
     `iTunes genres: ${genres.map(([g, n]) => `${g} ${n}`).join(', ')}.`, '',
@@ -649,6 +718,7 @@ else {
     ...foreign.map((c) => `| ${esc(c.title)} | ${esc(c.artists.join(', '))} | ${c.year} | ${esc(c.language)} |`), '',
     `## Left out by hand (${skipped.length})`, '', 'The SKIP list in scripts/english.mjs.', '',
     ...skipped.map((c) => `- ${esc(c.title)} (${esc(c.artists[0])}): ${c.skip}`), '',
+    ...(removed.length ? ['Taken out of data/english.json:', '', ...removed.map(({ s, why }) => `- ${esc(s.title)} (${esc(s.singers[0])}, ${s.id}): ${why}`), ''] : []),
     `## Dropped after matching (${dupes.length})`, '', '| candidate | artist | iTunes track | why |', '|---|---|---|---|',
     ...dupes.map(({ c, r, why }) => `| ${esc(c.title)} | ${esc(c.artists[0])} | ${esc(r.trackName)} (${esc(r.collectionName)}) | ${esc(why)} |`), '',
     `## Not matched (${rejected.length})`, '', '| candidate | artists | chart year or listeners | why | nearest iTunes track |', '|---|---|---|---|---|',
@@ -657,6 +727,6 @@ else {
   writeFileSync(join(DATA, add ? 'english-add-report.md' : 'english-report.md'), md);
 }
 console.log(`\nDone in ${Math.round((Date.now() - t0) / 1000)}s: ${todo.length} candidates, ${accepted.length} matched, ${songs.length} kept `
-  + `(${later.length} outside ${FROM}-${TO}, ${dupes.length} duplicates, ${rejected.length} not matched). Decades ${JSON.stringify(perDecade)}, `
+  + `(${later.length} outside ${FROM}-${TO}, ${dupes.length} duplicates, ${rejected.length} not matched, ${waiting.length} waiting for iTunes). Decades ${JSON.stringify(perDecade)}, `
   + `tiers ${JSON.stringify(perTier)}. iTunes ${net.calls} calls, ${net.cacheHits} cached, ${net.throttled} throttled; `
   + `Last.fm ${lastfmStats.calls} calls, ${lastfmStats.cached} cached.`);
