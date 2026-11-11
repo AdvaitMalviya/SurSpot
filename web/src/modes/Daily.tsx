@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { ClipRound } from '../components/ClipRound';
 import { Reveal } from '../components/Reveal';
-import { dailySong, istDate, msToNextDay, type Song } from '../lib/catalog';
+import { DEFAULT_POOL, dailySong, istDate, msToNextDay, type Song } from '../lib/catalog';
 import { STAGES, outcome, shareGrid, type Attempt } from '../lib/game';
 import type { buildIndex } from '../lib/search';
 import { dailyGame, recordDaily, saveDailyGame } from '../lib/stats';
@@ -55,7 +55,7 @@ export function Daily({ songs, index, onStats }: { songs: Song[]; index: ReturnT
   return (
     <div className="mode">
       <div className="daily-head"><h1>Daily song #{number}</h1><p>{longDate(date)}</p></div>
-      <ClipRound key={date} song={song} index={index} attempts={attempts} onAttempt={onAttempt}
+      <ClipRound key={date} song={song} index={index} attempts={attempts} onAttempt={onAttempt} prefer={DEFAULT_POOL.languages}
         reveal={
           <Reveal song={song}
             headline={o === 'won' ? `Solved on try ${attempts.length} of ${STAGES.length}` : 'Not today. Here is the song.'}

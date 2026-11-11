@@ -1,7 +1,7 @@
 import { useEffect, useRef, type ReactNode } from 'react';
-import type { Song } from '../lib/catalog';
+import { isEnglish, type Language, type Song } from '../lib/catalog';
 import { audioRunning } from '../lib/audio';
-import { POINTS, STAGES, clues, fmtSeconds, giveUp, judge, outcome, type Attempt } from '../lib/game';
+import { POINTS, STAGES, clues, fmtSeconds, giveUp, judge, nearMiss, outcome, type Attempt } from '../lib/game';
 import type { buildIndex } from '../lib/search';
 import { GuessBox } from './GuessBox';
 import { Record } from './Record';
@@ -17,10 +17,11 @@ interface Props {
   ended?: boolean;         // the round was closed from outside (time ran out in a room)
   hold?: ReactNode;        // shown instead of the answer while other players are still guessing
   autoplay?: boolean;      // play the first clip as soon as it loads
+  prefer?: Language[];     // languages the game is drawing from, whose songs come first among the suggestions
 }
 
 // One song, six tries: the record, the clues earned so far, the tries list and the guess box.
-export function ClipRound({ song, index, attempts, onAttempt, onSkipSong, reveal, ended, hold, autoplay }: Props) {
+export function ClipRound({ song, index, attempts, onAttempt, onSkipSong, reveal, ended, hold, autoplay, prefer }: Props) {
   const { status, error, elapsed, span, playing, play, playHook, stop, clip } = useClip(song);
   const done = outcome(attempts) !== 'playing' || !!ended;
   const shown = done && !hold; // the answer is on screen
@@ -54,7 +55,7 @@ export function ClipRound({ song, index, attempts, onAttempt, onSkipSong, reveal
     const a = attempts[i];
     return !a ? (i === attempts.length && !done ? 'now' : 'empty') : a.kind === 'skip' ? 'skip' : a.verdict;
   };
-  const MARK = { right: 'Correct', film: 'Right film', wrong: 'Not it', skip: 'Skipped', now: '', empty: '' } as const;
+  const MARK = { right: 'Correct', film: nearMiss(song), wrong: 'Not it', skip: 'Skipped', now: '', empty: '' } as const;
 
   // Two columns on wide screens: the record and clues on one side, the tries and guess box (or the answer) on the other.
   return (
@@ -118,9 +119,9 @@ export function ClipRound({ song, index, attempts, onAttempt, onSkipSong, reveal
                 );
               })}
             </ol>
-            <GuessBox index={index} disabled={status === 'error'}
+            <GuessBox index={index} disabled={status === 'error'} prefer={prefer}
               exclude={attempts.flatMap((a) => (a.kind === 'guess' ? [a.id] : []))}
-              onGuess={(g) => onAttempt({ kind: 'guess', id: g.id, title: g.title, movie: g.movie, verdict: judge(g, song) })}>
+              onGuess={(g) => onAttempt({ kind: 'guess', id: g.id, title: g.title, movie: isEnglish(g) ? g.singers[0] ?? '' : g.movie, verdict: judge(g, song) })}>
               {!lastTry && <button type="button" className="btn btn-quiet" onClick={() => onAttempt({ kind: 'skip' })}>Skip, hear {fmtSeconds(STAGES[stage + 1])}</button>}
               <button type="button" className="btn btn-ghost" onClick={() => onAttempt(...giveUp(attempts))}>Give up</button>
             </GuessBox>

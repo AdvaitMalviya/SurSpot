@@ -4,7 +4,7 @@ import { PoolPicker, describePool } from '../components/PoolPicker';
 import { Reveal } from '../components/Reveal';
 import { ROOMS_URL, loadMe, useRoom, type Me } from '../components/useRoom';
 import { loadClip, unlockAudio } from '../lib/audio';
-import { inPool, shuffle, type Pool, type Song } from '../lib/catalog';
+import { inPool, languageOf, shuffle, type Language, type Pool, type Song } from '../lib/catalog';
 import { POINTS, gaveUp, outcome, type Attempt } from '../lib/game';
 import {
   NAME_LENGTH, ROOM_CODE, isDone, newRoomCode, pointsFor, standings, type Mark, type Result, type RoomState,
@@ -117,6 +117,9 @@ function useClock(on: boolean) {
 function InRoom({ code, me, songs, index, pool, onPool }: Omit<Props, 'code'> & { code: string; me: Me }) {
   const { room, status, problem, send, serverNow } = useRoom(code, me, creating === code);
   const byId = useMemo(() => new Map(songs.map((s) => [s.id, s])), [songs]);
+  // The languages of the whole game (not of the song playing), for the guess box to suggest first
+  const languages = useMemo(() => [...new Set((room?.songs ?? []).flatMap((id) => { const s = byId.get(id); return s ? [languageOf(s)] : []; }))],
+    [room?.songs, byId]);
 
   // Someone already has this code: pick another one.
   useEffect(() => {
@@ -171,7 +174,7 @@ function InRoom({ code, me, songs, index, pool, onPool }: Omit<Props, 'code'> & 
       )}
       {(room.phase === 'playing' || room.phase === 'reveal') && (
         <Game key={`${room.songs.join()}-${round}`} room={room} me={me} isHost={isHost} hostName={host?.name ?? 'the host'}
-          song={byId.get(room.songs[round]) ?? null} index={index} send={send} serverNow={serverNow} />
+          song={byId.get(room.songs[round]) ?? null} index={index} languages={languages} send={send} serverNow={serverNow} />
       )}
       {room.phase === 'over' && (
         <Final room={room} me={me} isHost={isHost} songs={byId} onAgain={() => send({ type: 'lobby' })} onLeave={leave} />
@@ -249,9 +252,9 @@ function Lobby({ room, me, isHost, hostName, songs, pool, onPool, onStart, onLea
 }
 
 // ---------------------------------------------------------------- one song
-function Game({ room, me, isHost, hostName, song, index, send, serverNow }: {
+function Game({ room, me, isHost, hostName, song, index, languages, send, serverNow }: {
   room: RoomState; me: Me; isHost: boolean; hostName: string; song: Song | null; index: ReturnType<typeof buildIndex>;
-  send: ReturnType<typeof useRoom>['send']; serverNow: () => number;
+  languages: Language[]; send: ReturnType<typeof useRoom>['send']; serverNow: () => number;
 }) {
   const { round, phase } = room;
   const key = `room-${room.code}`;
@@ -321,7 +324,7 @@ function Game({ room, me, isHost, hostName, song, index, send, serverNow }: {
       ) : !song ? (
         <p className="empty">This song isn’t in your copy of SurSpot. Reload the page to get the latest song list.</p>
       ) : (
-        <ClipRound song={song} index={index} attempts={attempts} onAttempt={onAttempt} autoplay ended={phase === 'reveal'}
+        <ClipRound song={song} index={index} attempts={attempts} onAttempt={onAttempt} autoplay ended={phase === 'reveal'} prefer={languages}
           hold={phase === 'playing' ? (
             <section className="waiting" aria-live="polite">
               <p className="reveal-headline">{headline}</p>

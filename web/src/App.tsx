@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState, type CSSProperties } from 'react';
 import { HelpDialog, StatsDialog } from './components/Dialogs';
 import { setVolume } from './lib/audio';
-import { DEFAULT_POOL, loadCatalog, type Pool, type Song } from './lib/catalog';
+import { DEFAULT_POOL, loadCatalog, readPool, type Pool, type Song } from './lib/catalog';
 import { buildIndex } from './lib/search';
 import { load, save } from './lib/storage';
 import { trackVisit } from './lib/track';
@@ -26,7 +26,7 @@ export default function App() {
   const [room, setRoom] = useState(roomOf);
   const [songs, setSongs] = useState<Song[] | null>(null);
   const [failed, setFailed] = useState(false);
-  const [pool, setPool] = useState<Pool>(() => load('pool', DEFAULT_POOL));
+  const [pool, setPool] = useState<Pool>(() => readPool(load('pool', DEFAULT_POOL)));
   const [prefs, setPrefs] = useState(() => load('prefs', { volume: 0.8, seenHelp: false }));
   const [dialog, setDialog] = useState<'help' | 'stats' | null>(prefs.seenHelp ? null : 'help');
   const [today, setToday] = useState<number>();

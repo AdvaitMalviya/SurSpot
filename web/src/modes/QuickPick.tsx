@@ -3,7 +3,7 @@ import { PoolPicker } from '../components/PoolPicker';
 import { Record } from '../components/Record';
 import { useClip } from '../components/useClip';
 import { loadClip } from '../lib/audio';
-import { decadeOf, inPool, shuffle, type Pool, type Song } from '../lib/catalog';
+import { decadeOf, inPool, isEnglish, languageOf, shuffle, sourceLabel, type Pool, type Song } from '../lib/catalog';
 import { quickStats, recordQuick } from '../lib/stats';
 import { trackSong } from '../lib/track';
 
@@ -12,13 +12,16 @@ const ROUNDS = 10, LIMIT = 15, CLIP = 5;
 interface Round { song: Song; options: Song[] }
 interface Answer { id: string | null; points: number }
 
-// Wrong options come from the same decade so the era alone doesn't give the answer away.
+// Wrong options come from the same language and decade so neither gives the answer away (three Hindi titles beside
+// one English one would), and from another film, or for an English song another artist.
 function buildRounds(candidates: Song[], all: Song[]): Round[] {
   return shuffle(candidates).slice(0, ROUNDS).map((song) => {
     const titles = new Set([song.title.toLowerCase()]);
     const options = [song];
-    const near = shuffle(all.filter((s) => decadeOf(s.year) === decadeOf(song.year) && s.movie !== song.movie));
-    for (const s of [...near, ...shuffle(all)]) {
+    const same = all.filter((s) => languageOf(s) === languageOf(song));
+    const apart = (s: Song) => (isEnglish(song) ? s.singers[0] !== song.singers[0] : s.movie !== song.movie);
+    const near = shuffle(same.filter((s) => decadeOf(s.year) === decadeOf(song.year) && apart(s)));
+    for (const s of [...near, ...shuffle(same), ...shuffle(all)]) {
       if (options.length === 4) break;
       if (titles.has(s.title.toLowerCase())) continue;
       titles.add(s.title.toLowerCase());
@@ -141,7 +144,7 @@ export function QuickPick({ songs, pool, onPool }: { songs: Song[]; pool: Pool; 
               return (
                 <button key={s.id} type="button" className={`option ${state}`} disabled={!!picked || (!startedAt && status !== 'error')} onClick={() => answer(s.id)}>
                   <b>{s.title}</b>
-                  <span>{s.movie}, {s.year}</span>
+                  <span>{sourceLabel(s)}</span>
                 </button>
               );
             })}

@@ -1,11 +1,12 @@
 import { useEffect, useId, useMemo, useRef, useState, type ReactNode } from 'react';
-import { artworkAt, sourceLabel, type Song } from '../lib/catalog';
+import { artworkAt, inLanguages, isEnglish, sourceLabel, type Language, type Song } from '../lib/catalog';
 import { search, type buildIndex } from '../lib/search';
 
 interface Props {
   index: ReturnType<typeof buildIndex>;
   exclude: string[];
   disabled?: boolean;
+  prefer?: Language[]; // their songs come first among the suggestions
   onGuess: (song: Song) => void;
   children?: ReactNode; // extra actions beside the Guess button (Skip, Give up)
 }
@@ -15,7 +16,7 @@ interface Props {
 // nearest the input; the up arrow moves away from it, to the next match.
 // Guessing takes two steps so a stray Enter can't spend a try: Enter (or a click) picks a suggestion, which
 // shows its cover in the field, and only then does Guess (or Enter again) send it.
-export function GuessBox({ index, exclude, disabled, onGuess, children }: Props) {
+export function GuessBox({ index, exclude, disabled, prefer, onGuess, children }: Props) {
   const [query, setQuery] = useState('');
   const [picked, setPicked] = useState<Song | null>(null);
   const [open, setOpen] = useState(false);
@@ -24,14 +25,14 @@ export function GuessBox({ index, exclude, disabled, onGuess, children }: Props)
   const listId = useId();
 
   const results = useMemo(
-    () => (picked ? [] : search(index, query, 8).filter((s) => !exclude.includes(s.id))),
-    [index, query, picked, exclude],
+    () => (picked ? [] : search(index, query, 8, prefer && ((s) => inLanguages(s, prefer))).filter((s) => !exclude.includes(s.id))),
+    [index, query, picked, exclude, prefer],
   );
   const showList = open && !picked && query.trim().length > 0;
 
   const choose = (s: Song) => {
     setPicked(s);
-    setQuery(`${s.title} (${s.movie || s.singers[0] || 'Single'})`);
+    setQuery(`${s.title} (${(isEnglish(s) ? s.singers[0] : s.movie) || s.singers[0] || 'Single'})`);
     setOpen(false);
   };
   const submit = () => {
@@ -61,12 +62,12 @@ export function GuessBox({ index, exclude, disabled, onGuess, children }: Props)
           ref={input}
           type="text"
           role="combobox"
-          aria-label="Song or film"
+          aria-label="Song, film or singer"
           aria-expanded={showList && results.length > 0}
           aria-controls={listId}
           aria-autocomplete="list"
           aria-activedescendant={showList && results[active] ? `${listId}-${active}` : undefined}
-          placeholder="Type a song or film"
+          placeholder="Type a song, film or singer"
           autoComplete="off"
           spellCheck={false}
           value={query}

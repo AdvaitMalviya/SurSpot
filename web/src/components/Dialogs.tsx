@@ -26,21 +26,24 @@ function Dialog({ open, title, onClose, children }: { open: boolean; title: stri
 export function HelpDialog({ open, onClose }: { open: boolean; onClose: () => void }) {
   return (
     <Dialog open={open} title="How to play" onClose={onClose}>
-      <p>Tap the record to hear a sliver of a Bollywood song, then type the song or its film and pick it from the list.</p>
+      <p>Tap the record to hear a sliver of a Bollywood song, then type the song, its film or a singer and pick it from the list.
+        You can add Punjabi and English songs from the song picker.</p>
       <p>You get six tries. A wrong guess or a skip unlocks a longer clip:</p>
       <ol className="help-ladder">
         {STAGES.map((s, i) => <li key={s}><span>{fmtSeconds(s)}</span><span>{POINTS[i]} points</span></li>)}
       </ol>
-      <p>From the third try you also get clues: the era, then the music director, the singers, and finally the film.</p>
-      <p>Guess another song from the same film and the try is marked <b className="tag-film">Right film</b>, so you know you are close.</p>
+      <p>From the third try you also get clues: the era, then the music director, the singers, and finally the film.
+        An English song gives its genre instead of the music director, and its album instead of a film.</p>
+      <p>Guess another song from the same film and the try is marked <b className="tag-film">Right film</b>, so you know you are close.
+        For an English song, another song by the same artist is <b className="tag-film">Right artist</b>.</p>
       <h3>Modes</h3>
       <dl className="help-modes">
-        <dt>Play</dt><dd>Endless songs from the pool you choose: any mix of decades, moods, difficulty and artists.</dd>
+        <dt>Play</dt><dd>Endless songs from the pool you choose: any mix of decades, moods, difficulty, languages and artists.</dd>
         <dt>Daily</dt><dd>One song a day, the same for everyone. A new one arrives at midnight India time.</dd>
         <dt>Quick pick</dt><dd>Ten songs, four choices each, fifteen seconds to answer. Faster answers score more.</dd>
         <dt>With friends</dt><dd>Make a room, send the link, and race your friends through the same songs, a minute each.</dd>
       </dl>
-      <p className="help-credit">Clips are 30-second previews from Apple Music. Film notes come from Wikipedia.</p>
+      <p className="help-credit">Clips are 30-second previews from Apple Music. Film and song notes come from Wikipedia.</p>
     </Dialog>
   );
 }

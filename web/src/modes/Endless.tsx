@@ -73,7 +73,7 @@ export function Endless({ songs, index, pool, onPool }: Props) {
         )}
       </div>
       {song ? (
-        <ClipRound key={song.id} song={song} index={index} attempts={attempts} onAttempt={onAttempt} onSkipSong={goNext}
+        <ClipRound key={song.id} song={song} index={index} attempts={attempts} onAttempt={onAttempt} onSkipSong={goNext} prefer={pool.languages}
           reveal={
             <Reveal song={song}
               headline={o === 'won' ? (tries === 1 ? 'First try!' : `Got it on try ${tries}`)

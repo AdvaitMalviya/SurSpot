@@ -27,18 +27,22 @@ const tokens = (s: string): Tok[] => norm(s).split(' ').filter(Boolean).map((raw
 const tokHit = (q: Tok, t: Tok, last: boolean) =>
   last ? t.raw.startsWith(q.raw) || t.skel.startsWith(q.skel) : t.raw === q.raw || t.skel === q.skel;
 
-interface Entry { song: Song; titles: Tok[][]; movie: Tok[] }
+interface Entry { song: Song; titles: Tok[][]; movie: Tok[]; people: Tok[] }
 export function buildIndex(songs: Song[]): Entry[] {
-  return songs.map((song) => ({ song, titles: [song.title, ...song.alt_titles].map(tokens), movie: tokens(song.movie) }));
+  return songs.map((song) => ({
+    song, titles: [song.title, ...song.alt_titles].map(tokens), movie: tokens(song.movie), people: tokens(song.singers.join(' ')),
+  }));
 }
 
-// Every query word must appear (the last one may be half-typed); titles beat films, famous songs break ties.
-export function search(index: Entry[], query: string, limit = 8): Song[] {
+// Every query word must appear in the title, film or singers (the last one may be half-typed), so a singer's name
+// narrows a title many songs share ("stay rihanna"). Titles beat films and singers, famous songs break ties, and songs
+// outside `prefer` (the languages the game is drawing from) come after the rest.
+export function search(index: Entry[], query: string, limit = 8, prefer?: (s: Song) => boolean): Song[] {
   const q = tokens(query);
   if (!q.length) return [];
   const scored: { song: Song; score: number }[] = [];
   for (const e of index) {
-    const all = [...e.titles.flat(), ...e.movie];
+    const all = [...e.titles.flat(), ...e.movie, ...e.people];
     if (!q.every((qt, i) => all.some((t) => tokHit(qt, t, i === q.length - 1)))) continue;
     let score = 0;
     for (const title of e.titles) {
@@ -47,6 +51,8 @@ export function search(index: Entry[], query: string, limit = 8): Song[] {
       score = Math.max(score, inTitle * 2 + (prefix ? 4 : 0) + (inTitle === q.length ? 2 : 0));
     }
     if (q.every((qt, i) => e.movie.some((t) => tokHit(qt, t, i === q.length - 1)))) score += 1;
+    if (q.every((qt, i) => e.people.some((t) => tokHit(qt, t, i === q.length - 1)))) score += 0.5;
+    if (prefer && !prefer(e.song)) score -= 3;
     scored.push({ song: e.song, score: score - e.song.tier * 0.3 });
   }
   return scored.sort((a, b) => b.score - a.score || a.song.year - b.song.year).slice(0, limit).map((x) => x.song);

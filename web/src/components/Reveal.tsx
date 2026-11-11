@@ -1,6 +1,6 @@
 import { useEffect, useState, type ReactNode } from 'react';
 import { setAmbient } from '../lib/ambient';
-import { devanagariTitle, isFilm, sourceLabel, type Song } from '../lib/catalog';
+import { devanagariTitle, isEnglish, isFilm, sourceLabel, type Song } from '../lib/catalog';
 import { filmInfo, type Film } from '../lib/wiki';
 
 interface Props {
@@ -10,7 +10,8 @@ interface Props {
   children?: ReactNode; // next-step actions
 }
 
-const searchTerm = (s: Song) => encodeURIComponent(`${s.title} ${s.movie} ${s.singers[0] ?? ''}`.trim());
+// An English album name only muddies the search ("Hello 25 Adele")
+const searchTerm = (s: Song) => encodeURIComponent(`${s.title} ${isEnglish(s) ? '' : s.movie} ${s.singers[0] ?? ''}`.replace(/\s+/g, ' ').trim());
 
 // Brand marks from Simple Icons (CC0), in the brand colours set in styles.css.
 const ICONS = {
@@ -22,7 +23,8 @@ const Icon = ({ name }: { name: keyof typeof ICONS }) => (
   <svg viewBox="0 0 24 24" aria-hidden="true" className={`listen-icon listen-${name}`}><path d={ICONS[name]} /></svg>
 );
 
-// The answer card: the song, who made it, where to hear all of it, and a note on the film from Wikipedia.
+// The answer card: the song, who made it, where to hear all of it, and a note from Wikipedia on the film (or, for an
+// English song, on the song itself).
 export function Reveal({ song, headline, detail, children }: Props) {
   const [film, setFilm] = useState<Film | null>(null);
   useEffect(() => {
@@ -33,6 +35,10 @@ export function Reveal({ song, headline, detail, children }: Props) {
     return () => { live = false; setAmbient(null); };
   }, [song]);
   const deva = devanagariTitle(song);
+  const english = isEnglish(song);
+  // English: the album (none for a single, or a song iTunes has only on a compilation) and the year; the artist is below
+  const from = english ? [song.movie, song.year].filter(Boolean).join(', ')
+    : isFilm(song) || !song.movie ? sourceLabel(song) : `${song.movie} (non-film), ${song.year}`;
 
   return (
     <section className="reveal" aria-live="polite">
@@ -43,11 +49,11 @@ export function Reveal({ song, headline, detail, children }: Props) {
         <div className="reveal-names">
           <h2 className="reveal-title">{song.title}</h2>
           {deva && <p className="reveal-deva" lang="hi">{deva}</p>}
-          <p className="reveal-film">{isFilm(song) || !song.movie ? sourceLabel(song) : `${song.movie} (non-film), ${song.year}`}</p>
+          <p className="reveal-film">{from}</p>
         </div>
       </div>
       <dl className="credits">
-        {song.singers.length > 0 && <div><dt>Sung by</dt><dd title={song.singers.join(', ')}>{song.singers.join(', ')}</dd></div>}
+        {song.singers.length > 0 && <div><dt>{english ? 'By' : 'Sung by'}</dt><dd title={song.singers.join(', ')}>{song.singers.join(', ')}</dd></div>}
         {song.composers.length > 0 && <div><dt>Music by</dt><dd title={song.composers.join(', ')}>{song.composers.join(', ')}</dd></div>}
       </dl>
       <div className="listen">
@@ -58,7 +64,7 @@ export function Reveal({ song, headline, detail, children }: Props) {
       </div>
       {film && (
         <aside className="film-note">
-          {film.thumb && <img src={film.thumb} alt={`Poster of ${film.title}`} loading="lazy" />}
+          {film.thumb && <img src={film.thumb} alt={`${english ? 'Picture for' : 'Poster of'} ${film.title}`} loading="lazy" />}
           <div>
             <p>{film.extract}</p>
             <a href={film.url} target="_blank" rel="noreferrer">More about {film.title} on Wikipedia</a>

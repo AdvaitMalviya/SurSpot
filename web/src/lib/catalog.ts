@@ -1,9 +1,11 @@
 import catalogUrl from '../../../data/catalog.json?url';
 import expandedUrl from '../../../data/expanded.json?url';
 import punjabiUrl from '../../../data/punjabi.json?url';
+import englishUrl from '../../../data/english.json?url';
 
 // One playable song: a curated seed entry with the iTunes master picked by scripts/resolve.mjs, or ('auto')
-// a soundtrack track added by scripts/expand.mjs, or a Punjabi song added by scripts/punjabi.mjs (tagged 'punjabi').
+// a soundtrack track added by scripts/expand.mjs, a Punjabi song added by scripts/punjabi.mjs (tagged 'punjabi'),
+// or an English song added by scripts/english.mjs (tagged 'english', with its iTunes genre and Wikipedia article).
 export interface Song {
   id: string;
   title: string;
@@ -20,11 +22,14 @@ export interface Song {
   appleUrl: string | null;
   durationMs: number | null;
   confidence: 'high' | 'low' | 'pinned' | 'auto';
+  genre?: string | null;
+  wiki?: string | null;
 }
 
-// Curated songs first, then the expanded and the Punjabi ones; a song that shares an earlier list's iTunes track is dropped.
+// Curated songs first, then the expanded, Punjabi and English ones; a song that shares an earlier list's iTunes track
+// is dropped. English loads with the rest because a room's players all need the same list.
 export async function loadCatalog(): Promise<Song[]> {
-  const lists = await Promise.all([catalogUrl, expandedUrl, punjabiUrl].map(async (url) => {
+  const lists = await Promise.all([catalogUrl, expandedUrl, punjabiUrl, englishUrl].map(async (url) => {
     const res = await fetch(url);
     if (!res.ok) throw new Error(`catalog ${res.status}`);
     return (await res.json()) as Song[];
@@ -43,8 +48,10 @@ export const decadeOf = (year: number) => Math.floor(year / 10) * 10;
 export const decadeLabel = (d: number) => (d < 2000 ? `${d % 100}s` : `${d}s`);
 export const isFilm = (s: Song) => !s.tags.includes('non-film');
 export const isPunjabi = (s: Song) => s.tags.includes('punjabi');
-// "Brown Munde" is a single: no film or album to name.
-export const sourceLabel = (s: Song) => `${s.movie || 'Single'}, ${s.year}`;
+export const isEnglish = (s: Song) => s.tags.includes('english');
+// Where a song is from, as a list or a guess shows it. "Brown Munde" is a single: no film or album to name.
+// An English song is known by who sings it ("Hello" alone could be anyone's).
+export const sourceLabel = (s: Song) => (isEnglish(s) ? `${s.singers[0] ?? 'Unknown'}, ${s.year}` : `${s.movie || 'Single'}, ${s.year}`);
 export const devanagariTitle = (s: Song) => s.alt_titles.find((t) => /[ऀ-ॿ]/.test(t)) ?? null;
 // Apple's artwork URLs carry their size ('600x600bb'); any square size can be asked for.
 export const artworkAt = (s: Song, px: number) => s.artwork?.replace(/\/\d+x\d+bb\./, `/${px}x${px}bb.`) ?? null;
@@ -59,21 +66,32 @@ export const LEVELS = {
 } as const;
 export type Level = keyof typeof LEVELS;
 
-export const LANGUAGES = { all: 'Both', hindi: 'Hindi', punjabi: 'Punjabi' } as const;
+export const LANGUAGES = { hindi: 'Hindi', punjabi: 'Punjabi', english: 'English' } as const;
 export type Language = keyof typeof LANGUAGES;
+export const languageOf = (s: Song): Language => (isEnglish(s) ? 'english' : isPunjabi(s) ? 'punjabi' : 'hindi');
 
 export interface Pool {
   decades: number[];
   tags: string[];
   levels: Level[];
   artist: string | null;
-  language: Language;
+  languages: Language[]; // one or more; English is in only when picked
 }
-export const DEFAULT_POOL: Pool = { decades: [], tags: [], levels: ['easy', 'medium'], artist: null, language: 'all' };
+export const DEFAULT_POOL: Pool = { decades: [], tags: [], levels: ['easy', 'medium'], artist: null, languages: ['hindi', 'punjabi'] };
 
-export const inLanguage = (s: Song, l: Language) => l === 'all' || (l === 'punjabi') === isPunjabi(s);
+// A pool as this browser saved it. Pools saved before English arrived have one `language`: 'all' (then Hindi and
+// Punjabi), 'hindi' or 'punjabi'. It wins when present, since storage.load fills in the default `languages` beside it.
+export function readPool(saved: Partial<Pool> & { language?: string }): Pool {
+  const { language, ...rest } = saved;
+  const old = language === 'hindi' || language === 'punjabi' ? [language] : DEFAULT_POOL.languages;
+  const picked = (language !== undefined ? old : Array.isArray(saved.languages) ? saved.languages : [])
+    .filter((l): l is Language => l in LANGUAGES);
+  return { ...DEFAULT_POOL, ...rest, languages: picked.length ? picked : DEFAULT_POOL.languages };
+}
+
+export const inLanguages = (s: Song, ls: Language[]) => ls.includes(languageOf(s));
 export function inPool(s: Song, p: Pool) {
-  if (!inLanguage(s, p.language)) return false;
+  if (!inLanguages(s, p.languages)) return false;
   if (p.decades.length && !p.decades.includes(decadeOf(s.year))) return false;
   if (p.tags.length && !s.tags.some((t) => p.tags.includes(t))) return false;
   if (p.levels.length && !p.levels.some((l) => LEVELS[l]?.tier === s.tier)) return false;
@@ -90,7 +108,7 @@ export function artists(songs: Song[], min = 12) {
 
 export function tagCounts(songs: Song[]) {
   const n = new Map<string, number>();
-  for (const s of songs) for (const t of s.tags) if (t !== 'punjabi') n.set(t, (n.get(t) ?? 0) + 1); // a language, not a mood
+  for (const s of songs) for (const t of s.tags) if (t !== 'punjabi' && t !== 'english') n.set(t, (n.get(t) ?? 0) + 1); // languages, not moods
   return [...n].sort((a, b) => b[1] - a[1]);
 }
 
@@ -115,6 +133,8 @@ export function shuffle<T>(xs: T[], rand: () => number = Math.random) {
 // ------------------------------------------------------------------ daily
 // The daily song changes at midnight IST and is the same for everyone. Days walk a fixed shuffle of
 // the well-known, confidently matched curated songs, so nothing repeats until the whole list has been used.
+// Any song added to that list reshuffles every day to come, so English songs are kept out by name as well as by
+// their 'auto' confidence.
 const DAY_ONE = Date.UTC(2026, 9, 24);
 export function istDate(now = Date.now()) {
   return new Date(now + 5.5 * 3600e3).toISOString().slice(0, 10);
@@ -124,7 +144,7 @@ export function dayNumber(date: string) {
   return Math.floor((Date.UTC(y, m - 1, d) - DAY_ONE) / 864e5) + 1;
 }
 export function dailySong(songs: Song[], date: string) {
-  const pool = songs.filter((s) => s.tier <= 2 && (s.confidence === 'high' || s.confidence === 'pinned')).sort((a, b) => a.id.localeCompare(b.id));
+  const pool = songs.filter((s) => !isEnglish(s) && s.tier <= 2 && (s.confidence === 'high' || s.confidence === 'pinned')).sort((a, b) => a.id.localeCompare(b.id));
   const order = shuffle(pool, mulberry32(0x5e12));
   const n = dayNumber(date);
   return { song: order[(((n - 1) % order.length) + order.length) % order.length], number: n };

@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef } from 'react';
-import { LANGUAGES, LEVELS, artists, decadeLabel, inLanguage, inPool, tagCounts, type Language, type Level, type Pool, type Song } from '../lib/catalog';
+import { DEFAULT_POOL, LANGUAGES, LEVELS, artists, decadeLabel, inLanguages, inPool, tagCounts, type Language, type Level, type Pool, type Song } from '../lib/catalog';
 
 const DECADES = [1950, 1960, 1970, 1980, 1990, 2000, 2010, 2020];
 const TAG_NAMES: Record<string, string> = {
@@ -8,12 +8,20 @@ const TAG_NAMES: Record<string, string> = {
 const tagName = (t: string) => TAG_NAMES[t] ?? t[0].toUpperCase() + t.slice(1);
 const toggle = <T,>(xs: T[], x: T) => (xs.includes(x) ? xs.filter((y) => y !== x) : [...xs, x]);
 
+// Hindi and Punjabi, the default, go unsaid
+function describeLanguages(ls: Language[]) {
+  const picked = (Object.keys(LANGUAGES) as Language[]).filter((l) => ls.includes(l));
+  if (picked.length === DEFAULT_POOL.languages.length && DEFAULT_POOL.languages.every((l) => picked.includes(l))) return [];
+  if (picked.length === 1) return [`${LANGUAGES[picked[0]]} only`];
+  return [picked.length === Object.keys(LANGUAGES).length ? 'all languages' : picked.map((l) => LANGUAGES[l]).join(' and ')];
+}
+
 export function describePool(p: Pool) {
   return [
     p.decades.length ? p.decades.slice().sort().map(decadeLabel).join(', ') : 'All eras',
     ...(p.tags.length ? [p.tags.map(tagName).join(' or ').toLowerCase()] : []),
     ...(p.artist ? [p.artist] : []),
-    ...(p.language !== 'all' ? [`${LANGUAGES[p.language]} only`] : []),
+    ...describeLanguages(p.languages),
     p.levels.length && p.levels.length < 4
       ? `${(Object.keys(LEVELS) as Level[]).filter((l) => p.levels.includes(l)).map((l) => LEVELS[l].label.toLowerCase()).join(' and ')} songs`
       : 'any difficulty',
@@ -21,10 +29,10 @@ export function describePool(p: Pool) {
 }
 
 // Narrow the songs a game draws from: by decade, mood, how well known they are, language, and singer or composer.
-// Moods and artists follow the language (Punjabi songs carry no moods), keeping whatever is already picked.
+// Moods and artists follow the languages (Punjabi and English songs carry no moods), keeping whatever is already picked.
 export function PoolPicker({ songs, pool, onChange }: { songs: Song[]; pool: Pool; onChange: (p: Pool) => void }) {
   const count = useMemo(() => songs.filter((s) => inPool(s, pool)).length, [songs, pool]);
-  const spoken = useMemo(() => songs.filter((s) => inLanguage(s, pool.language)), [songs, pool.language]);
+  const spoken = useMemo(() => songs.filter((s) => inLanguages(s, pool.languages)), [songs, pool.languages]);
   const tags = useMemo(() => {
     const all = tagCounts(spoken).filter(([t]) => t !== 'non-film');
     return [...all, ...pool.tags.filter((t) => !all.some(([u]) => u === t)).map((t) => [t, 0] as [string, number])];
@@ -95,14 +103,17 @@ export function PoolPicker({ songs, pool, onChange }: { songs: Song[]; pool: Poo
         </fieldset>
         <fieldset>
           <legend>Language</legend>
-          <div className="segmented">
-            {(Object.keys(LANGUAGES) as Language[]).map((l) => (
-              <label key={l}>
-                <input type="radio" name="language" checked={pool.language === l} onChange={() => onChange({ ...pool, language: l })} />
-                <span>{LANGUAGES[l]}</span>
-              </label>
-            ))}
+          <div className="chips">
+            {(Object.keys(LANGUAGES) as Language[]).map((l) => {
+              const on = pool.languages.includes(l), last = on && pool.languages.length === 1;
+              return (
+                <button key={l} type="button" className="chip" aria-pressed={on} aria-disabled={last || undefined}
+                  title={last ? 'Pick another language first' : undefined}
+                  onClick={() => { if (!last) onChange({ ...pool, languages: toggle(pool.languages, l) }); }}>{LANGUAGES[l]}</button>
+              );
+            })}
           </div>
+          <p className="pool-note">Pick one or more. English songs run from 1990 to now.</p>
         </fieldset>
         <label className="pool-artist">
           <span>Singer or composer</span>
