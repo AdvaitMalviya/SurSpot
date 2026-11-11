@@ -30,7 +30,8 @@ export function describePool(p: Pool) {
 
 // Narrow the songs a game draws from: by decade, mood, how well known they are, language, and singer or composer.
 // Moods and artists follow the languages (Punjabi and English songs carry no moods), keeping whatever is already picked.
-export function PoolPicker({ songs, pool, onChange }: { songs: Song[]; pool: Pool; onChange: (p: Pool) => void }) {
+// `pending`: the English songs the pool asks for are still loading, so the count isn't final yet.
+export function PoolPicker({ songs, pool, onChange, pending }: { songs: Song[]; pool: Pool; onChange: (p: Pool) => void; pending?: boolean }) {
   const count = useMemo(() => songs.filter((s) => inPool(s, pool)).length, [songs, pool]);
   const spoken = useMemo(() => songs.filter((s) => inLanguages(s, pool.languages)), [songs, pool.languages]);
   const tags = useMemo(() => {
@@ -113,7 +114,7 @@ export function PoolPicker({ songs, pool, onChange }: { songs: Song[]; pool: Poo
               );
             })}
           </div>
-          <p className="pool-note">Pick one or more. English songs run from 1990 to now.</p>
+          <p className="pool-note">Pick one or more. English songs run from the 1950s to now.</p>
         </fieldset>
         <label className="pool-artist">
           <span>Singer or composer</span>
@@ -123,9 +124,9 @@ export function PoolPicker({ songs, pool, onChange }: { songs: Song[]; pool: Poo
           </select>
         </label>
         <button type="button" className="btn btn-primary pool-done" onClick={() => { if (ref.current) ref.current.open = false; }}>
-          Play {count} songs
+          {pending ? 'Loading English songs…' : `Play ${count} songs`}
         </button>
-        {count < 10 && (
+        {pending ? <p className="pool-warn" role="status">The English songs are on their way. They join the pool in a moment.</p> : count < 10 && (
           <p className="pool-warn" role="status">
             {count ? `Only ${count} songs match, so they will repeat soon.` : 'No songs match.'} Add an era or mood, or pick an easier level.
           </p>

@@ -19,7 +19,7 @@ import { existsSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import {
   DATA, net, readJson, writeJsonRows, itunesJson, searchUrl, slugify, skeleton, basicNorm, stripDecorations, decorations,
-  creditHits, lev, artwork600, decadeOf, throttleInterval,
+  creditHits, lev, artwork600, decadeOf, throttleInterval, splitArtists,
 } from './lib.mjs';
 import { lastfm, lastfmStats, listenersFor } from './lastfm.mjs';
 import { cutsByDecade, tierFor } from './tiers.mjs';
@@ -41,8 +41,9 @@ const MIN_LISTENERS = 20000;   // an artist's own Last.fm track page...
 const SHARE_OF_TOP = 0.2;      // ...and at least a fifth of the listeners of their best-known song
 
 // ---------------------------------------------------------------- artists
-// English-language singers and bands Indian listeners know, from the 1990s on. Many were bigger in India than on
-// the US charts (Westlife, Boyzone, Bryan Adams), or are what Indian listeners play now (Last.fm's India chart).
+// English-language singers and bands Indian listeners know. Many were bigger in India than on the US charts
+// (Westlife, Boyzone, Bryan Adams; before them Boney M., Jim Reeves, Cliff Richard), or are what Indian listeners
+// play now (Last.fm's India chart).
 const ARTISTS = [
   'Westlife', 'Backstreet Boys', 'Boyzone', 'Spice Girls', '*NSYNC', 'Hanson', 'Aqua', 'Vengaboys', 'Savage Garden', 'Roxette',
   'Ace of Base', 'Bryan Adams', 'Celine Dion', 'Mariah Carey', 'Whitney Houston', 'Michael Jackson', 'Madonna', 'George Michael',
@@ -68,9 +69,27 @@ const ARTISTS = [
   'Lenny Kravitz', 'Seal', 'Dido', 'Natasha Bedingfield', 'Jordin Sparks', 'Leona Lewis', 'Chris Brown', 'Ne-Yo', 'Pharrell Williams',
   'Mark Ronson', 'Wiz Khalifa', 'Macklemore', 'Gym Class Heroes', 'Cobra Starship', 'Far East Movement', 'Iyaz', 'Sean Kingston',
   'Taio Cruz', 'Jay Sean',
+  // before 1990
+  'ABBA', 'Queen', 'The Beatles', 'Elvis Presley', 'Boney M.', 'Bee Gees', 'Eagles', 'Simon & Garfunkel', 'Led Zeppelin',
+  'Pink Floyd', 'The Rolling Stones', 'Lionel Richie', 'Stevie Wonder', 'Phil Collins', 'Cyndi Lauper', 'Modern Talking', 'Europe',
+  'a-ha', 'Dire Straits', "Guns N' Roses", 'AC/DC', 'Def Leppard', 'Scorpions', 'Toto', 'Journey', 'Kenny Rogers', 'John Denver',
+  'Cliff Richard', 'Carpenters', 'Bob Marley & The Wailers', 'Bob Dylan', 'Elton John', 'Billy Joel', 'Rod Stewart', 'Wham!',
+  'Duran Duran', 'Tears for Fears', 'The Police', 'Survivor', 'Kool & The Gang', 'Chicago', 'Air Supply', 'Lobo', 'Don McLean',
+  'Engelbert Humperdinck', 'Tom Jones', 'Neil Diamond', 'Harry Belafonte', 'Jim Reeves', 'Pat Boone', 'Paul Anka',
+  'Nat King Cole', 'Frank Sinatra', 'Dean Martin', 'Louis Armstrong', 'The Beach Boys', 'The Doors', 'Creedence Clearwater Revival',
+  'Deep Purple', 'Fleetwood Mac', 'Bonnie Tyler', 'Olivia Newton-John', 'Donna Summer', 'Gloria Gaynor', 'Village People',
+  'Chris de Burgh', 'Rick Astley', 'Foreigner', 'Bobby McFerrin', 'UB40', 'Tracy Chapman', 'Eurythmics', 'Bruce Springsteen',
+  'Van Halen', 'Pet Shop Boys', 'Depeche Mode', 'The Cure', 'John Lennon', 'Cat Stevens', 'The Monkees',
 ];
 // Last.fm tracks of an artist that are someone else's (a namesake on the same page) or not in English
 const NOT_THEIRS = {};
+// Candidates left out by hand (title|first artist), where nothing else catches them
+const SKIP = new Map([
+  ['Al di là|Emilio Pericoli', 'sung in Italian'],
+  ['Banana Boat (Day-O)|Harry Belafonte', 'the same song as his "Day-O (The Banana Boat Song)"'],
+  ["It's in the Book|Johnny Standley", 'a spoken comedy routine, not a song'],
+  ['St. George and the Dragonet|Stan Freberg', 'a spoken comedy routine, not a song'],
+]);
 
 // ---------------------------------------------------------------- Billboard Year-End Hot 100 (Wikipedia)
 // Links become placeholders first, so a linked name like [[Hootie & the Blowfish]] stays one artist.
@@ -165,7 +184,9 @@ async function billboard(year) {
 // Sung in English, though Wikipedia files them under another language (for a version in it) or iTunes under K-Pop
 const SUNG_IN_ENGLISH = new Set(['End of the Road|Boyz II Men', 'Do You Believe in Us|Jon Secada', 'Angel|Jon Secada',
   'Hero|Mariah Carey', 'Sukiyaki|4 P.M.', 'I Want You|Thalía', 'Cupid|Fifty Fifty', 'Dynamite|BTS', 'Butter|BTS',
-  'Permission to Dance|BTS']);
+  'Permission to Dance|BTS', 'Waterloo|ABBA', 'Major Tom (Coming Home)|Peter Schilling', 'Sukiyaki|A Taste of Honey',
+  'Vaya con Dios|Les Paul and Mary Ford', 'Rose, Rose, I Love You|Frankie Laine', 'Tzena, Tzena, Tzena|Gordon Jenkins',
+  'This Girl Is a Woman Now|Gary Puckett & The Union Gap', 'The Girl from Ipanema|Stan Getz']);
 const LANGUAGES = ['English', 'Spanish', 'Portuguese', 'Korean', 'Japanese', 'French', 'Italian', 'German', 'Hindi', 'Punjabi',
   'Arabic', 'Swedish', 'Dutch', 'Russian', 'Turkish', 'Hebrew', 'Greek', 'Tagalog', 'Mandarin', 'Cantonese', 'Yoruba'];
 async function languagesOf(pages) {
@@ -186,13 +207,17 @@ async function languagesOf(pages) {
 
 // ---------------------------------------------------------------- Last.fm candidates
 const titleKey = (t) => skeleton(stripDecorations(t) || t).join(' ');
+// Carols and Christmas standards everyone has recorded: only the exact recording counts as right, so naming the song
+// isn't enough to get it. Christmas hits that are a singer's own song ("All I Want for Christmas Is You") stay, and
+// a charted recording of a standard comes in through the charts regardless.
+const STANDARD = /^(jingle bells|silent night|sleigh ride|silver bells|white christmas|winter wonderland|o holy night|have yourself a merry little christmas|the christmas song|let it snow|deck the halls?|the first noel|o come all ye faithful|hark the herald|(the )?little drummer boy|frosty the snowman|rudolph the red nosed reindeer|santa claus is coming? to town|its beginning to look a lot like christmas|ill be home for christmas|marys boy child|away in a manger|ave maria|amazing grace|o little town of bethlehem|we wish you a merry christmas|god rest ye merry gentlemen|joy to the world|the twelve days of christmas|o christmas tree)\b/;
 async function topTracks(artist) {
   // Last.fm reads a '+' in a name as a space, so it is sent encoded twice (Florence + the Machine)
   const b = await lastfm({ method: 'artist.gettoptracks', artist: artist.replace(/\+/g, '%2B'), limit: '50', autocorrect: '1' }, { offline });
   const merged = new Map();
   for (const t of b?.toptracks?.track ?? []) {
     const title = (stripDecorations(t.name) || t.name).replace(/\s+/g, ' ').trim();
-    if (!/[a-z]/i.test(title) || /^(intro|outro|interlude|skit|untitled)$/i.test(title)) continue;
+    if (!/[a-z]/i.test(title) || /^(intro|outro|interlude|skit|untitled)$/i.test(title) || STANDARD.test(basicNorm(title))) continue;
     if (NOT_THEIRS[artist]?.some((n) => titleKey(n) === titleKey(title))) continue;
     const k = titleKey(title);
     if (!k) continue;
@@ -333,15 +358,18 @@ for (const c of cands) {
   const sung = SUNG_IN_ENGLISH.has(`${c.title}|${c.artists[0]}`);
   if (l?.size && !l.has('English') && !l.has('Spanglish') && !sung) c.language = [...l].join(', ');
   c.english = sung || !!l?.has('English'); // then a K-Pop or Latin genre on iTunes doesn't count against it
+  c.skip = [...SKIP].find(([k]) => { const [t, a] = k.split('|'); return titleKey(t) === titleKey(c.title) && credited([a], c.artists[0]); })?.[1] ?? null;
 }
 const foreign = cands.filter((c) => c.language);
+const skipped = cands.filter((c) => c.skip && !c.language);
 console.log(`  ${foreign.length} charted songs are sung in another language (Wikipedia)`);
 if (plan) for (const c of foreign) console.log(`    ${c.title} | ${c.artists.join(', ')} | ${c.year} | ${c.language}`);
 
 const ENGLISH = join(DATA, 'english.json');
 const prev = add ? readJson(ENGLISH) : [];
-let todo = cands.filter((c) => !c.language);
-if (add) todo = cands.filter((c) => !prev.some((s) => titleKey(s.title) === titleKey(c.title) && credited(s.singers, c.artists[0])));
+let todo = cands.filter((c) => !c.language && !c.skip);
+const prevByTitle = Map.groupBy(prev, (s) => titleKey(s.title));
+if (add) todo = cands.filter((c) => !c.language && !c.skip && !(prevByTitle.get(titleKey(c.title)) ?? []).some((s) => credited(s.singers, c.artists[0])));
 console.log(`  ${cands.length} candidate songs: ${fromCharts} from the charts, ${fromArtists} more from ${ARTISTS.length} artists' Last.fm pages`
   + `${add ? `; ${todo.length} not already in data/english.json` : ''}`);
 if (plan) {
@@ -360,12 +388,14 @@ todo = todo.slice(0, limit);
 const partial = limit < Infinity || !!debug;
 
 const artistUrl = (artist) => `https://itunes.apple.com/search?${new URLSearchParams({ term: artist, country: 'in', media: 'music', entity: 'song', limit: '200' })}`;
-const accepted = [], rejected = [];
+// A lookup that still fails after itunesJson's retries (the connection dropped) would make its song look missing
+// from iTunes, so the run then writes nothing: replies so far are cached, and running again picks up where it failed.
+const accepted = [], rejected = [], unreachable = [];
 for (const [i, c] of todo.entries()) {
   const seen = new Map(); // trackId -> judged
   const look = async (url) => {
     let body = null;
-    try { body = await itunesJson(url, { offline }); } catch (e) { console.log(`  [skip] ${e.message}`); }
+    try { body = await itunesJson(url, { offline }); } catch (e) { console.log(`  [skip] ${e.message}`); if (!offline) unreachable.push(url); }
     for (const [rank, r] of (body?.results ?? []).entries()) {
       const j = judge(c, r);
       if (j && !seen.has(r.trackId)) seen.set(r.trackId, { ...j, rank: seen.size + rank });
@@ -389,7 +419,10 @@ for (const [i, c] of todo.entries()) {
     const asCharted = (r) => named.every((d) => basicNorm(r.trackName).includes(d));
     const date = (r) => (yearOf(r) ? String(r.releaseDate).slice(0, 10) : '9999');
     const cleanEdit = (r) => r.trackExplicitness === 'cleaned';
-    good.sort((a, b) => asCharted(b.r) - asCharted(a.r) || isCompilation(a.r) - isCompilation(b.r) || isReissue(a.r) - isReissue(b.r)
+    // A credit naming someone the chart doesn't is a later remake: Tony Bennett's 1953 "Rags to Riches" against his
+    // 2006 duet with Elton John, which is not a compilation and so would otherwise win.
+    const remake = (r) => splitArtists(r.artistName).some((n) => !credited(c.artists, n));
+    good.sort((a, b) => asCharted(b.r) - asCharted(a.r) || remake(a.r) - remake(b.r) || isCompilation(a.r) - isCompilation(b.r) || isReissue(a.r) - isReissue(b.r)
       || cleanEdit(a.r) - cleanEdit(b.r) || date(a.r).localeCompare(date(b.r)) || a.rank - b.rank);
     // the year: the earliest copy of the recording itself (versions carry their own dates, some of them wrong)
     const years = good.map((j) => yearOf(j.r)).filter(Boolean);
@@ -519,14 +552,24 @@ for (const s of songs) {
   s._.india = hits.length ? Math.min(...hits.map((h) => h.rank)) : null;
 }
 
-// Tiers: hand-tagged songs set each decade's cut points and keep their own tier.
+// Tiers: hand-tagged songs set each decade's cut points and keep their own tier. With --add, the hand-tagged songs
+// already in data/english.json count too (their listeners looked up again, from the cache), so a new song from any
+// decade is measured on the same scale as the songs already there.
 const anchors = readJson(join(DATA, 'english-tiers.json'));
-const anchored = [], unanchored = [];
+const anchored = [], unanchored = [], calibration = [];
 for (const a of anchors) {
   const s = [...songs, ...prev].find((x) => [x.title, ...x.alt_titles].some((t) => titleKey(t) === titleKey(a.title)) && credited([a.artist], x.singers.join(', ')));
-  if (s && s._) { s._.anchor = a.tier; anchored.push(s); } else if (!s) unanchored.push(a);
+  if (!s) { unanchored.push(a); continue; }
+  anchored.push(s);
+  if (s._) { s._.anchor = a.tier; calibration.push({ year: s.year, tier: a.tier, listeners: s._.listeners }); continue; }
+  const listeners = await listenersFor({ title: s.title, alt_titles: s.alt_titles, singers: s.singers, composers: [] }, { offline });
+  calibration.push({ year: s.year, tier: a.tier, listeners: listeners ?? 0 });
+  s.tier = a.tier; // a song already in the file takes a hand tag added or changed since
 }
-const cuts = cutsByDecade(anchored.map((s) => ({ year: s.year, tier: s._.anchor, listeners: s._.listeners })));
+const cuts = cutsByDecade(calibration);
+// Easy is "everyone knows it". A decade whose hand-tagged songs include none (the 1950s: even Elvis's hits are Medium
+// for players in India) gets no Easy songs, rather than the cut point tiers.mjs would borrow from other decades.
+const easyDecades = new Set(calibration.filter((x) => x.tier === 1).map((x) => decadeOf(x.year)));
 // Last.fm's India chart makes a song easier: in its top 1,000, one level easier and at most Medium; in the next 2,000,
 // one level easier but never Easy. Further down (a few hundred plays a week) it says too little.
 const indiaTier = (tier, rank) => (rank == null || rank > 3000 ? tier : rank <= 1000 ? Math.min(Math.max(1, tier - 1), 2) : tier > 2 ? tier - 1 : tier);
@@ -537,6 +580,7 @@ const knownTier = (tier, rank) => (rank <= 3 ? Math.min(tier, 2) : rank <= 8 ? M
 for (const s of songs) {
   s._.byListeners = cuts.size ? tierFor(cuts, s.year, s._.listeners) : 4; // a partial run may hold no hand-tagged song
   s.tier = s._.anchor ?? knownTier(indiaTier(s._.byListeners, s._.india), s._.c.artistRank ?? Infinity);
+  if (!s._.anchor && s.tier === 1 && !easyDecades.has(decadeOf(s.year))) s.tier = 2;
 }
 
 // ---------------------------------------------------------------- report
@@ -559,6 +603,11 @@ if (partial) {
   for (const { c, r, why } of dupes) console.log(`  = ${c.title} | ${c.artists[0]} -> ${r.trackName} (${r.collectionName}): ${why}`);
   for (const { c, why, near } of rejected) console.log(`  - ${c.title} | ${c.artists.join(', ')} | ${c.year ?? c.listeners}: ${why}${near ? ` [${near.trackName} / ${near.artistName} / ${near.collectionName} / ${near.primaryGenreName}]` : ''}`);
   console.log('\nPartial run: data/english.json not written.');
+}
+else if (unreachable.length) {
+  console.log(`\n${unreachable.length} iTunes lookups failed (no connection?), so nothing was written. Run the same command again:`
+    + ' everything that worked is cached.');
+  process.exitCode = 1;
 }
 else {
   writeJsonRows(ENGLISH, [...prev, ...songs.map(({ _, ...s }) => s)].sort((a, b) => a.year - b.year || a.id.localeCompare(b.id)));
@@ -598,6 +647,8 @@ else {
     'Left out before matching: Wikipedia files these charted songs under other languages\' songs, not English.', '',
     '| title | artists | chart year | language |', '|---|---|---|---|',
     ...foreign.map((c) => `| ${esc(c.title)} | ${esc(c.artists.join(', '))} | ${c.year} | ${esc(c.language)} |`), '',
+    `## Left out by hand (${skipped.length})`, '', 'The SKIP list in scripts/english.mjs.', '',
+    ...skipped.map((c) => `- ${esc(c.title)} (${esc(c.artists[0])}): ${c.skip}`), '',
     `## Dropped after matching (${dupes.length})`, '', '| candidate | artist | iTunes track | why |', '|---|---|---|---|',
     ...dupes.map(({ c, r, why }) => `| ${esc(c.title)} | ${esc(c.artists[0])} | ${esc(r.trackName)} (${esc(r.collectionName)}) | ${esc(why)} |`), '',
     `## Not matched (${rejected.length})`, '', '| candidate | artists | chart year or listeners | why | nearest iTunes track |', '|---|---|---|---|---|',

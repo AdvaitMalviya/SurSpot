@@ -33,7 +33,7 @@ function buildRounds(candidates: Song[], all: Song[]): Round[] {
 
 const pointsFor = (msLeft: number) => Math.round(40 + (60 * msLeft) / (LIMIT * 1000));
 
-export function QuickPick({ songs, pool, onPool }: { songs: Song[]; pool: Pool; onPool: (p: Pool) => void }) {
+export function QuickPick({ songs, pool, onPool, pending }: { songs: Song[]; pool: Pool; onPool: (p: Pool) => void; pending?: boolean }) {
   const candidates = useMemo(() => songs.filter((s) => inPool(s, pool)), [songs, pool]);
   const [rounds, setRounds] = useState<Round[] | null>(null);
   const [answers, setAnswers] = useState<Answer[]>([]);
@@ -89,7 +89,7 @@ export function QuickPick({ songs, pool, onPool }: { songs: Song[]; pool: Pool; 
     const best = quickStats().best;
     return (
       <div className="mode">
-        <div className="toolbar"><PoolPicker songs={songs} pool={pool} onChange={onPool} /></div>
+        <div className="toolbar"><PoolPicker songs={songs} pool={pool} onChange={onPool} pending={pending} /></div>
         {over ? (
           <section className="quick-summary">
             <p className="quick-total"><b>{total}</b> points</p>
@@ -97,7 +97,7 @@ export function QuickPick({ songs, pool, onPool }: { songs: Song[]; pool: Pool; 
             <ol className="quick-list">
               {rounds!.map((r, k) => (
                 <li key={r.song.id} className={answers[k].points ? 'is-right' : 'is-wrong'}>
-                  <span><b>{r.song.title}</b> {r.song.movie}, {r.song.year}</span>
+                  <span><b>{r.song.title}</b> {sourceLabel(r.song)}</span>
                   <span>{answers[k].points ? `+${answers[k].points}` : answers[k].id ? 'Wrong' : 'Time up'}</span>
                 </li>
               ))}
@@ -108,8 +108,9 @@ export function QuickPick({ songs, pool, onPool }: { songs: Song[]; pool: Pool; 
           <section className="quick-intro">
             <h1>Quick pick</h1>
             <p>Ten songs. Hear five seconds, pick the song from four, and beat the {LIMIT}-second clock. The faster you answer, the more you score.</p>
-            <button type="button" className="btn btn-primary" onClick={start} disabled={candidates.length < ROUNDS}>Start</button>
-            {candidates.length < ROUNDS && <p className="pool-warn">Quick pick needs at least {ROUNDS} songs. Widen the pool above.</p>}
+            <button type="button" className="btn btn-primary" onClick={start} disabled={pending || candidates.length < ROUNDS}>Start</button>
+            {pending ? <p className="pool-warn" role="status">Loading the English songs…</p>
+              : candidates.length < ROUNDS && <p className="pool-warn">Quick pick needs at least {ROUNDS} songs. Widen the pool above.</p>}
           </section>
         )}
       </div>

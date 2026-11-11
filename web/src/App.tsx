@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState, type CSSProperties } from 'react';
 import { HelpDialog, StatsDialog } from './components/Dialogs';
 import { setVolume } from './lib/audio';
-import { DEFAULT_POOL, loadCatalog, readPool, type Pool, type Song } from './lib/catalog';
+import { DEFAULT_POOL, loadEnglish, loadIndian, mergeLists, readPool, type Pool, type Song } from './lib/catalog';
 import { buildIndex } from './lib/search';
 import { load, save } from './lib/storage';
 import { trackVisit } from './lib/track';
@@ -24,7 +24,8 @@ const MODES: [Route, string, string][] = [
 export default function App() {
   const [route, setRoute] = useState<Route>(routeOf);
   const [room, setRoom] = useState(roomOf);
-  const [songs, setSongs] = useState<Song[] | null>(null);
+  const [indian, setIndian] = useState<Song[][] | null>(null);
+  const [english, setEnglish] = useState<Song[] | 'idle' | 'loading' | 'failed'>('idle');
   const [failed, setFailed] = useState(false);
   const [pool, setPool] = useState<Pool>(() => readPool(load('pool', DEFAULT_POOL)));
   const [prefs, setPrefs] = useState(() => load('prefs', { volume: 0.8, seenHelp: false }));
@@ -36,7 +37,16 @@ export default function App() {
     addEventListener('hashchange', onHash);
     return () => removeEventListener('hashchange', onHash);
   }, []);
-  useEffect(() => { loadCatalog().then(setSongs, () => setFailed(true)); }, []);
+  useEffect(() => { loadIndian().then(setIndian, () => setFailed(true)); }, []);
+  // English songs load when a pool asks for them, or for a room, whose players must all hold the same songs.
+  const needsEnglish = route === 'friends' || ((route === 'play' || route === 'quick') && pool.languages.includes('english'));
+  useEffect(() => {
+    if (!needsEnglish || english !== 'idle') return;
+    setEnglish('loading');
+    loadEnglish().then(setEnglish, () => setEnglish('failed'));
+  }, [needsEnglish, english]);
+  const englishPending = needsEnglish && (english === 'idle' || english === 'loading');
+  const songs = useMemo(() => indian && mergeLists(Array.isArray(english) ? [...indian, english] : indian), [indian, english]);
   useEffect(trackVisit, []);
   useEffect(() => { setVolume(prefs.volume); save('prefs', prefs); }, [prefs]);
   const index = useMemo(() => (songs ? buildIndex(songs) : []), [songs]);
@@ -76,11 +86,15 @@ export default function App() {
 
         <main>
           {failed && <p className="empty">The song list didn’t load. Check your connection and reload the page.</p>}
+          {!failed && needsEnglish && english === 'failed' && (
+            <p className="empty">The English songs didn’t load. Check your connection and reload the page.</p>
+          )}
           {!songs && !failed && <p className="empty">Loading songs…</p>}
-          {songs && route === 'play' && <Endless songs={songs} index={index} pool={pool} onPool={changePool} />}
+          {songs && route === 'play' && <Endless songs={songs} index={index} pool={pool} onPool={changePool} pending={englishPending} />}
           {songs && route === 'daily' && <Daily songs={songs} index={index} onStats={(t) => { setToday(t || undefined); setDialog('stats'); }} />}
-          {songs && route === 'quick' && <QuickPick songs={songs} pool={pool} onPool={changePool} />}
-          {songs && route === 'friends' && <Friends songs={songs} index={index} pool={pool} onPool={changePool} code={room} />}
+          {songs && route === 'quick' && <QuickPick songs={songs} pool={pool} onPool={changePool} pending={englishPending} />}
+          {songs && route === 'friends' && (englishPending ? <p className="empty">Loading songs…</p>
+            : <Friends songs={songs} index={index} pool={pool} onPool={changePool} code={room} />)}
         </main>
 
 

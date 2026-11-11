@@ -26,14 +26,14 @@ export interface Song {
   wiki?: string | null;
 }
 
+async function fetchList(url: string) {
+  const res = await fetch(url);
+  if (!res.ok) throw new Error(`catalog ${res.status}`);
+  return (await res.json()) as Song[];
+}
 // Curated songs first, then the expanded, Punjabi and English ones; a song that shares an earlier list's iTunes track
-// is dropped. English loads with the rest because a room's players all need the same list.
-export async function loadCatalog(): Promise<Song[]> {
-  const lists = await Promise.all([catalogUrl, expandedUrl, punjabiUrl, englishUrl].map(async (url) => {
-    const res = await fetch(url);
-    if (!res.ok) throw new Error(`catalog ${res.status}`);
-    return (await res.json()) as Song[];
-  }));
+// is dropped.
+export function mergeLists(lists: Song[][]): Song[] {
   const tracks = new Set<number>();
   const out: Song[] = [];
   for (const list of lists) {
@@ -42,6 +42,14 @@ export async function loadCatalog(): Promise<Song[]> {
     out.push(...fresh);
   }
   return out;
+}
+// The game loads the Hindi and Punjabi lists first, and the English one (as big as the rest together) only once a
+// pool asks for English or a room is joined, so most players never download it.
+export const loadIndian = () => Promise.all([catalogUrl, expandedUrl, punjabiUrl].map(fetchList));
+export const loadEnglish = () => fetchList(englishUrl);
+// Everything at once, for the stats page.
+export async function loadCatalog(): Promise<Song[]> {
+  return mergeLists(await Promise.all([catalogUrl, expandedUrl, punjabiUrl, englishUrl].map(fetchList)));
 }
 
 export const decadeOf = (year: number) => Math.floor(year / 10) * 10;

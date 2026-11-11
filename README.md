@@ -1,8 +1,8 @@
 # सुरSpot
 
 Name the song from a split second of it. SurSpot is a guess-the-song game for Hindi film music and Punjabi
-music from the 1950s to now, with English songs from 1990 on when you want them. It runs in the browser: no app,
-no sign-up.
+music from the 1950s to now, with English songs from the same years when you want them. It runs in the browser: no
+app, no sign-up.
 
 **Play it at [surspot.pages.dev](https://surspot.pages.dev)**
 
@@ -48,18 +48,18 @@ colours of the song's cover.
 
 ## The songs
 
-About 14,500 songs: 9,400 Hindi, mostly from films, 1,150 Punjabi and 3,900 English. Every song has a difficulty from Easy
+About 18,200 songs: 9,400 Hindi, mostly from films, 1,150 Punjabi and 7,700 English. Every song has a difficulty from Easy
 (everyone knows it) to Expert (a deep cut), and a pool can mix any of them. About 1,200 songs were picked and
 tagged by hand with moods and difficulty. The rest come from the soundtracks of the most-read Hindi films on
 Wikipedia and the best-known tracks of Punjabi artists on Last.fm. Their difficulty is set by how many
 Last.fm listeners they have, compared decade by decade with the hand-tagged songs, since a hit from 1965 has
 far fewer listeners than one from 2015.
 
-The 3,900 English songs run from 1990 to now: Billboard's Year-End Hot 100 for each year, plus the best-known
-tracks of English-language artists Indian listeners know well, Westlife and Linkin Park to Arctic Monkeys and
-Sabrina Carpenter. Their difficulty comes from Last.fm listeners too, measured against 163 hand-tagged English
-songs, and songs that rank high on Last.fm's chart for India count as easier. English is off until you pick it in
-the pool, and the daily song stays Hindi.
+The 7,700 English songs run from 1950 to now: Billboard's year-end chart for each year, plus the best-known
+tracks of English-language artists Indian listeners know well, from Jim Reeves, ABBA and Boney M. to Westlife,
+Linkin Park and Sabrina Carpenter. Their difficulty comes from Last.fm listeners too, measured decade by decade
+against 285 hand-tagged English songs. Songs that rank high on Last.fm's chart for India count as easier, and so do
+the best-known songs of those artists. English is off until you pick it in the pool, and the daily song stays Hindi.
 
 The audio is the 30-second preview that Apple's iTunes API provides for each track, played straight from Apple
 and cut to exact lengths in the browser. SurSpot doesn't store or host any audio. The songs belong to their

@@ -14,10 +14,11 @@ interface Props {
   index: ReturnType<typeof buildIndex>;
   pool: Pool;
   onPool: (p: Pool) => void;
+  pending?: boolean; // the pool asks for English songs that are still loading; they join the draw when they arrive
 }
 
 // Unlimited songs from the chosen pool, with a running score and a run of consecutive solves.
-export function Endless({ songs, index, pool, onPool }: Props) {
+export function Endless({ songs, index, pool, onPool, pending }: Props) {
   const candidates = useMemo(() => songs.filter((s) => inPool(s, pool)), [songs, pool]);
   const recent = useRef<string[]>([]);
   const pick = useCallback((avoid?: string): Song | null => {
@@ -63,7 +64,7 @@ export function Endless({ songs, index, pool, onPool }: Props) {
   return (
     <div className="mode">
       <div className="toolbar">
-        <PoolPicker songs={songs} pool={pool} onChange={onPool} />
+        <PoolPicker songs={songs} pool={pool} onChange={onPool} pending={pending} />
         {run.played > 0 && (
           <div className="scoreline" aria-live="polite">
             <span><b>{run.score}</b> points</span>
@@ -83,7 +84,7 @@ export function Endless({ songs, index, pool, onPool }: Props) {
             </Reveal>
           } />
       ) : (
-        <p className="empty">No songs match this pool. Open the pool above and add an era or mood.</p>
+        <p className="empty">{pending ? 'Loading the English songs…' : 'No songs match this pool. Open the pool above and add an era or mood.'}</p>
       )}
     </div>
   );
