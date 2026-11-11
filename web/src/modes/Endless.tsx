@@ -1,10 +1,11 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { ClipRound } from '../components/ClipRound';
 import { PoolPicker } from '../components/PoolPicker';
 import { Reveal } from '../components/Reveal';
 import { loadClip } from '../lib/audio';
 import { inPool, type Pool, type Song } from '../lib/catalog';
 import { POINTS, gaveUp, outcome, type Attempt } from '../lib/game';
+import { markHeard, pickFresh } from '../lib/heard';
 import type { buildIndex } from '../lib/search';
 import { recordEndless } from '../lib/stats';
 import { trackSong } from '../lib/track';
@@ -20,12 +21,8 @@ interface Props {
 // Unlimited songs from the chosen pool, with a running score and a run of consecutive solves.
 export function Endless({ songs, index, pool, onPool, pending }: Props) {
   const candidates = useMemo(() => songs.filter((s) => inPool(s, pool)), [songs, pool]);
-  const recent = useRef<string[]>([]);
-  const pick = useCallback((avoid?: string): Song | null => {
-    const fresh = candidates.filter((s) => !recent.current.includes(s.id) && s.id !== avoid);
-    const from = fresh.length ? fresh : candidates.filter((s) => s.id !== avoid);
-    return from.length ? from[Math.floor(Math.random() * from.length)] : candidates[0] ?? null;
-  }, [candidates]);
+  // Songs already heard, here or in another mode, wait until the rest of the pool has played (lib/heard.ts).
+  const pick = useCallback((avoid?: string) => pickFresh(candidates, avoid), [candidates]);
 
   const [song, setSong] = useState<Song | null>(() => pick());
   const [next, setNext] = useState<Song | null>(null);
@@ -55,9 +52,11 @@ export function Endless({ songs, index, pool, onPool, pending }: Props) {
     setRun(r);
     recordEndless(won, r.streak, r.score);
     trackSong({ mode: 'play', song: song.id, won, tries: all.length });
-    recent.current = [song.id, ...recent.current].slice(0, Math.floor(candidates.length / 2));
+    markHeard(song.id);
   };
   const goNext = () => { setSong(next ?? pick(song?.id)); setAttempts([]); };
+  // A song whose preview won't load counts as heard too, so it doesn't come straight back.
+  const skip = () => { if (song) markHeard(song.id); goNext(); };
 
   const o = outcome(attempts);
   const tries = attempts.length;
@@ -74,7 +73,7 @@ export function Endless({ songs, index, pool, onPool, pending }: Props) {
         )}
       </div>
       {song ? (
-        <ClipRound key={song.id} song={song} index={index} attempts={attempts} onAttempt={onAttempt} onSkipSong={goNext} prefer={pool.languages}
+        <ClipRound key={song.id} song={song} index={index} attempts={attempts} onAttempt={onAttempt} onSkipSong={skip} prefer={pool.languages}
           reveal={
             <Reveal song={song}
               headline={o === 'won' ? (tries === 1 ? 'First try!' : `Got it on try ${tries}`)

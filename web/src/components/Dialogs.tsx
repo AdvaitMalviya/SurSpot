@@ -38,7 +38,8 @@ export function HelpDialog({ open, onClose }: { open: boolean; onClose: () => vo
         For an English song, another song by the same artist is <b className="tag-film">Right artist</b>.</p>
       <h3>Modes</h3>
       <dl className="help-modes">
-        <dt>Play</dt><dd>Endless songs from the pool you choose: any mix of decades, moods, difficulty, languages and artists.</dd>
+        <dt>Play</dt><dd>Endless songs from the pool you choose: any mix of decades, moods, difficulty, languages and artists.
+          A song you've heard doesn't come back until you've heard the rest of the pool.</dd>
         <dt>Daily</dt><dd>One song a day, the same for everyone. A new one arrives at midnight India time.</dd>
         <dt>Quick pick</dt><dd>Ten songs, four choices each, fifteen seconds to answer. Faster answers score more.</dd>
         <dt>With friends</dt><dd>Make a room, send the link, and race your friends through the same songs, a minute each.</dd>

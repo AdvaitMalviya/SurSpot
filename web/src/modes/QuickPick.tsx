@@ -4,6 +4,7 @@ import { Record } from '../components/Record';
 import { useClip } from '../components/useClip';
 import { loadClip } from '../lib/audio';
 import { decadeOf, inPool, isEnglish, languageOf, shuffle, sourceLabel, type Pool, type Song } from '../lib/catalog';
+import { freshFirst, markHeard } from '../lib/heard';
 import { quickStats, recordQuick } from '../lib/stats';
 import { trackSong } from '../lib/track';
 
@@ -12,10 +13,11 @@ const ROUNDS = 10, LIMIT = 15, CLIP = 5;
 interface Round { song: Song; options: Song[] }
 interface Answer { id: string | null; points: number }
 
-// Wrong options come from the same language and decade so neither gives the answer away (three Hindi titles beside
-// one English one would), and from another film, or for an English song another artist.
+// The songs to name are ones not heard yet where the pool has enough (lib/heard.ts). Wrong options come from the same
+// language and decade so neither gives the answer away (three Hindi titles beside one English one would), and from
+// another film, or for an English song another artist.
 function buildRounds(candidates: Song[], all: Song[]): Round[] {
-  return shuffle(candidates).slice(0, ROUNDS).map((song) => {
+  return freshFirst(candidates).slice(0, ROUNDS).map((song) => {
     const titles = new Set([song.title.toLowerCase()]);
     const options = [song];
     const same = all.filter((s) => languageOf(s) === languageOf(song));
@@ -62,6 +64,7 @@ export function QuickPick({ songs, pool, onPool, pending }: { songs: Song[]; poo
     setAnswers(next);
     setShown(i);
     trackSong({ mode: 'quick', song: round.song.id, won: id === round.song.id, tries: 1 });
+    markHeard(round.song.id);
     if (next.length === rounds!.length) recordQuick(next.reduce((n, a) => n + a.points, 0));
     const after = rounds![i + 1];
     if (after) loadClip(after.song).catch(() => {});

@@ -3,6 +3,7 @@ import { ClipRound } from '../components/ClipRound';
 import { Reveal } from '../components/Reveal';
 import { DEFAULT_POOL, dailySong, istDate, msToNextDay, type Song } from '../lib/catalog';
 import { STAGES, outcome, shareGrid, type Attempt } from '../lib/game';
+import { markHeard } from '../lib/heard';
 import type { buildIndex } from '../lib/search';
 import { dailyGame, recordDaily, saveDailyGame } from '../lib/stats';
 import { trackSongOnce } from '../lib/track';
@@ -37,6 +38,7 @@ export function Daily({ songs, index, onStats }: { songs: Song[]; index: ReturnT
     if (r !== 'playing') {
       recordDaily(number, r === 'won', all.length);
       trackSongOnce(`daily-${date}`, { mode: 'daily', song: song.id, won: r === 'won', tries: all.length });
+      markHeard(song.id);
       setTimeout(() => onStats(r === 'won' ? all.length : 0), 1800);
     }
   };

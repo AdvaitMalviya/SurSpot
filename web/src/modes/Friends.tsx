@@ -4,8 +4,9 @@ import { PoolPicker, describePool } from '../components/PoolPicker';
 import { Reveal } from '../components/Reveal';
 import { ROOMS_URL, loadMe, useRoom, type Me } from '../components/useRoom';
 import { loadClip, unlockAudio } from '../lib/audio';
-import { inPool, languageOf, shuffle, type Language, type Pool, type Song } from '../lib/catalog';
+import { inPool, languageOf, type Language, type Pool, type Song } from '../lib/catalog';
 import { POINTS, gaveUp, outcome, type Attempt } from '../lib/game';
+import { freshFirst, markHeard } from '../lib/heard';
 import {
   NAME_LENGTH, ROOM_CODE, isDone, newRoomCode, pointsFor, standings, type Mark, type Result, type RoomState,
 } from '../lib/room';
@@ -198,7 +199,8 @@ function Lobby({ room, me, isHost, hostName, songs, pool, onPool, onStart, onLea
       else { await navigator.clipboard.writeText(link); setCopied(true); }
     } catch { /* share sheet closed */ }
   };
-  const start = () => onStart(shuffle(candidates).slice(0, prefs.rounds).map((s) => s.id), describePool(pool));
+  // Songs the host hasn't heard come first, so a second game in the same room brings new ones.
+  const start = () => onStart(freshFirst(candidates).slice(0, prefs.rounds).map((s) => s.id), describePool(pool));
 
   return (
     <>
@@ -292,6 +294,7 @@ function Game({ room, me, isHost, hostName, song, index, languages, send, server
   useEffect(() => {
     if (phase !== 'reveal' || !song) return;
     trackSongOnce(`room-${room.code}-${room.startsAt}`, { mode: 'friends', song: song.id, won: outcome(attempts) === 'won', tries: attempts.length });
+    markHeard(song.id);
   }, [phase, song]);
 
   const notDone = room.players.filter((p) => p.pid !== me.pid && !isDone(room.results[round]?.[p.pid]));

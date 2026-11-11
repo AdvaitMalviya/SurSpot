@@ -368,6 +368,7 @@ h1, h2, h3 { margin: 0; }
   pointer-events: none;
 }
 .pool-warn { margin: 0; color: var(--wrong); font-size: 0.95rem; font-weight: 500; }
+.pool-heard { margin: 0; }
 
 .scoreline { display: flex; flex-wrap: wrap; gap: 0.25rem 1rem; padding: 0.3rem 0.6rem 0.3rem 0; color: var(--ink-2); font-size: 0.95rem; }
 .scoreline b { color: var(--score); font: 750 semi-expanded 1.1rem/1 var(--sans); font-variant-numeric: tabular-nums; }
@@ -981,7 +982,7 @@ h1, h2, h3 { margin: 0; }
   .quick-intro h1 { font-size: 3rem; }
   /* Era and mood across; how well known beside language with the singer under it; then the button. */
   .pool-body { width: min(46rem, calc(100vw - 32px)); grid-template-columns: 1.4fr 1fr; gap: 1rem 2rem; max-height: calc(100dvh - 10rem); }
-  .pool-wide, .pool-done, .pool-warn { grid-column: 1 / -1; }
+  .pool-wide, .pool-done, .pool-warn, .pool-heard { grid-column: 1 / -1; }
   .pool-known { grid-row: span 2; }
 }
 @media (min-width: 75rem) {

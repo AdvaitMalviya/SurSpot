@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef } from 'react';
 import { DEFAULT_POOL, LANGUAGES, LEVELS, artists, decadeLabel, inLanguages, inPool, tagCounts, type Language, type Level, type Pool, type Song } from '../lib/catalog';
+import { heardCount } from '../lib/heard';
 
 const DECADES = [1950, 1960, 1970, 1980, 1990, 2000, 2010, 2020];
 const TAG_NAMES: Record<string, string> = {
@@ -32,7 +33,9 @@ export function describePool(p: Pool) {
 // Moods and artists follow the languages (Punjabi and English songs carry no moods), keeping whatever is already picked.
 // `pending`: the English songs the pool asks for are still loading, so the count isn't final yet.
 export function PoolPicker({ songs, pool, onChange, pending }: { songs: Song[]; pool: Pool; onChange: (p: Pool) => void; pending?: boolean }) {
-  const count = useMemo(() => songs.filter((s) => inPool(s, pool)).length, [songs, pool]);
+  const pooled = useMemo(() => songs.filter((s) => inPool(s, pool)), [songs, pool]);
+  const count = pooled.length;
+  const heard = heardCount(pooled); // not memoised: it grows as songs play
   const spoken = useMemo(() => songs.filter((s) => inLanguages(s, pool.languages)), [songs, pool.languages]);
   const tags = useMemo(() => {
     const all = tagCounts(spoken).filter(([t]) => t !== 'non-film');
@@ -126,9 +129,14 @@ export function PoolPicker({ songs, pool, onChange, pending }: { songs: Song[]; 
         <button type="button" className="btn btn-primary pool-done" onClick={() => { if (ref.current) ref.current.open = false; }}>
           {pending ? 'Loading English songs…' : `Play ${count} songs`}
         </button>
-        {pending ? <p className="pool-warn" role="status">The English songs are on their way. They join the pool in a moment.</p> : count < 10 && (
+        {pending ? <p className="pool-warn" role="status">The English songs are on their way. They join the pool in a moment.</p> : count < 10 ? (
           <p className="pool-warn" role="status">
             {count ? `Only ${count} songs match, so they will repeat soon.` : 'No songs match.'} Add an era or mood, or pick an easier level.
+          </p>
+        ) : heard > 0 && (
+          <p className="pool-note pool-heard">
+            {heard >= count ? `You’ve heard all ${count} of these, so they start coming round again.`
+              : `You’ve heard ${heard} of these. The other ${count - heard} come first.`}
           </p>
         )}
       </div>
